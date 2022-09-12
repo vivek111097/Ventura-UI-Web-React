@@ -1,0 +1,110 @@
+.leftBg {
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ff844b+0,ffa880+100 */
+  background: #ff844b; /* Old browsers */
+  background: -moz-linear-gradient(
+    top,
+    #ff844b 0%,
+    #ffa880 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    top,
+    #ff844b 0%,
+    #ffa880 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #ff844b 0%,
+    #ffa880 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff844b', endColorstr='#ffa880',GradientType=0 ); /* IE6-9 */
+}
+.fullHeight {
+  height: 100vh;
+}
+.signUpBox {
+  background: #ffffff;
+  border: 1px solid #e0dfe7;
+  box-shadow: 0px 4px 16px -8px rgb(45 43 64 / 12%);
+  border-radius: 24px;
+  max-width: 490px;
+  margin: 40px auto;
+  padding: 64px 48px;
+}
+
+.logo {
+  margin-bottom: 74px;
+}
+.signUpBox h3 {
+  /* font-size: 24px;
+  color: #191442;
+  font-weight: 600;
+  margin: 0 0 8px 0; */
+}
+.signUpBox p.subTitle {
+  /* color: #6b6874;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22.4px;
+  margin-bottom: 0; */
+}
+.signUpBox input {
+  /* margin-top: 24px; */
+}
+.haveAnAccount {
+  color: #191442;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 16px;
+}
+.haveAnAccount a {
+  color: #f47a44;
+  font-family: "sorabold";
+}
+.termsOfUse {
+  font-size: 11px;
+  color: #b0adbe;
+  text-align: center;
+  line-height: 16px;
+  margin-top: 98px;
+}
+.termsOfUse strong {
+  color: #5c5968;
+}
+
+/* Left Component css Start */
+.landingCarousel {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.landingSlides{
+  padding: 0 70px;
+  outline: none !important;
+}
+
+.landingSlides p{
+  font-size: 20px;
+  color: white;
+  font-weight: 300;
+  margin-top: 11px;
+  margin-bottom: 40px;
+  font-family: "soralight";
+  padding: 0 58px;
+  line-height: 30px;  
+}
+
+.landingSlides h3{
+  font-size: 48px;
+  color: white;
+  font-weight: 600;
+  line-height: 60px;
+  margin-bottom: 12px;
+  margin-top: 33px;
+}
+.landingSlides img.thumb {
+  display: block;
+  margin: 0 auto;
+}
+.downloadApp img{
+  margin:0 12px;
+}
