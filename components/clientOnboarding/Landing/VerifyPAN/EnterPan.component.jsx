@@ -78,7 +78,6 @@ const EnterPan = (props) => {
     }
   };
 
-  console.log(errors);
   return (
     <>
 
@@ -100,7 +99,7 @@ const EnterPan = (props) => {
               message: "Maximum 10 number",
             },
           })}
-          onKeyUp={() => {
+          onKeyUp={(e) => {
             setValue("pan",e.target.value.toLocaleUpperCase())
             trigger("pan");
           }}

@@ -7,9 +7,10 @@ import { CO_BaseURL } from "../../global/config";
 
 
 const AxiosInstance = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: CO_BaseURL,
     headers: {
-        Accept: `application/json`
+        Accept: `application/json`,
+        session_id:"82275b0c-9f2c-4c7b-9dc0-1972f4f55064"
 
     }
 })

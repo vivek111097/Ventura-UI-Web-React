@@ -1,11 +1,11 @@
 import styles from "../styles/Home.module.css";
-import ButtonUI from "../components/ui/Button";
 import Layout from "../components/layout/layout";
 import Modal from "../components/ui/Modal/Modal.component";
 import { TOGGLE_MODAL } from "../Redux/modal";
 import { connect } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
+import ButtonUI from "../components/ui/Button.component";
 
 const Home = (props) => {
   const { showModal, toggleModal } = props;

@@ -2,8 +2,45 @@
   max-width: 388px;
   margin: 20px auto;
 }
-.guardContainer{
- border: 1px solid #E0DFE7;
- border-radius: 12px;
- padding: 20px 16px;
+.horizontal_slider {
+  width: 100%;
+  height: 30px;
+}
+
+.example_thumb {
+  font-size: 0.9em;
+  text-align: center;
+  background-color: #fff;
+  color: red;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: 1px solid #e0dfe7;
+  box-shadow: 0px 4px 8px -2px rgba(45, 43, 64, 0.16);
+  border-radius: 8px;
+  outline: none;
+}
+
+.example_track {
+  position: relative;
+  background: #ff844b;
+}
+
+.example_track.example-track-1 {
+  background: #7260e2;
+}
+
+.example_track.example-track-2 {
+  background: #41c977;
+}
+
+.horizontal_slider .example-track {
+  top: 10px;
+  height: 8px;
+}
+
+.horizontal_slider .example-thumb {
+  top: 1px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
 }

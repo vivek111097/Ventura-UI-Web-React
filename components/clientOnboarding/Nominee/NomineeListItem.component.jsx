@@ -5,15 +5,27 @@ import AxiosInstance from "../../../Api/Axios/axios";
 import style from './NomineeList.module.css';
 
 
+
+
 const NomineeListItem = () => {
+  let reqdata={
+    "phone": 8369747962,
+    "nominee_data": [
+    ]
+
+}
   const [nomineeList, setNomineeList] = useState([]);
   useEffect(() => {
-    const getNomineeList = async () => {
-      const { data } = await AxiosInstance.get("/nominee");
-      console.log(data);
-      setNomineeList(data.nominee_data);
-    };
-    getNomineeList();
+    try{
+        const resp =  AxiosInstance.post("/signup/user/nominee/add",{...reqdata});
+        console.log(resp);
+      }
+    
+    catch(e)
+    {
+      console.log(e)
+    }
+    
    
   }, []);
   const calculateAge=(birthDate)=>{

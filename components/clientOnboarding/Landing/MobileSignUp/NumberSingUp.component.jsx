@@ -49,16 +49,17 @@ const SingUpNumber = () => {
       
       {otpSent ? (
          <NumberOTP/>
-        // <EnterPan/>
+       
       ) : (
-        <NumberInput
-          phone={phone}
-          setphone={setphone}
-          session={session}
-          setsession={setsession}
-          otpSent={otpSent}
-          setotpSent={setotpSent}
-        />
+          <EnterPan/>
+        // <NumberInput
+        //   phone={phone}
+        //   setphone={setphone}
+        //   session={session}
+        //   setsession={setsession}
+        //   otpSent={otpSent}
+        //   setotpSent={setotpSent}
+        // />
       )}
     </>
   );

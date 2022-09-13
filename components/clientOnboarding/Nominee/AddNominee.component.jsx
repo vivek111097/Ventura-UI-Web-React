@@ -1,40 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { getRelationships } from "../../../Api/user";
 import AxiosInstance from "./../../../Api/Axios/axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import style from "./Nominee.module.css";
 import { validatePANOrAddhar } from "../../validation/validation";
 import ButtonUI from "../../ui/Button.component";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useRouter } from "next/router";
+import ReactSlider from "react-slider";
+/**
+ *
+ * @author vivek chaudhari
+ * @description  Add Nomineee Form
+ */
 
 const AddNominee = () => {
+  const [Nominee_1_Share,Set_Nominee_1_Share] = useState(0);
+  const [Nominee_2_Share,Set_Nominee_2_Share] = useState(0);
+  const [Nominee_3_Share,Set_Nominee_3_Share] = useState(0);
   const [nominee_relationship, setNominee_Relationship] = useState([]);
   const [showGuardianForm, setShowGuardianForm] = useState(false);
+  const [IsMinor, setIsMinor] = useState(false);
   const router = useRouter();
 
-  const schema = yup.object({
-    nominee_name: yup.string().required(),
-    // relationship: "",
-    //   nominee_name: "",
-    //   dob: null,
-    //   nominee_address: "",
-    //   pan_or_aadhar: "",
-    //   guard_relationship: "",
-    //   guard_name:"",
-    //   guard_dob:null,
-    //   guard_pan_or_aadhar:"",
-    //   guard_address:""
-  });
-
   useEffect(() => {
+    // get relationships data for binding to dropdown
     const getRelationships = async () => {
-      const { data } = await AxiosInstance.get("/relationships");
-      setNominee_Relationship(data);
-      console.log(data);
+      const { data } = await AxiosInstance.get(
+        "/signup/static/nominee/relationships"
+      );
+      setNominee_Relationship(data.relationships);
     };
     getRelationships();
   }, []);
@@ -43,26 +38,85 @@ const AddNominee = () => {
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors },
     trigger,
   } = useForm({
-    resolver: yupResolver(schema),
+    defaultValues: {
+      relationship: "",
+      nominee_name: "",
+      dob: null,
+      nominee_address: "",
+      pan_or_aadhar: "",
+      guard_relationship: "",
+      guard_name: "",
+      guard_dob: null,
+      guard_pan_or_aadhar: "",
+      guard_address: "",
+    },
   });
-  const onSubmit = (data) => console.log(data);
-
-  const checkAge = () => {
-    let dob = new Date(watch("dob")).getFullYear();
-    let today = new Date().getFullYear();
-    today - dob < 18 ? setShowGuardianForm(true) : setShowGuardianForm(false);
-    console.log(today);
-    console.log(dob);
+  const onSubmit = (data) => {
+    try {
+      let nominee_data = {
+        name: data.nominee_name,
+        relation: data.relationship,
+        birthdate: data.dob,
+        address: data.nominee_address,
+        identification_type: "pan",
+        identification_no: data.pan_or_aadhar,
+        nominee_minor: IsMinor,
+        zipcode: "110011",
+        nominee_guardian_details: {
+          guardian_identification_no: data.guard_pan_or_aadhar,
+          guardian_dob: data.guard_dob,
+          guardian_identification_type: "pan",
+          guardian_name: data.guard_name,
+          guardian_address: data.guard_address,
+          guardian_relation: data.guard_relationship,
+          guardian_zipcode: 110011,
+        },
+        nominee_share: 50,
+      };
+      console.log(nominee_data);
+      const PostData = {
+        phone: 8369747962,
+        nominee_data: [nominee_data],
+      };
+      console.log(PostData);
+      const resp = AxiosInstance.post("/signup/user/nominee/add", {
+        PostData,
+      });
+      console.log(resp);
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  //  checkAge metod accepts date of birth and Type
+  //  for Nominee 'N' and Guardian 'G'
+  const checkAge = (date, type) => {
+    let dob = new Date(date).getFullYear();
+    let today = new Date().getFullYear();
+    if (type == "N") {
+      if (today - dob < 18) {
+        setShowGuardianForm(true);
+        setIsMinor(true);
+      } else {
+        setShowGuardianForm(false);
+      }
+    } else if (type == "G") {
+      if (today - dob < 18) {
+        console.log("Guardian's age should be greter than 18");
+      }
+    }
+  };
+  const handleInput = (share) => {
+    Set_Nominee_1_Share(share[0])
+    Set_Nominee_2_Share(share[1] - share[0])
+    Set_Nominee_3_Share(100 - share[1])
+}
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
-
       <div className={style.formContainer}>
         <h2 className="title">Add nominee 1</h2>
 
@@ -102,7 +156,7 @@ const AddNominee = () => {
             required: "PAN Number or Aadhaar Number is required",
             validate: validatePANOrAddhar,
           })}
-          onKeyUp={(e) => {
+          onKeyUp={() => {
             trigger("pan_or_aadhar");
           }}
         />
@@ -129,7 +183,7 @@ const AddNominee = () => {
               placeholderText="Select date"
               onChange={(date) => {
                 field.onChange(date);
-                checkAge();
+                checkAge(date, "N");
               }}
               selected={field.value}
               showPopperArrow={false}
@@ -161,6 +215,22 @@ const AddNominee = () => {
           )}
         />
 
+        <ReactSlider
+          className={style.horizontal_slider}
+          thumbClassName={style.example_thumb}
+          trackClassName={style.example_track}
+          defaultValue={[40, 100]}
+          ariaLabel={["Leftmost thumb", "Rightmost thumb"]}
+          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+          pearling
+          onChange={(val) => {
+            handleInput(val);
+          }}
+        />
+        <p>Nominee 1 : {Nominee_1_Share}%</p>
+        <p>Nominee 2 : {Nominee_2_Share}%</p>
+        <p>Nominee 3 : {Nominee_3_Share}%</p>
+
         {/* Guardian's detail required in case of nominee is minor  */}
         {showGuardianForm && (
           <div className={style.guardContainer}>
@@ -190,48 +260,6 @@ const AddNominee = () => {
             <label className="form-label" htmlFor="dobNominee1">
               Guardian's date of birth
             </label>
-            {/* <Controller
-              control={control}
-              name="guard_dob"
-              render={({ field }) => (
-                <DatePicker
-                  className="form-control"
-                  placeholderText="Select date"
-                  showYearPicker
-                  onChange={(date) => {
-                    field.onChange(date);
-                    checkAge();
-                  }}
-                  selected={field.value}
-                  showPopperArrow={false}
-                  maxDate={new Date()}
-                  showMonthDropdown
-                  showYearDropdown
-                  dateFormatCalendar="MMMM"
-                  yearDropdownItemNumber={35}
-                  scrollableYearDropdown
-                  // popperContainer={ }
-                  popperClassName="datepicker"
-                  popperPlacement="top-start"
-                  popperModifiers={[
-                    {
-                      name: "offset",
-                      options: {
-                        offset: [0, -20],
-                      },
-                    },
-                    {
-                      name: "preventOverflow",
-                      options: {
-                        rootBoundary: "viewport",
-                        tether: false,
-                        altAxis: true,
-                      },
-                    },
-                  ]}
-                />
-              )}
-            /> */}
 
             <Controller
               control={control}
@@ -242,7 +270,7 @@ const AddNominee = () => {
                   placeholderText="Select date"
                   onChange={(date) => {
                     field.onChange(date);
-                    checkAge();
+                    checkAge(date, "G");
                   }}
                   selected={field.value}
                   showPopperArrow={false}
@@ -302,7 +330,7 @@ const AddNominee = () => {
             />
           </div>
         )}
-        {/* disabled */}
+        {/* disabled untile complate form validation */}
         <ButtonUI
           type="submit"
           onClick={() => router.push("/co/nominee/nomineelist")}
@@ -310,7 +338,6 @@ const AddNominee = () => {
           Add Nominee
         </ButtonUI>
       </div>
-      {/* errors will return when field validation fails  */}
       {errors.exampleRequired && <span>This field is required</span>}
     </form>
   );
