@@ -17,10 +17,13 @@ const NomineeListItem = () => {
   const [nomineeList, setNomineeList] = useState([]);
   useEffect(() => {
     try{
-        const resp =  AxiosInstance.post("/signup/user/nominee/add",{...reqdata});
-        console.log(resp);
-      }
-    
+      // const getNomineeList = async () => {
+      //   const { data } = await AxiosInstance.post("/signup/user/nominee/add",{...reqdata});
+      //   console.log(data);
+      //   setNomineeList(data.nominee_data);
+      // };
+      // getNomineeList();
+    }
     catch(e)
     {
       console.log(e)

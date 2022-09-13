@@ -2,9 +2,12 @@
   max-width: 388px;
   margin: 20px auto;
 }
+.Sliderwrap{
+  padding:0 15px;
+}
 .horizontal_slider {
   width: 100%;
-  height: 30px;
+  height:26px
 }
 
 .example_thumb {
@@ -14,33 +17,75 @@
   color: red;
   cursor: pointer;
   box-sizing: border-box;
-  border: 1px solid #e0dfe7;
+  border: 1px solid #E0DFE7;
   box-shadow: 0px 4px 8px -2px rgba(45, 43, 64, 0.16);
   border-radius: 8px;
-  outline: none;
+  outline:none
 }
 
 .example_track {
   position: relative;
-  background: #ff844b;
+  background: #FF844B;
+  border-radius: 4px;
 }
 
-.example_track.example-track-1 {
-  background: #7260e2;
+.example_track.example_track-1 {
+  background: #7260E2;
 }
 
-.example_track.example-track-2 {
-  background: #41c977;
+.example_track.example_track_2 {
+  background: #41C977;
 }
 
-.horizontal_slider .example-track {
+.horizontal_slider .example_track {
   top: 10px;
   height: 8px;
 }
 
-.horizontal_slider .example-thumb {
+.horizontal_slider .example_thumb {
   top: 1px;
   width: 24px;
   height: 24px;
   line-height: 24px;
+}
+
+.SliderNumWrap{
+  display: flex;
+  padding: 0;
+  justify-content: space-between;
+  margin: 0 0 8px 10px;
+}
+.SliderNumWrap .SliderNum{
+  list-style: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  color: #B0ADBE;
+}
+.NomineesWrap{
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+.NomineesWrap .Nominees{
+  list-style: none;
+  flex: 1;
+}
+.NomineesWrap  .Percentage{
+  font-style: normal;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 0 0 4px 0;
+}
+
+.NomineesWrap  .NomineeNum{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  margin: 0;
 }

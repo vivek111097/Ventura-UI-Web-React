@@ -8,6 +8,7 @@ import { validatePANOrAddhar } from "../../validation/validation";
 import ButtonUI from "../../ui/Button.component";
 import { useRouter } from "next/router";
 import ReactSlider from "react-slider";
+import axios from "axios";
 /**
  *
  * @author vivek chaudhari
@@ -20,7 +21,7 @@ const AddNominee = () => {
   const [Nominee_3_Share,Set_Nominee_3_Share] = useState(0);
   const [nominee_relationship, setNominee_Relationship] = useState([]);
   const [showGuardianForm, setShowGuardianForm] = useState(false);
-  const [IsMinor, setIsMinor] = useState(false);
+  const [IsMinor, setIsMinor] = useState("no");
   const router = useRouter();
 
   useEffect(() => {
@@ -54,12 +55,12 @@ const AddNominee = () => {
       guard_address: "",
     },
   });
-  const onSubmit = (data) => {
+  const onSubmit = (data) => {    
     try {
       let nominee_data = {
         name: data.nominee_name,
         relation: data.relationship,
-        birthdate: data.dob,
+        birthdate: data.dob.toLocaleDateString(),
         address: data.nominee_address,
         identification_type: "pan",
         identification_no: data.pan_or_aadhar,
@@ -67,7 +68,7 @@ const AddNominee = () => {
         zipcode: "110011",
         nominee_guardian_details: {
           guardian_identification_no: data.guard_pan_or_aadhar,
-          guardian_dob: data.guard_dob,
+          guardian_dob: data.guard_dob.toLocaleDateString(),
           guardian_identification_type: "pan",
           guardian_name: data.guard_name,
           guardian_address: data.guard_address,
@@ -82,9 +83,15 @@ const AddNominee = () => {
         nominee_data: [nominee_data],
       };
       console.log(PostData);
-      const resp = AxiosInstance.post("/signup/user/nominee/add", {
-        PostData,
-      });
+      // const resp = AxiosInstance.post("/signup/user/nominee/add", {
+      //   PostData,
+      // });
+      const resp=axios.post('https://kyc-stage.ventura1.com/onboarding/v2/signup/user/nominee/add',{...PostData},{
+        headers:{
+          Accept: `application/json`,
+          session_id:"82275b0c-9f2c-4c7b-9dc0-1972f4f55064"
+        }
+      })
       console.log(resp);
     } catch (e) {
       console.log(e);
@@ -94,12 +101,13 @@ const AddNominee = () => {
   //  checkAge metod accepts date of birth and Type
   //  for Nominee 'N' and Guardian 'G'
   const checkAge = (date, type) => {
+    console.log(date)
     let dob = new Date(date).getFullYear();
     let today = new Date().getFullYear();
     if (type == "N") {
       if (today - dob < 18) {
         setShowGuardianForm(true);
-        setIsMinor(true);
+        setIsMinor("yes");
       } else {
         setShowGuardianForm(false);
       }

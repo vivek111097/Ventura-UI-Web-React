@@ -31,7 +31,6 @@ export const validatePANOrAddhar = (pan) => {
 
   if (Number.isInteger(parseInt(pan[0]))) {
     console.log('Aaadhar number')
-
   }
   else {
     const validation_msg = validatePAN(pan)
