@@ -3,6 +3,7 @@ import axios from "axios";
 
 import NumberOTP from "./NumberOTP.component";
 import NumberInput from "./NumberInput.component";
+import EnterPan from "../VerifyPAN/EnterPan.component";
 
 const SingUpNumber = () => {
   const [otpSent, setotpSent] = useState(false);
@@ -44,8 +45,11 @@ const SingUpNumber = () => {
   };
   return (
     <>
+      {/* Using Ternary Operator to Toggle OTP And Input Field  */}
+      
       {otpSent ? (
-        <NumberOTP session={session} phone={phone} />
+         <NumberOTP/>
+        // <EnterPan/>
       ) : (
         <NumberInput
           phone={phone}

@@ -1,0 +1,9 @@
+.formContainer{
+  max-width: 388px;
+  margin: 20px auto;
+}
+.guardContainer{
+ border: 1px solid #E0DFE7;
+ border-radius: 12px;
+ padding: 20px 16px;
+}

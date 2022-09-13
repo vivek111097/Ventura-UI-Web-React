@@ -24,6 +24,17 @@ const Landing_slice = createSlice({
         user: addedTouser,
       };
     },
+    // STORE_NUMBER: (state, action) => {
+    //   const { sessionId, phoneNumber } = action.payload
+    //   const addedTouser = produce(state.user, (draft) => {
+    //     draft.sessionid=sessionId
+    //     draft.phonenumber=phoneNumber
+    //   });
+    //   return {
+    //     ...state,
+    //     user: addedTouser,
+    //   };
+    // },
 
     SET_OTP_VALIDATED:(state, action)=>{
       const { isvalidated } = action.payload

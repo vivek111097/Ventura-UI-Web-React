@@ -5,23 +5,15 @@ import { STORE_SESSION } from "../../../../Redux/Landing";
 import ButtonUI from "../../../ui/Button.component";
 import styles from ".././Landing.module.css";
 
-
 const PhoneInput = (props) => {
-  const {
-    phone,
-    setphone,
-    session,
-    setsession,
-    otpSent,
-    setotpSent,
-  }=props
-  const [disabled, setdisabled] = useState(true);
+  const { phone, setphone, session, setsession, otpSent, setotpSent } = props;
+
   const {
     register,
     trigger,
     setValue,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm();
 
   // Defining Regex for mobile number
@@ -30,15 +22,13 @@ const PhoneInput = (props) => {
   //   Number Validation
   const validatePhone = (phone) => {
     if (phoneNumberRegex.test(phone)) {
-      //   enabling the button if mobile number is valid
-      setdisabled(false);
       return true;
     } else {
-      setdisabled(true);
-      return "Invalid Input";
+      return "Invalid Phone Number";
     }
   };
 
+  // Handling Form on Submit Using Async Await
   const onSubmit = async (data) => {
     try {
       const getData = await fetch(
@@ -58,17 +48,18 @@ const PhoneInput = (props) => {
       //   if (getData) {
       //     setotpSent(true);
       //   }
+
       //   receiving response from backend
       const res = await getData.json();
       if (res) {
         setotpSent(true);
         setsession(res.sessionid);
         setphone(res.phone);
-        let UserSession={
-          sessionId:res.sessionid,
-          phoneNumber:res.phone
-        }
-        props.storeSession(UserSession)
+        let UserSession = {
+          sessionId: res.sessionid,
+          phoneNumber: res.phone,
+        };
+        props.storeSession(UserSession);
       } else {
         alert("there was some error ");
       }
@@ -83,12 +74,15 @@ const PhoneInput = (props) => {
       <p className="subTitle">
         Enter your number to help us set up your investment account.
       </p>
+
+      {/* Mobile Number Input Form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-auto">
             <input className="form-control countryCode" defaultValue={"+91"} />
           </div>
           <div className="col">
+            {/* Number Inout Field */}
             <input
               className="form-control"
               placeholder="Enter mobile number"
@@ -107,6 +101,8 @@ const PhoneInput = (props) => {
             />
           </div>
         </div>
+
+        {/* WhatsApp Notification Button Default Value Will Be Checked */}
         <div className="checkBox">
           <input
             type="checkbox"
@@ -115,7 +111,9 @@ const PhoneInput = (props) => {
           />
           <label htmlFor="enableWhatsapp">Enable WhatsApp notifications</label>
         </div>
-        <ButtonUI type={"submit"} disabled={disabled}>
+
+        {/* Submit Button */}
+        <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
           Continue
         </ButtonUI>
       </form>
@@ -130,8 +128,6 @@ const PhoneInput = (props) => {
     </>
   );
 };
-
-
 
 const mapStateToProps = (state) => {
   return {

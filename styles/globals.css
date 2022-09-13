@@ -156,6 +156,79 @@ a {
 }
 /* Custom Button Input End */
 
+
+/* Custom Input Label */
+.form-label{
+  font-size: 12px;
+  line-height: 15.12px;
+  color: #6B6874;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Datepicker start */
+
+.datepicker .react-datepicker{
+  border: 1px solid #E0DFE7;
+  box-shadow: 0px 4px 8px -2px #2D2B4029;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.datepicker .react-datepicker__header{
+  padding: 20px 0;
+  background-color: #fff;
+  border-bottom: 0;
+}
+
+.datepicker .react-datepicker__year-read-view--down-arrow, .datepicker .react-datepicker__month-read-view--down-arrow, .datepicker .react-datepicker__month-year-read-view--down-arrow, .datepicker .react-datepicker__navigation-icon::before{
+  border-width: 2px 2px 0 0;
+  border-color: #B0ADBE;
+  height: 5px!important;
+  top: 17px;
+  width: 5px;
+}
+
+.datepicker .react-datepicker__current-month, .datepicker .react-datepicker-time__header, .datepicker .react-datepicker-year-header{
+  display: none;
+}
+
+.datepicker .react-datepicker__month-read-view--selected-month, .datepicker .react-datepicker__year-read-view--selected-year{
+  margin-bottom: 22px;
+  color: #FF844B;
+  font-size: 16px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.datepicker .react-datepicker__day-name{
+  color: #B0ADBE;
+  margin: 0 8px 0;
+}
+
+.datepicker .react-datepicker__day-name, .datepicker .react-datepicker__day, .datepicker .react-datepicker__time-name{
+  width: 36px;;
+  height: 30px;;
+  line-height: 2rem;
+  
+}
+
+.datepicker .react-datepicker__day, .datepicker .react-datepicker__time-name{
+  margin: 0 8px 16px;
+}
+
+.datepicker .react-datepicker__day--keyboard-selected, .datepicker .react-datepicker__month-text--keyboard-selected, .datepicker .react-datepicker__quarter-text--keyboard-selected, .datepicker .react-datepicker__year-text--keyboard-selected,
+.datepicker .react-datepicker__day--selected{
+  background-color: #FF844B;
+}
+
+.datepicker .react-datepicker__month-read-view--down-arrow, .datepicker .react-datepicker__year-read-view--down-arrow{
+  display: none;
+
+}
+
+/* Datepicker end */
+
 /* Custom Button Css Start */
 .btn {
   margin-top: 15px;
@@ -262,6 +335,7 @@ a {
   color: #191442;
   font-weight: 600;
   margin: 0 0 8px 0;
+  margin-bottom: 24px;
 }
 .subTitle{
   color: #6b6874;

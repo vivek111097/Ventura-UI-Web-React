@@ -1,10 +1,11 @@
 import React from 'react'
-import Nominee from '../../../components/clientOnboarding/Nominee/Nominee.component'
+import AddNominee from '../../../components/clientOnboarding/Nominee/AddNominee.component'
+
 
 const Nominee_Page = () => {
   return (
     <>
-    <Nominee/>
+    <AddNominee/>
     </>
   )
 }

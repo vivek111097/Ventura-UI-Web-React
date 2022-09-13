@@ -7,19 +7,23 @@ import ButtonUI from '../../../ui/Button.component';
 const MailOTP = (props) => {
     const { session, phone } = props;
     console.log(session);
-    const [disabled, setdisabled] = useState(true);
     const {
       register,
       trigger,
       setValue,
   
       handleSubmit,
-      formState: { errors },
+      formState: { errors ,isDirty,isValid},
     } = useForm();
+
     const router = useRouter();
+
+    // Getting All OTP Element From Input 
     function getCodeBoxElement(index) {
       return document.getElementById("codeBox" + index);
     }
+
+    // OnKeyUp Function 
     function onKeyUpEvent(index, event) {
       const eventCode = event.which || event.keyCode;
       if (getCodeBoxElement(index).value.length === 1) {
@@ -31,13 +35,14 @@ const MailOTP = (props) => {
           //   console.log(p)
           //   console.log("hello")
           //   }
-          setdisabled(false);
         }
       }
       if (eventCode === 8 && index !== 1) {
         getCodeBoxElement(index - 1).focus();
       }
     }
+
+    // OnFocus Event
     function onFocusEvent(index) {
       for (let item = 1; item < index; item++) {
         const currentElement = getCodeBoxElement(item);
@@ -47,9 +52,16 @@ const MailOTP = (props) => {
         }
       }
     }
+
+    
+// Handling THe Form on Submit Using Async Await
     const onSubmit = async (data) => {
-      const { codeBox1, codeBox2, codeBox3, codeBox4 } = data;
-      const otp = `${codeBox1}${codeBox2}${codeBox3}${codeBox4}`;
+
+      // Destructuring All the Input 
+      const { codeBox1, codeBox2, codeBox3, codeBox4 , codeBox5, codeBox6 } = data;
+
+      // Storing all input in one variable 
+      const otp = `${codeBox1}${codeBox2}${codeBox3}${codeBox4}${codeBox5}${codeBox6}`;
       try {
         console.log(data.otp);
         const getData = await fetch(
@@ -81,6 +93,7 @@ const MailOTP = (props) => {
         //     setotpSent(true);
         //   }
   
+
         //   receiving response from backend
         const res = await getData.json();
         if (res) {
@@ -96,6 +109,8 @@ const MailOTP = (props) => {
     };
     return (
       <>
+
+      {/* OTP Input Form */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="container">
             <div className="row justify-content-md-center">
@@ -103,7 +118,8 @@ const MailOTP = (props) => {
                 <div className="row">
                   <div className="col-sm-12 mt-5 bgWhite">
                     <div className="title">Verify OTP</div>
-  
+                   
+                   {/* OTP Input Field */}
                     <input
                       className="otp"
                       id="codeBox1"
@@ -123,6 +139,8 @@ const MailOTP = (props) => {
                       })}
                       maxLength={1}
                     />
+                   
+                   {/* OTP Input Field */}
                     <input
                       className="otp"
                       id="codeBox2"
@@ -142,6 +160,8 @@ const MailOTP = (props) => {
                       })}
                       maxLength={1}
                     />
+                   
+                   {/* OTP Input Field */}
                     <input
                       className="otp"
                       id="codeBox3"
@@ -161,6 +181,8 @@ const MailOTP = (props) => {
                       })}
                       maxLength={1}
                     />
+                   
+                   {/* OTP Input Field */}
                     <input
                       className="otp"
                       id="codeBox4"
@@ -180,6 +202,8 @@ const MailOTP = (props) => {
                       })}
                       maxLength={1}
                     />
+                   
+                   {/* OTP Input Field */}
                     <input
                       className="otp"
                       id="codeBox5"
@@ -199,6 +223,8 @@ const MailOTP = (props) => {
                       })}
                       maxLength={1}
                     />
+                   
+                   {/* OTP Input Field */}
                     <input
                       className="otp"
                       id="codeBox6"
@@ -218,7 +244,9 @@ const MailOTP = (props) => {
                       })}
                       maxLength={1}
                     />
-                    <ButtonUI type={"submit"} disabled={disabled}>
+
+                    {/* Submit Button */}
+                      <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
                       submit
                     </ButtonUI>
                   </div>

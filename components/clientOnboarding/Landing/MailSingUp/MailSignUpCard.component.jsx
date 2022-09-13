@@ -7,6 +7,7 @@ import MailSingUp from './MailSingUp.component';
 const MailSignUpCard = () => {
   return (
 <>
+
 <div className={styles.signUpBox}>
     <img
       src="/images/VenturaLogo.png"
