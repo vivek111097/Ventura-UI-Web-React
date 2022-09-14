@@ -3,66 +3,38 @@ import axios from "axios";
 
 import NumberOTP from "./NumberOTP.component";
 import NumberInput from "./NumberInput.component";
-import EnterPan from "../VerifyPAN/EnterPan.component";
+import EnterPanComponent from "../VerifyPAN/EnterPan.component";
+import { connect } from "react-redux";
 
 const SingUpNumber = () => {
   const [otpSent, setotpSent] = useState(false);
-  const [session, setsession] = useState("");
-  const [phone, setphone] = useState("");
 
-  const onSubmit = async (data) => {
-    try {
-      const getData = await fetch(
-        "https://kyc-stage.ventura1.com/onboarding/v1/signup/user/phone",
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-        }
-      );
-      // .then((res)=>{
-      //   console.log(res)
-      // }).catch((error)=>{
-      //   console.log(error)
-      // })
-
-      // { "phone": 7666777118 }
-      //   if (getData) {
-      //     setotpSent(true);
-      //   }
-      //   receiving response from backend
-      const res = await getData.json();
-      if (res) {
-        setotpSent(true);
-        setsession(res.sessionid);
-        setphone(res.phone);
-      } else {
-        alert("there was some error ");
-      }
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <>
       {/* Using Ternary Operator to Toggle OTP And Input Field  */}
-      
+
       {otpSent ? (
-         <NumberOTP/>
-       
+        <NumberOTP />
       ) : (
-          <EnterPan/>
-        // <NumberInput
-        //   phone={phone}
-        //   setphone={setphone}
-        //   session={session}
-        //   setsession={setsession}
-        //   otpSent={otpSent}
-        //   setotpSent={setotpSent}
-        // />
+        <NumberInput otpSent={otpSent} setotpSent={setotpSent} />
       )}
     </>
   );
 };
 
 export default SingUpNumber;
+
+// const mapStateToProps = (state) => {
+// console.log(state)
+//   return {
+//     IsPhoneotpSent: state.LandingReducer.IsPhoneotpSent
+//   };
+// };
+
+// // const mapDispatchToProps = (dispatch) => {
+// //   return {
+// //     storeSession: (session) => dispatch(STORE_SESSION(session)),
+// //   };
+// // };
+
+// export default connect(mapStateToProps)(SingUpNumber);

@@ -1,81 +1,55 @@
-
 /**
  * ==============================================
- * Dot Pulse
+ * Dot Flashing
  * ==============================================
  */
- .dot-pulse {
+ .dotFlashing {
   position: relative;
-  left: -9999px;
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #FF844B;
-  color: #FF844B;
-  box-shadow: 9999px 0 0 -5px #FF844B;
-  animation: dotPulse 1.5s infinite linear;
-  animation-delay: .25s;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dotFlashing 1s infinite linear alternate;
+  animation-delay: .5s;
+  margin: 0;
 }
 
-.dot-pulse::before, .dot-pulse::after {
+.dotFlashing::before, .dotFlashing::after {
   content: '';
   display: inline-block;
   position: absolute;
   top: 0;
+}
+
+.dotFlashing::before {
+  left: -15px;
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #FF844B;
-  color: #FF844B;
-}
-
-.dot-pulse::before {
-  box-shadow: 9984px 0 0 -5px #FF844B;
-  animation: dotPulseBefore 1.5s infinite linear;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dotFlashing 1s infinite alternate;
   animation-delay: 0s;
 }
 
-.dot-pulse::after {
-  box-shadow: 10014px 0 0 -5px #FF844B;
-  animation: dotPulseAfter 1.5s infinite linear;
-  animation-delay: .5s;
+.dotFlashing::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dotFlashing 1s infinite alternate;
+  animation-delay: 1s;
 }
 
-@keyframes dotPulseBefore {
+@keyframes dotFlashing {
   0% {
-    box-shadow: 9984px 0 0 -5px #FF844B;
+    background-color: #9880ff;
   }
-  30% {
-    box-shadow: 9984px 0 0 2px #FF844B;
-  }
-  60%,
+  50%,
   100% {
-    box-shadow: 9984px 0 0 -5px #FF844B;
-  }
-}
-
-@keyframes dotPulse {
-  0% {
-    box-shadow: 9999px 0 0 -5px #FF844B;
-  }
-  30% {
-    box-shadow: 9999px 0 0 2px #FF844B;
-  }
-  60%,
-  100% {
-    box-shadow: 9999px 0 0 -5px #FF844B;
-  }
-}
-
-@keyframes dotPulseAfter {
-  0% {
-    box-shadow: 10014px 0 0 -5px #FF844B;
-  }
-  30% {
-    box-shadow: 10014px 0 0 2px #FF844B;
-  }
-  60%,
-  100% {
-    box-shadow: 10014px 0 0 -5px #FF844B;
+    background-color: #ebe6ff;
   }
 }

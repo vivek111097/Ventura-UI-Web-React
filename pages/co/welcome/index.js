@@ -1,19 +1,13 @@
-import React from 'react'
+import React from "react";
+// import WelcomComponent from "../../components/clientOnboarding/WelcomToVentura/Welcom.component";
+import WelcomComponent from '../../../components/clientOnboarding/WelcomToVentura/Welcom.component'
 
 const Welcome = () => {
   return (
     <>
-    <div>Welcome</div>
-    <div>React</div>
-
-      <div className="row justify-content">
-        <div className="col-4">
-          Its Col-4
-        </div>
-      </div>
-      this is welcome page
+      <WelcomComponent />
     </>
-  )
-}
+  );
+};
 
-export default Welcome
+export default Welcome;

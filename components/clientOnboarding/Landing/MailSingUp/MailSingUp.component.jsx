@@ -6,8 +6,6 @@ import MailInput from "./MailInput.component";
 
 const MailSingUp = () => {
   const [otpSent, setotpSent] = useState(false);
-  const [session, setsession] = useState("");
-  const [mail, setmail] = useState("");
 
 
   return (
@@ -16,18 +14,9 @@ const MailSingUp = () => {
     
       {otpSent ? (
         <MailOTP
-          // session={session}
-          mail={mail}
         />
       ) : (
-        <MailInput
-          mail={mail}
-          setmail={setmail}
-          // session={session}
-          // setsession={setsession}
-          otpSent={otpSent}
-          setotpSent={setotpSent}
-        />
+        <MailInput otpSent={otpSent} setotpSent={setotpSent}/>
       )}
     </>
   );

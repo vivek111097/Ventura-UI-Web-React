@@ -16,9 +16,9 @@ import axios from "axios";
  */
 
 const AddNominee = () => {
-  const [Nominee_1_Share,Set_Nominee_1_Share] = useState(0);
-  const [Nominee_2_Share,Set_Nominee_2_Share] = useState(0);
-  const [Nominee_3_Share,Set_Nominee_3_Share] = useState(0);
+  const [Nominee_1_Share, Set_Nominee_1_Share] = useState(0);
+  const [Nominee_2_Share, Set_Nominee_2_Share] = useState(0);
+  const [Nominee_3_Share, Set_Nominee_3_Share] = useState(0);
   const [nominee_relationship, setNominee_Relationship] = useState([]);
   const [showGuardianForm, setShowGuardianForm] = useState(false);
   const [IsMinor, setIsMinor] = useState("no");
@@ -28,7 +28,12 @@ const AddNominee = () => {
     // get relationships data for binding to dropdown
     const getRelationships = async () => {
       const { data } = await AxiosInstance.get(
-        "/signup/static/nominee/relationships"
+        "/signup/static/nominee/relationships",
+        {
+          headers: {
+            session_id: "2395a076-e0df-4827-adfd-912b8b46e40a",
+          },
+        }
       );
       setNominee_Relationship(data.relationships);
     };
@@ -55,7 +60,7 @@ const AddNominee = () => {
       guard_address: "",
     },
   });
-  const onSubmit = (data) => {    
+  const onSubmit = (data) => {
     try {
       let nominee_data = {
         name: data.nominee_name,
@@ -86,12 +91,16 @@ const AddNominee = () => {
       // const resp = AxiosInstance.post("/signup/user/nominee/add", {
       //   PostData,
       // });
-      const resp=axios.post('https://kyc-stage.ventura1.com/onboarding/v2/signup/user/nominee/add',{...PostData},{
-        headers:{
-          Accept: `application/json`,
-          session_id:"82275b0c-9f2c-4c7b-9dc0-1972f4f55064"
+      const resp = axios.post(
+        "https://kyc-stage.ventura1.com/onboarding/v2/signup/user/nominee/add",
+        { ...PostData },
+        {
+          headers: {
+            Accept: `application/json`,
+            session_id: "82275b0c-9f2c-4c7b-9dc0-1972f4f55064",
+          },
         }
-      })
+      );
       console.log(resp);
     } catch (e) {
       console.log(e);
@@ -101,7 +110,7 @@ const AddNominee = () => {
   //  checkAge metod accepts date of birth and Type
   //  for Nominee 'N' and Guardian 'G'
   const checkAge = (date, type) => {
-    console.log(date)
+    console.log(date);
     let dob = new Date(date).getFullYear();
     let today = new Date().getFullYear();
     if (type == "N") {
@@ -118,10 +127,10 @@ const AddNominee = () => {
     }
   };
   const handleInput = (share) => {
-    Set_Nominee_1_Share(share[0])
-    Set_Nominee_2_Share(share[1] - share[0])
-    Set_Nominee_3_Share(100 - share[1])
-}
+    Set_Nominee_1_Share(share[0]);
+    Set_Nominee_2_Share(share[1] - share[0]);
+    Set_Nominee_3_Share(100 - share[1]);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

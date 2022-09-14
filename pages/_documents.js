@@ -4,9 +4,10 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head></Head>
+        <Head> 
+        <link rel="shortcut icon" href="/fevicon.png" />
+        </Head>
         <body>
-            
           <Main />
           <div id="modal_overlays"></div>
           <NextScript />

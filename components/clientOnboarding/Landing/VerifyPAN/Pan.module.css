@@ -1,0 +1,68 @@
+.note {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #5c5968;
+  background: linear-gradient(180deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  padding-left: 34px;
+  margin-bottom: 10px;
+  margin-top: 24px;
+}
+
+.note:before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 8px;
+  left: 16px;
+  top: 19px;
+  background: #7260e2;
+  border-radius: 10px;
+}
+
+.panNoTxt {
+  font-weight: 600;
+  font-size: 20px;
+  color: #191442;
+  margin: 24px 0;
+}
+
+.panCardBox {
+  background: #e2deff;
+  border: 1px solid #afa9fc;
+  border-radius: 12px;
+  padding: 16px;
+  height: 168px;
+  position: relative;
+}
+.panCardBox .panCont {
+  position: absolute;
+  bottom: 8px;
+}
+.panCardBox .list {
+}
+.panCardBox .list span {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #6b6874;
+}
+.panCardBox .list h4 {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  margin-top: 5px;
+  color: #191442;
+}
+.notYourPan {
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  color: #ff844b;
+  margin: 24px 0 16px;
+  display: block;
+  cursor:pointer;
+}

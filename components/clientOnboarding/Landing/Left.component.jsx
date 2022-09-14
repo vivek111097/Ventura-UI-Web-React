@@ -9,15 +9,16 @@ import styles from "./Landing.module.css";
 export default class SimpleSlider extends Component {
   render() {
     const settings = {
-      dots: false,
+      dots: true,
       infinite: true,
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      autoplay: true,
+      autoplay: false,
       autoplaySpeed: 2000,
       nextArrow: false,
       prevArrow: false,
+      // adaptiveHeight:true,
     };
     return (
       <>
@@ -25,12 +26,12 @@ export default class SimpleSlider extends Component {
           <Slider {...settings}>
             <div className={styles.landingSlides}>
               <img src="/images/item1.png" alt="" className={styles.thumb} />
-              <h3>Open your account in less than 10 minutes</h3>
+              <h3>Open your account in <br/>less than 10 minutes</h3>
               <p>Find and act on market opportunities instantly</p>
             </div>
             <div className={styles.landingSlides}>
               <img src="/images/item2.png" alt="" className={styles.thumb} />
-              <h3>Partner with an experienced advisor</h3>
+              <h3>Partner with <br/>an experienced advisor</h3>
               <p>
                 Boost your portfolio’s growth with trusted research &
                 recommendations

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
 
 const Occupation = () => {
 
     const [occupationlist, setoccupationlist] = useState([])
 
     const getOccupationList = async () => {
+      console.log("getting list")
         try {
           const maritalStatus = await axios
             .get(
@@ -18,7 +21,7 @@ const Occupation = () => {
                 },
               }
             )
-           const response= await maritalStatus.data();
+           const response= await occupationlist.data();
               setoccupationlist([...response])
            console.log(response)
         } catch (error) {

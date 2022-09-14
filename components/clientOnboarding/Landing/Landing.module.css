@@ -27,12 +27,25 @@
   box-shadow: 0px 4px 16px -8px rgb(45 43 64 / 12%);
   border-radius: 24px;
   max-width: 490px;
-  margin: 40px auto;
-  padding: 64px 48px;
+  margin: 0px auto;
+  position:relative;
+  padding: 48px;
+  min-height: 540px;
+}
+.lineBg{
+position:absolute;
+right:0;
+top:0;
 }
 
+.lineBgBottom{
+  position:absolute;
+  left:0;
+  bottom:0;
+  }
+  
 .logo {
-  margin-bottom: 74px;
+  margin-bottom: 40px;
 }
 .signUpBox h3 {
   /* font-size: 24px;
@@ -65,16 +78,18 @@
   color: #b0adbe;
   text-align: center;
   line-height: 16px;
-  margin-top: 98px;
+  margin-bottom: 0;
+  margin-top: 30px;
 }
-.termsOfUse strong {
+.termsOfUse a {
   color: #5c5968;
+  font-weight:bold;
 }
 
 /* Left Component css Start */
 .landingCarousel {
   text-align: center;
-  margin-top: 80px;
+  margin-top: 0px;
 }
 
 .landingSlides{
@@ -83,28 +98,36 @@
 }
 
 .landingSlides p{
-  font-size: 20px;
+  font-size: 16px;
   color: white;
   font-weight: 300;
-  margin-top: 11px;
-  margin-bottom: 40px;
+  margin-top: 5px;
+  margin-bottom: 0px;
   font-family: "soralight";
   padding: 0 58px;
-  line-height: 30px;  
+  line-height: 23px;  
 }
 
 .landingSlides h3{
-  font-size: 48px;
+  font-size: 36px;
   color: white;
   font-weight: 600;
-  line-height: 60px;
+  line-height: 46px;
   margin-bottom: 12px;
-  margin-top: 33px;
+  margin-top: 22px;
 }
 .landingSlides img.thumb {
   display: block;
   margin: 0 auto;
+  max-width: 250px;
 }
 .downloadApp img{
   margin:0 12px;
+}
+
+.or{
+  text-align: center;
+  color: #B0ADBE;
+  font-size: 11px;
+  margin: 15px 0 0 0;
 }

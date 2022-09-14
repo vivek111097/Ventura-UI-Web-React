@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
-import { STORE_SESSION } from "../../../../Redux/Landing";
-import ButtonUI from "../../../ui/Button.component";
-import styles from ".././Landing.module.css";
+import axios from "axios";
 
-const PhoneInput = (props) => {
-  const { phone, setphone, session, setsession, otpSent, setotpSent } = props;
+import { STORE_SESSION } from "../../../../Redux/Landing";
+import UseAxios from "../../../global/hooks/useAxios";
+import ButtonUI from "../../../ui/Button.component";
+import Loader from "../../../ui/Loader/Loader.component";
+import styles from ".././Landing.module.css";
+import AxiosInstance from "../../../../Api/Axios/axios";
+
+const NumberInput = (props) => {
+  const [isLoading, setisLoading] = useState(false);
+  const { otpSent, setotpSent } = props;
 
   const {
     register,
     trigger,
     setValue,
     handleSubmit,
+    watch,
     formState: { errors, isDirty, isValid },
   } = useForm();
 
@@ -31,39 +38,43 @@ const PhoneInput = (props) => {
   // Handling Form on Submit Using Async Await
   const onSubmit = async (data) => {
     try {
-      const getData = await fetch(
-        "https://kyc-stage.ventura1.com/onboarding/v1/signup/user/phone",
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-        }
-      );
-      // .then((res)=>{
-      //   console.log(res)
-      // }).catch((error)=>{
-      //   console.log(error)
-      // })
+      setisLoading(true);
+      const APIData = {
+        phone: parseInt(data.phone),
+        enable_whatsapp: data.enableWhatsapp,
+      };
+      console.log(APIData);
+      const getData = await AxiosInstance.post("/signup/user/phone", {
+        ...APIData,
+      });
+      const getSession_ID = await AxiosInstance.post("/signup/session-id", {
+        ...APIData,
+      });
+ 
 
-      // { "phone": 7666777118 }
-      //   if (getData) {
-      //     setotpSent(true);
-      //   }
+      // receiving response from backend
 
-      //   receiving response from backend
-      const res = await getData.json();
-      if (res) {
+      const sessionRes = await getSession_ID.data;
+      const res = await getData.data;
+      if (getSession_ID.status == 200) {
+        console.log(sessionRes);
+        console.log(res);
+        setisLoading(false);
         setotpSent(true);
-        setsession(res.sessionid);
-        setphone(res.phone);
-        let UserSession = {
-          sessionId: res.sessionid,
-          phoneNumber: res.phone,
-        };
-        props.storeSession(UserSession);
-      } else {
-        alert("there was some error ");
+      let UserSession = {
+          session_id: sessionRes.session_id,
+          phone: sessionRes.phone,
+        IsPhoneOTPSent: true,
+          clientid: res.clientid,
+          existing_user: res.existing_user,
+          new_user: res.new_user,
+          returning_user: res.returning_user,
+      };
+      props.storeSession(UserSession);
       }
-      console.log(res);
+      else {
+        console.log("hello saif");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +95,7 @@ const PhoneInput = (props) => {
           <div className="col">
             {/* Number Inout Field */}
             <input
+              type={"text"}
               className="form-control"
               placeholder="Enter mobile number"
               name="phone"
@@ -93,7 +105,7 @@ const PhoneInput = (props) => {
                 validate: validatePhone,
               })}
               onInput={(e) => {
-                setValue("phone", e.target.value.replace(/\D/g, ""));
+                setValue("phone", parseInt(e.target.value.replace(/\D/g, "")));
               }}
               onKeyUp={() => {
                 trigger("phone");
@@ -107,6 +119,7 @@ const PhoneInput = (props) => {
           <input
             type="checkbox"
             id="enableWhatsapp"
+            {...register("enableWhatsapp")}
             defaultChecked={"checked"}
           />
           <label htmlFor="enableWhatsapp">Enable WhatsApp notifications</label>
@@ -114,7 +127,8 @@ const PhoneInput = (props) => {
 
         {/* Submit Button */}
         <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
-          Continue
+       {/* {isLoading===true ? (<Loader/> ):    "Continue " } */}
+       Continue
         </ButtonUI>
       </form>
       <p className={styles.haveAnAccount}>
@@ -122,8 +136,8 @@ const PhoneInput = (props) => {
         <a href=""> Login</a>
       </p>
       <p className={styles.termsOfUse}>
-        By proceeding, you accept Ventura’s <strong>Terms of Use</strong> <br />
-        and <strong>Privacy Policy</strong>.
+        By proceeding, you accept Ventura’s <a href="">Terms of Use</a> <br />
+        and <a href="">Privacy Policy</a>.
       </p>
     </>
   );
@@ -131,7 +145,7 @@ const PhoneInput = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    //  showModal: state.modalReducer.showModal,
+    showModal: state.modalReducer.showModal,
   };
 };
 
@@ -141,4 +155,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PhoneInput);
+export default connect(mapStateToProps, mapDispatchToProps)(NumberInput);

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
+import Header from "../../../global/Header.component";
 import ButtonUI from "../../../ui/Button.component";
+import styles from "./Pan.module.css";
 
 const EnterPan = (props) => {
   const {
@@ -24,6 +26,7 @@ const EnterPan = (props) => {
 
   // Validating PAN Number
   const validatePAN = (pan) => {
+    console.log(pan);
     // Checking If PAN is Valid or Not
     if (PANRegex.test(pan)) {
       // Checking If Individual PAN is Valid or Not
@@ -78,43 +81,75 @@ const EnterPan = (props) => {
     }
   };
 
+  console.log(errors);
   return (
     <>
-
+      <Header />
       {/* PAN Form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <section className="ContainerBG">
+        <div className="bgtop">
+          <img src="/images/welcomebgtop.png" />
+        </div>
+        <div className="bgbottom">
+          <img src="/images/welcomebgbottom.png" />
+        </div>
 
-        {/* PAN Number Input */}
-        <input
-          type="text"
-          className="form-control"
-          id="pan"
-          placeholder="Enter PAN"
-          maxLength={10}
-          {...register("pan", {
-            required: "PAN Number is required",
-            validate: validatePAN,
-            maxLength: {
-              value: 10,
-              message: "Maximum 10 number",
-            },
-          })}
-          onKeyUp={(e) => {
-            setValue("pan",e.target.value.toLocaleUpperCase())
-            trigger("pan");
-          }}
-        />
-        {/* {errors.panNumber && (
+        <div className="containerMini">
+          <h2 className="title">Enter your PAN</h2>
+          <p className="subTitle">
+            These details are required by SEBI to open your demat account.
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* PAN Number Input */}
+            <input
+              type="text"
+              className="form-control"
+              id="pan"
+              placeholder="Enter PAN"
+              maxLength={10}
+              {...register("pan", {
+                required: "PAN Number is required",
+                validate: validatePAN,
+                maxLength: {
+                  value: 10,
+                  message: "Maximum 10 number",
+                },
+              })}
+              onKeyUp={(e) => {
+                setValue("pan", e.target.value.toLocaleUpperCase());
+                trigger("pan");
+              }}
+            />
+            {/* {errors.panNumber && (
                   <small className="form-text text-danger">
                     {errors.panNumber.message}
                   </small>
                 )} */}
 
-        {/* Submit Button */}
-        <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
-          Continue
-        </ButtonUI>
-      </form>
+            {/* Submit Button */}
+            <div className="checkBox duelLine">
+              <input
+                type="checkbox"
+                id="enableWhatsapp"
+                defaultChecked={"checked"}
+              />
+              <label htmlFor="enableWhatsapp">
+                  I’m a tax resident of India and not paying taxes to any other
+                  jurisdiction(s). 
+                  <a>Know more</a>
+              </label>
+            </div>
+            <div className={styles.note}>
+              Your account would be opened as per your PAN card details. Please
+              use the Offline Account Opening Form if you are looking to open an
+              HUF, Corporate, Partnership, Joint or NRI account.
+            </div>
+            <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
+              Continue
+            </ButtonUI>
+          </form>
+        </div>
+      </section>
     </>
   );
 };
