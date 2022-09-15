@@ -2,7 +2,12 @@ import React from "react";
 import Header from "../../../global/Header.component";
 import styles from "./Pan.module.css";
 import ButtonUI from "../../../ui/Button.component";
-const PANCardDetails = () => {
+import { connect } from "react-redux";
+import Link from "next/link";
+const PANCardDetails = (props) => {
+  console.log(props)
+  const {pan}=props
+  console.log(props.pan)
   return (
     <>
       <Header />
@@ -18,25 +23,41 @@ const PANCardDetails = () => {
           <p className="subTitle">
             This PAN will be used to set up your demat account.
           </p>
-          <div className={styles.panNoTxt}>AGMLS6667Z</div>
+          <div className={styles.panNoTxt}>{pan.pan}</div>
           <div className={styles.panCardBox}>
             <div className={styles.panCont}>
               <div className={styles.list}>
                 <span>Name</span>
-                <h4>Mr. Arvind Mohan Nath</h4>
+                <h4>Mr. {pan.name}</h4>
               </div>
               <div className={styles.list}>
                 <span>Permanent Account Number</span>
-                <h4>AGMLS6667Z</h4>
+                <h4>{pan.pan}</h4>
               </div>
             </div>
           </div>
-          <a href="" className={styles.notYourPan}>Not your PAN? Try again</a>
-          <ButtonUI type={"submit"}>Continue</ButtonUI>
+          <Link href={"/co/pan"}><a  className={styles.notYourPan}>Not your PAN? Try again</a></Link>
+          <Link href={"/co/nominee"}><ButtonUI type={"submit"}>Continue</ButtonUI></Link>
         </div>
       </section>
     </>
   );
 };
 
-export default PANCardDetails;
+
+const mapStateToProps = (state) => {
+  return {
+    pan: state.LandingReducer.user.pan,
+    phone: state.LandingReducer.user.phone,
+    showModal: state.modalReducer.showModal,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // storePAN: (isValidated) => dispatch(STORE_PAN(isValidated)),
+    toggleModal: () => dispatch(TOGGLE_MODAL()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PANCardDetails);

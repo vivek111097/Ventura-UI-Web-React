@@ -59,7 +59,7 @@ const SingUp = () => {
         setsession(res.sessionid);
         setphone(res.phone);
       } else {
-        alert("there was some error ");
+        
       }
       console.log(res);
     } catch (error) {

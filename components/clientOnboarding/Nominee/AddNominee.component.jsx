@@ -9,13 +9,14 @@ import ButtonUI from "../../ui/Button.component";
 import { useRouter } from "next/router";
 import ReactSlider from "react-slider";
 import axios from "axios";
+import { connect } from "react-redux";
 /**
  *
  * @author vivek chaudhari
  * @description  Add Nomineee Form
  */
 
-const AddNominee = () => {
+const AddNominee = (props) => {
   const [Nominee_1_Share, Set_Nominee_1_Share] = useState(0);
   const [Nominee_2_Share, Set_Nominee_2_Share] = useState(0);
   const [Nominee_3_Share, Set_Nominee_3_Share] = useState(0);
@@ -31,7 +32,7 @@ const AddNominee = () => {
         "/signup/static/nominee/relationships",
         {
           headers: {
-            session_id: "2395a076-e0df-4827-adfd-912b8b46e40a",
+            session_id: props.session_id,
           },
         }
       );
@@ -71,26 +72,36 @@ const AddNominee = () => {
         identification_no: data.pan_or_aadhar,
         nominee_minor: IsMinor,
         zipcode: "110011",
-        nominee_guardian_details: {
-          guardian_identification_no: data.guard_pan_or_aadhar,
-          guardian_dob: data.guard_dob.toLocaleDateString(),
-          guardian_identification_type: "pan",
-          guardian_name: data.guard_name,
-          guardian_address: data.guard_address,
-          guardian_relation: data.guard_relationship,
-          guardian_zipcode: 110011,
-        },
+
         nominee_share: 50,
       };
+      let Guard_data;
+      if (IsMinor === "yes") {
+        Guard_data = {
+          nominee_guardian_details: {
+            guardian_identification_no: data.guard_pan_or_aadhar,
+            guardian_dob: data.guard_dob.toLocaleDateString(),
+            guardian_identification_type: "pan",
+            guardian_name: data.guard_name,
+            guardian_address: data.guard_address,
+            guardian_relation: data.guard_relationship,
+            guardian_zipcode: 110011,
+          },
+        };
+      } else {
+        Guard_data = {
+          nominee_guardian_details: {},
+        };
+      }
+      const responceObj = Object.assign(nominee_data, Guard_data);
+
       console.log(nominee_data);
       const PostData = {
         phone: 8369747962,
-        nominee_data: [nominee_data],
+        nominee_data: [responceObj],
       };
       console.log(PostData);
-      // const resp = AxiosInstance.post("/signup/user/nominee/add", {
-      //   PostData,
-      // });
+
       const resp = axios.post(
         "https://kyc-stage.ventura1.com/onboarding/v2/signup/user/nominee/add",
         { ...PostData },
@@ -111,8 +122,10 @@ const AddNominee = () => {
   //  for Nominee 'N' and Guardian 'G'
   const checkAge = (date, type) => {
     console.log(date);
-    let dob = new Date(date).getFullYear();
+    let dob = date.getFullYear();
     let today = new Date().getFullYear();
+    console.log(dob);
+    console.log(today);
     if (type == "N") {
       if (today - dob < 18) {
         setShowGuardianForm(true);
@@ -231,22 +244,49 @@ const AddNominee = () => {
             />
           )}
         />
-
-        <ReactSlider
-          className={style.horizontal_slider}
-          thumbClassName={style.example_thumb}
-          trackClassName={style.example_track}
-          defaultValue={[40, 100]}
-          ariaLabel={["Leftmost thumb", "Rightmost thumb"]}
-          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
-          pearling
-          onChange={(val) => {
-            handleInput(val);
-          }}
-        />
-        <p>Nominee 1 : {Nominee_1_Share}%</p>
-        <p>Nominee 2 : {Nominee_2_Share}%</p>
-        <p>Nominee 3 : {Nominee_3_Share}%</p>
+        <label className="form-label" htmlFor="nomineeName">
+        % of nomination
+        </label>
+        <div className="Sliderwrap">
+          <ReactSlider
+            className="horizontal_slider"
+            thumbClassName="example_thumb"
+            trackClassName="example_track"
+            defaultValue={[40, 100]}
+            ariaLabel={["Leftmost thumb", "Rightmost thumb"]}
+            pearling onChange={(val) => { handleInput(val);}}
+          />
+          <ul className={style.SliderNumWrap}>
+            <li className={style.SliderNum}>0</li>
+            <li className={style.SliderNum}>|</li>
+            <li className={style.SliderNum}>20</li>
+            <li className={style.SliderNum}>|</li>
+            <li className={style.SliderNum}>40</li>
+            <li className={style.SliderNum}>|</li>
+            <li className={style.SliderNum}>60</li>
+            <li className={style.SliderNum}>|</li>
+            <li className={style.SliderNum}>80</li>
+            <li className={style.SliderNum}>|</li>
+            <li className={style.SliderNum}>100</li>
+          </ul>
+          <ul className={style.NomineesWrap}>
+            <li className={style.Nominees}>
+                <p className={style.PerOrange}>{Nominee_1_Share}%</p>
+                <p className={style.NomineeNum}>Nominee 1</p>
+            </li>
+            <li className={style.Nominees}>
+                <p className={style.PerBlue}>{Nominee_2_Share}%</p>
+                <p className={style.NomineeNum}>Nominee 2</p>
+            </li>
+            <li className={style.Nominees}>
+                <p className={style.PerGreen}>{Nominee_3_Share}%</p>
+                <p className={style.NomineeNum}>Nominee 3</p>
+            </li>
+          </ul>
+          <div className={style.SliderTip}>Move the slider to the left or right to <strong>distribute nomination share</strong> between the nominees.
+          </div>
+        </div>
+         
 
         {/* Guardian's detail required in case of nominee is minor  */}
         {showGuardianForm && (
@@ -360,4 +400,18 @@ const AddNominee = () => {
   );
 };
 
-export default AddNominee;
+
+
+const mapStateToProps = (state) => {
+console.log(state)
+  return {
+    session_id: state.LandingReducer.user.session_id,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddNominee);

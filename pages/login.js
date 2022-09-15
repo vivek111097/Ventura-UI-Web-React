@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import ButtonUI from "../components/ui/Button.component";
 
+
 const Home = (props) => {
   const { showModal, toggleModal } = props;
   useEffect(() => {
@@ -14,14 +15,17 @@ const Home = (props) => {
   })
   return (
     <div className={styles.container}>
-      <Layout>
+      <ButtonUI buttonType="success">Success Example</ButtonUI>
+      <ButtonUI buttonType="error">Error Example</ButtonUI>
+      <ButtonUI><img src="/images/google.png"/>Continue with Google</ButtonUI>
+      {/* <Layout>
         {showModal && <Modal onClick={toggleModal}>
           <ButtonUI onClick={toggleModal}>Close</ButtonUI>
           <h1>Smart</h1>
           <div>conflict</div>
         </Modal>}
         <ButtonUI onClick={toggleModal}>Toggle Modal</ButtonUI>
-      </Layout>
+      </Layout> */}
     </div>
   )
 }

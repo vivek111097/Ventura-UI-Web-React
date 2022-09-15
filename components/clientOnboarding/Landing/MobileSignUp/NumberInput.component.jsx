@@ -4,13 +4,17 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 import { STORE_SESSION } from "../../../../Redux/Landing";
+import { TOGGLE_MODAL } from "../../../../Redux/modal";
+
 import UseAxios from "../../../global/hooks/useAxios";
 import ButtonUI from "../../../ui/Button.component";
 import Loader from "../../../ui/Loader/Loader.component";
+import Modal from "../../../ui/Modal/Modal.component";
 import styles from ".././Landing.module.css";
 import AxiosInstance from "../../../../Api/Axios/axios";
 
 const NumberInput = (props) => {
+  const { showModal, toggleModal } = props;
   const [isLoading, setisLoading] = useState(false);
   const { otpSent, setotpSent } = props;
 
@@ -20,6 +24,7 @@ const NumberInput = (props) => {
     setValue,
     handleSubmit,
     watch,
+    reset,
     formState: { errors, isDirty, isValid },
   } = useForm();
 
@@ -50,7 +55,6 @@ const NumberInput = (props) => {
       const getSession_ID = await AxiosInstance.post("/signup/session-id", {
         ...APIData,
       });
- 
 
       // receiving response from backend
 
@@ -61,84 +65,109 @@ const NumberInput = (props) => {
         console.log(res);
         setisLoading(false);
         setotpSent(true);
-      let UserSession = {
+        let UserSession = {
           session_id: sessionRes.session_id,
-          phone: sessionRes.phone,
-        IsPhoneOTPSent: true,
+          phone: parseInt(sessionRes.phone),
+          IsPhoneOTPSent: true,
           clientid: res.clientid,
           existing_user: res.existing_user,
           new_user: res.new_user,
           returning_user: res.returning_user,
-      };
-      props.storeSession(UserSession);
+        };
+        props.storeSession(UserSession);
+      } else {
+        props.toggleModal();
       }
-      else {
-        console.log("hello saif");
-      }
+      reset();
     } catch (error) {
+      props.toggleModal();
+      setisLoading(false);
       console.log(error);
+      reset();
     }
   };
   return (
     <>
-      <h2 className="title">Ready to get started?</h2>
-      <p className="subTitle">
-        Enter your number to help us set up your investment account.
-      </p>
+      {isLoading === true ? (
+        <Loader />
+      ) : (
+        <>
+          <h2 className="title animate__animated animate__fadeInUp animate__delay-1s">
+            Ready to get started?
+          </h2>
+          <p className="subTitle animate__animated animate__fadeInUp animate__delay_1_3s">
+            Enter your number to help us set up your investment account.
+          </p>
 
-      {/* Mobile Number Input Form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="row">
-          <div className="col-auto">
-            <input className="form-control countryCode" defaultValue={"+91"} />
-          </div>
-          <div className="col">
-            {/* Number Inout Field */}
-            <input
-              type={"text"}
-              className="form-control"
-              placeholder="Enter mobile number"
-              name="phone"
-              maxLength={10}
-              {...register("phone", {
-                required: true,
-                validate: validatePhone,
-              })}
-              onInput={(e) => {
-                setValue("phone", parseInt(e.target.value.replace(/\D/g, "")));
-              }}
-              onKeyUp={() => {
-                trigger("phone");
-              }}
-            />
-          </div>
-        </div>
+          {/* Mobile Number Input Form */}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="row  animate__animated animate__fadeInUp  animate__delay_1_6s">
+              <div className="col-auto ">
+                <input
+                  className="form-control countryCode"
+                  defaultValue={"+91"}
+                />
+              </div>
+              <div className="col">
+                {/* Number Inout Field */}
+                <input
+                  type={"text"}
+                  className="form-control"
+                  placeholder="Enter mobile number"
+                  name="phone"
+                  maxLength={10}
+                  {...register("phone", {
+                    required: true,
+                    validate: validatePhone,
+                  })}
+                  onInput={(e) => {
+                    setValue("phone", e.target.value.replace(/\D/g, ""));
+                  }}
+                  onKeyUp={() => {
+                    trigger("phone");
+                  }}
+                />
+              </div>
+            </div>
 
-        {/* WhatsApp Notification Button Default Value Will Be Checked */}
-        <div className="checkBox">
-          <input
-            type="checkbox"
-            id="enableWhatsapp"
-            {...register("enableWhatsapp")}
-            defaultChecked={"checked"}
-          />
-          <label htmlFor="enableWhatsapp">Enable WhatsApp notifications</label>
-        </div>
+            {/* WhatsApp Notification Button Default Value Will Be Checked */}
+            <div className="checkBox  animate__animated animate__fadeInUp  animate__delay_1_9s">
+              <input
+                type="checkbox"
+                id="enableWhatsapp"
+                {...register("enableWhatsapp")}
+                defaultChecked={"checked"}
+              />
+              <label htmlFor="enableWhatsapp">
+                Enable WhatsApp notifications
+              </label>
+            </div>
 
-        {/* Submit Button */}
-        <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
-       {/* {isLoading===true ? (<Loader/> ):    "Continue " } */}
-       Continue
-        </ButtonUI>
-      </form>
-      <p className={styles.haveAnAccount}>
-        Have an account?
-        <a href=""> Login</a>
-      </p>
-      <p className={styles.termsOfUse}>
-        By proceeding, you accept Ventura’s <a href="">Terms of Use</a> <br />
-        and <a href="">Privacy Policy</a>.
-      </p>
+            {/* Submit Button */}
+            <div className="animate__animated animate__fadeInUp animate__delay_2_2s">
+              <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
+                {/* {isLoading===true ? (<Loader/> ):    "Continue " } */}
+                Continue
+              </ButtonUI>
+            </div>
+          </form>
+          <p className={`animate__animated animate__fadeInUp animate__delay_2_5s ${styles.haveAnAccount}`}>
+            Have an account?
+            <a href="">Login</a>
+          </p>
+          <p className={`animate__animated animate__fadeInUp animate__delay_2_8s ${styles.termsOfUse}`}>
+            By proceeding, you accept Ventura’s <a href="">Terms of Use</a>{" "}
+            <br />
+            and <a href="">Privacy Policy</a>.
+          </p>
+          {showModal === true ? (
+            <Modal onClick={toggleModal}>
+              <ButtonUI onClick={toggleModal}>x</ButtonUI>
+              <h1>Soe thing went Wrong</h1>
+            </Modal>
+          ) : null}
+        </>
+      )}
     </>
   );
 };
@@ -152,6 +181,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     storeSession: (session) => dispatch(STORE_SESSION(session)),
+    toggleModal: () => dispatch(TOGGLE_MODAL()),
   };
 };
 

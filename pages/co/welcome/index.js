@@ -1,7 +1,5 @@
-import React from "react";
-// import WelcomComponent from "../../components/clientOnboarding/WelcomToVentura/Welcom.component";
+import React from 'react'
 import WelcomComponent from '../../../components/clientOnboarding/WelcomToVentura/Welcom.component'
-
 const Welcome = () => {
   return (
     <>

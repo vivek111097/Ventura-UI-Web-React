@@ -52,7 +52,7 @@ const WelcomComponent = () => {
               <span className='icon-react'></span>
             </div>
             <div className={styles.steptext}>
-              <h3 className={styles.Ca_Subtitle}>Confirm it's you</h3>
+              <h3 className={styles.Ca_Subtitle}>Confirm it&apos;s you</h3>
               <p className={styles.Ca_Subtitletext}>Upload your photo and signature</p>
             </div>
           </div>
@@ -67,9 +67,9 @@ const WelcomComponent = () => {
             </div>
           </div>
 
-          <ButtonUI type={"submit"}> Create account </ButtonUI>
+      <Link href={"/co/pan"}><ButtonUI type={"submit"}> Create account </ButtonUI></Link>
           <div className={styles.Reminder}>
-            <p className={styles.text}>Don't have everything ready?</p>
+            <p className={styles.text}>Don&apos;t have everything ready?</p>
             <Link href="/"><a className={styles.link}>Set a reminder</a></Link>
           </div>
            

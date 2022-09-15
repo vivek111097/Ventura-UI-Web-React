@@ -2,18 +2,22 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
+import AxiosInstance from "../../../../Api/Axios/axios";
 import { SET_EMAIL_OTP_VALIDATED } from "../../../../Redux/Landing";
 import ButtonUI from "../../../ui/Button.component";
 import Loader from "../../../ui/Loader/Loader.component";
+import Modal from "../../../ui/Modal/Modal.component";
 
 const MailOTP = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [counter, setCounter] = React.useState(60);
+  const { showModal, toggleModal } = props;
   const {
     register,
     trigger,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid },
   } = useForm();
 
@@ -23,11 +27,11 @@ const MailOTP = (props) => {
   const onSubmit = async (data) => {
     try {
       setisLoading(true);
-  
+
       // Destructuring All the Input
       const { otpFirst, otpSecond, otpThird, otpFourth, otpFifth, otpSixth } =
         data;
-  
+
       // Storing all input in one variable
       const otp = `${otpFirst}${otpSecond}${otpThird}${otpFourth}${otpFifth}${otpSixth}`;
       const email = props.email;
@@ -37,9 +41,7 @@ const MailOTP = (props) => {
       };
       const getData = await AxiosInstance.post(
         "/signup/user/email/otp/verify",
-        {
-          ...APIData,
-        },
+        { ...APIData },
         {
           headers: {
             session_id: props.session_id,
@@ -49,19 +51,23 @@ const MailOTP = (props) => {
 
       //   receiving response from backend
       const res = await getData.data;
-      if (res) {
-       if(getData.status==200){
-        setisLoading(false);
-        props.updateOtpValidation(true);
-        alert("otp verified");
-        router.push("/co/welcome");
-       }
-      } else {
-        alert("there was some error ");
-      }
       console.log(res);
+      if (res) {
+        if (getData.status == 200) {
+          setisLoading(false);
+          props.updateOtpValidation(true);
+          router.push("/co/welcome");
+        }
+      } else {
+        props.toggleModal();
+      }
+      reset();
+      // console.log(res);
     } catch (error) {
+      // props.toggleModal();
+      setisLoading(false);
       console.log(error);
+      reset();
     }
   };
   useEffect(() => {
@@ -110,177 +116,195 @@ const MailOTP = (props) => {
 
       return true;
     }
-  
   }, []);
   useEffect(() => {
-
- 
-      const timer =
+    const timer =
       counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     return () => clearInterval(timer);
-  
   }, [counter]);
   return (
     <>
-      {/* OTP Input Form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="container animate__animated animate__bounce">
-          <h2 className="title">Enter OTP here</h2>
-          <p className="subTitle">
-          We have sent an OTP to your email ID  {props.email}
-          </p>
-          <div className="enterOTP row">
-            <div className="col-2">
-              <input
-                className="otp"
-                id="otpFirst"
-                type="text"
-                min="0"
-                max="9"
-                step="1"
-                onInput={(event) => {
-                  setValue("otpFirst", event.target.value.replace(/\D/g, ""));
-                  // onKeyUpEvent(1, event);
-                }}
-                // onFocus={() => {
-                //   onFocusEvent(1);
-                // }}
-                {...register("otpFirst", {
-                  required: true,
-                  //   validate: isFormValid,
-                })}
-                maxLength={1}
-              />
+      {isLoading === true ? (
+        <Loader />
+      ) : (
+        <>
+          {/* OTP Input Form */}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="container animate__animated animate__bounce">
+              <h2 className="title">Enter OTP here</h2>
+              <p className="subTitle">
+                We have sent an OTP to your email ID {props.email}
+              </p>
+              <div className="enterOTP row">
+                <div className="col-2">
+                  <input
+                    className="otp"
+                    id="otpFirst"
+                    type="text"
+                    min="0"
+                    max="9"
+                    step="1"
+                    onInput={(event) => {
+                      setValue(
+                        "otpFirst",
+                        event.target.value.replace(/\D/g, "")
+                      );
+                      // onKeyUpEvent(1, event);
+                    }}
+                    // onFocus={() => {
+                    //   onFocusEvent(1);
+                    // }}
+                    {...register("otpFirst", {
+                      required: true,
+                      //   validate: isFormValid,
+                    })}
+                    maxLength={1}
+                  />
+                </div>
+                <div className="col-2">
+                  <input
+                    className="otp"
+                    id="otpSecond"
+                    type="text"
+                    min="0"
+                    max="9"
+                    step="1"
+                    onInput={(event) => {
+                      setValue(
+                        "otpSecond",
+                        event.target.value.replace(/\D/g, "")
+                      );
+                      // onKeyUpEvent(2, event);
+                    }}
+                    // onFocus={() => {
+                    //   onFocusEvent(2);
+                    // }}
+                    {...register("otpSecond", {
+                      required: true,
+                      //   validate: isFormValid,
+                    })}
+                    maxLength={1}
+                  />
+                </div>
+                <div className="col-2">
+                  <input
+                    className="otp"
+                    id="otpThird"
+                    type="text"
+                    min="0"
+                    max="9"
+                    step="1"
+                    onInput={(event) => {
+                      setValue(
+                        "otpThird",
+                        event.target.value.replace(/\D/g, "")
+                      );
+                      // onKeyUpEvent(3, event);
+                    }}
+                    // onFocus={() => {
+                    //   onFocusEvent(3);
+                    // }}
+                    {...register("otpThird", {
+                      required: true,
+                      //   validate: isFormValid,
+                    })}
+                    maxLength={1}
+                  />
+                </div>
+                <div className="col-2">
+                  <input
+                    className="otp"
+                    id="otpFourth"
+                    type="text"
+                    min="0"
+                    max="9"
+                    step="1"
+                    onInput={(event) => {
+                      setValue(
+                        "otpFourth",
+                        event.target.value.replace(/\D/g, "")
+                      );
+                      // onKeyUpEvent(4, event);
+                    }}
+                    // onFocus={() => {
+                    //   onFocusEvent(4);
+                    // }}
+                    {...register("otpFourth", {
+                      required: true,
+                      //   validate: isFormValid,
+                    })}
+                    maxLength={1}
+                  />
+                </div>
+                <div className="col-2">
+                  <input
+                    className="otp"
+                    id="otpFifth"
+                    type="text"
+                    min="0"
+                    max="9"
+                    step="1"
+                    onInput={(event) => {
+                      setValue(
+                        "otpFifth",
+                        event.target.value.replace(/\D/g, "")
+                      );
+                      // onKeyUpEvent(5, event);
+                    }}
+                    // onFocus={() => {
+                    //   onFocusEvent(5);
+                    // }}
+                    {...register("otpFifth", {
+                      required: true,
+                      //   validate: isFormValid,
+                    })}
+                    maxLength={1}
+                  />
+                </div>
+                <div className="col-2">
+                  <input
+                    className="otp"
+                    id="otpSixth"
+                    type="text"
+                    min="0"
+                    max="9"
+                    step="1"
+                    onInput={(event) => {
+                      setValue(
+                        "otpSixth",
+                        event.target.value.replace(/\D/g, "")
+                      );
+                      // onKeyUpEvent(6, event);
+                    }}
+                    // onFocus={() => {
+                    //   onFocusEvent(6);
+                    // }}
+                    {...register("otpSixth", {
+                      required: true,
+                      //   validate: isFormValid,
+                    })}
+                    maxLength={1}
+                  />
+                </div>
+              </div>
+              <div className="row otpTimerResend">
+                <div className="col-6 timer">
+                  {counter === 0 ? null : <>00:{counter}s</>}
+                </div>
+                <div className="col-6 text-right">
+                  {counter === 0 && (
+                    <a href="" className="btnLInk">
+                      Resend OTP
+                    </a>
+                  )}
+                </div>
+              </div>
+              <ButtonUI type={"submit"}>
+                {isLoading === true ? <Loader /> : "Verify OTP "}
+                Verify OTP
+              </ButtonUI>
             </div>
-            <div className="col-2">
-              <input
-                className="otp"
-                id="otpSecond"
-                type="text"
-                min="0"
-                max="9"
-                step="1"
-                onInput={(event) => {
-                  setValue("otpSecond", event.target.value.replace(/\D/g, ""));
-                  // onKeyUpEvent(2, event);
-                }}
-                // onFocus={() => {
-                //   onFocusEvent(2);
-                // }}
-                {...register("otpSecond", {
-                  required: true,
-                  //   validate: isFormValid,
-                })}
-                maxLength={1}
-              />
-            </div>
-            <div className="col-2">
-              <input
-                className="otp"
-                id="otpThird"
-                type="text"
-                min="0"
-                max="9"
-                step="1"
-                onInput={(event) => {
-                  setValue("otpThird", event.target.value.replace(/\D/g, ""));
-                  // onKeyUpEvent(3, event);
-                }}
-                // onFocus={() => {
-                //   onFocusEvent(3);
-                // }}
-                {...register("otpThird", {
-                  required: true,
-                  //   validate: isFormValid,
-                })}
-                maxLength={1}
-              />
-            </div>
-            <div className="col-2">
-              <input
-                className="otp"
-                id="otpFourth"
-                type="text"
-                min="0"
-                max="9"
-                step="1"
-                onInput={(event) => {
-                  setValue("otpFourth", event.target.value.replace(/\D/g, ""));
-                  // onKeyUpEvent(4, event);
-                }}
-                // onFocus={() => {
-                //   onFocusEvent(4);
-                // }}
-                {...register("otpFourth", {
-                  required: true,
-                  //   validate: isFormValid,
-                })}
-                maxLength={1}
-              />
-            </div>
-            <div className="col-2">
-              <input
-                className="otp"
-                id="otpFifth"
-                type="text"
-                min="0"
-                max="9"
-                step="1"
-                onInput={(event) => {
-                  setValue("otpFifth", event.target.value.replace(/\D/g, ""));
-                  // onKeyUpEvent(5, event);
-                }}
-                // onFocus={() => {
-                //   onFocusEvent(5);
-                // }}
-                {...register("otpFifth", {
-                  required: true,
-                  //   validate: isFormValid,
-                })}
-                maxLength={1}
-              />
-            </div>
-            <div className="col-2">
-              <input
-                className="otp"
-                id="otpSixth"
-                type="text"
-                min="0"
-                max="9"
-                step="1"
-                onInput={(event) => {
-                  setValue("otpSixth", event.target.value.replace(/\D/g, ""));
-                  // onKeyUpEvent(6, event);
-                }}
-                // onFocus={() => {
-                //   onFocusEvent(6);
-                // }}
-                {...register("otpSixth", {
-                  required: true,
-                  //   validate: isFormValid,
-                })}
-                maxLength={1}
-              />
-            </div>
-          </div>
-          <div className="row otpTimerResend">
-            <div className="col-6 timer">
-              {counter === 0 ? null : <>00:{counter}s</>}
-            </div>
-            <div className="col-6 text-right">
-              {counter === 0 && (
-                <a href="" className="btnLInk">
-                  Resend OTP
-                </a>
-              )}
-            </div>
-          </div>
-          <ButtonUI type={"submit"}>
-            {isLoading === true ? <Loader /> : "Verify OTP "}
-            Verify OTP
-          </ButtonUI>
-        </div>
-        {/* <OTPInput
+            {/* <OTPInput
       value={OTP}
       onChange={setOTP}
       autoFocus
@@ -290,10 +314,24 @@ const MailOTP = (props) => {
       secure
     />
     <ResendOTP handelResendClick={() => console.log("Resend clicked")} /> */}
-        {/* <ButtonUI type={"submit"} disabled={disabled}>
+            {/* <ButtonUI type={"submit"} disabled={disabled}>
           submit
         </ButtonUI> */}
-      </form>
+          </form>
+          {showModal === true ? (
+            <Modal onClick={toggleModal}>
+              <ButtonUI onClick={toggleModal}>x</ButtonUI>
+              <h1>Soe thing went Wrong</h1>
+            </Modal>
+          ) : null}
+          {/* { showModalSuccess === true ? (
+        <Modal onClick={toggleModal}>
+          <ButtonUI onClick={toggleModal}>x</ButtonUI>
+          <h1>Otp Send Successfull</h1>
+        </Modal>
+      ) : null } */}
+        </>
+      )}
     </>
   );
 };
@@ -304,6 +342,8 @@ const mapStateToProps = (state) => {
   return {
     session_id: state.LandingReducer.user.session_id,
     email: state.LandingReducer.user.email,
+    showModal: state.modalReducer.showModal,
+    // showModalSuccess: state.modalReducer.showModal,
   };
 };
 

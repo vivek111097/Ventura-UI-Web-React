@@ -75,21 +75,7 @@ const OTP = (props) => {
           }),
         }
       );
-      // .then((res) => {
-      //   alert("otp verified successfully");
-      //   console.log(res);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
-
-      // { "phone": 7666777118 }
-      //   if (getData) {
-      //     setotpSent(true);
-      //   }
-
       //   receiving response from backend
-    //   const res = await getData.json();
       if (getData) {
         alert("top verified");
         router.push("/co/welcome")

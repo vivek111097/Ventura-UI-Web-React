@@ -1,13 +1,16 @@
 import React from "react";
-import classes from "./Loader.module.css";
+import styles from "./Loader.module.css";
+
 const Loader = () => {
   return (
     <>
-      <div className={classes.snippet} data-title=".dot-flashing">
-        <div className={classes.stage}>
-          <div className={classes.dotFlashing}></div>
+      <div className={styles.overlay}>
+        <div className={styles.overlay__inner}>
+          <div className={styles.overlay__content}>
+            <span className={styles.spinner}></span>
+          </div>
         </div>
-      </div>
+      </div> 
     </>
   );
 };

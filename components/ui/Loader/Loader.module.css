@@ -1,55 +1,43 @@
-/**
- * ==============================================
- * Dot Flashing
- * ==============================================
- */
- .dotFlashing {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: #9880ff;
-  color: #9880ff;
-  animation: dotFlashing 1s infinite linear alternate;
-  animation-delay: .5s;
-  margin: 0;
-}
-
-.dotFlashing::before, .dotFlashing::after {
-  content: '';
-  display: inline-block;
-  position: absolute;
+.overlay {
+  left: 0;
   top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+ 
+.overlay__inner {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 
-.dotFlashing::before {
-  left: -15px;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: #9880ff;
-  color: #9880ff;
-  animation: dotFlashing 1s infinite alternate;
-  animation-delay: 0s;
+.overlay__content {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.dotFlashing::after {
-  left: 15px;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: #9880ff;
-  color: #9880ff;
-  animation: dotFlashing 1s infinite alternate;
-  animation-delay: 1s;
+.spinner {
+  width: 75px;
+  height: 75px;
+  display: inline-block;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.05);
+  border-top-color: #fff;
+  animation: spin 1s infinite linear;
+  border-radius: 100%;
+  border-style: solid;
 }
 
-@keyframes dotFlashing {
-  0% {
-    background-color: #9880ff;
-  }
-  50%,
-  100% {
-    background-color: #ebe6ff;
-  }
+@keyframes spin {
+100% {
+  transform: rotate(360deg);
+}
 }

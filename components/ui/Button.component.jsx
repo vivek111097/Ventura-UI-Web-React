@@ -8,7 +8,7 @@ const ButtonUI = (props) => {
   const { type, onClick , disabled } = props;
   return (
     <>
-      <button className="btn" type={type || "button"} onClick={onClick || null} disabled={disabled || false}>
+      <button className="btn" type={type || "button"} onClick={onClick || void(0)} disabled={disabled || false}>
         {props.children}
       </button>
     </>

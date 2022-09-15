@@ -1,0 +1,116 @@
+.formContainer {
+  max-width: 388px;
+  margin: 20px auto;
+}
+
+.card {
+  background: #f8f8f8;
+  border-radius: 12px;
+}
+
+.container__list {
+  list-style-type: none;
+  padding: 0;
+}
+.list_item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-bottom: 1px solid #e0dfe7;
+}
+
+.list_item:last-child {
+  border-bottom: 0;
+}
+.key {
+  min-width: 87px;
+
+  height: 15px;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+
+  /* Neutrals/Labels */
+
+  color: #6b6874;
+}
+
+.value {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 15px;
+  min-width: 188px;
+  color: #191442;
+}
+
+.list_item_div {
+  padding: 12px;
+}
+
+.outer_div {
+  display: flex;
+}
+
+.btn {
+  color: #ff844b;
+  background: none;
+  border: none;
+}
+
+.kraHead {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 140%;
+  color: #191442;
+}
+
+.kraSubtitle {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 140%;
+  color: #6b6874;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.uploadTitle {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  color: #191442;
+}
+.uploadSubtitle {
+  font-size: 14px;
+}
+.note {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  list-style: none;
+  padding: 0%;
+  color: #5c5968;
+}
+
+.note li::before {
+  content: "";
+  background-color: #7260e2;
+  border-radius: 100%;
+  font-weight: bold;
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  margin-left: -25px;
+  margin-right: 5px;
+}
+
+.note li {
+  padding-left: 25px;
+}
+
+.skip {
+  display: flex;
+  margin-top: 16px;
+    justify-content: center;
+    margin-top: 16px;
+}

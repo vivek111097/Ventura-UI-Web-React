@@ -1,29 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import AxiosInstance from "../../../../Api/Axios/axios";
 const MaritalStatus = () => {
-    
+    const [MaritalList, setMaritalList] = useState([])
   const getMaritalStatus = async () => {
     try {
-      const maritalStatus = await axios
-        .get(
-          `https://kyc-stage.ventura1.com/onboarding/v1/signup/static/user/occupations`,
-
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/x-www-form-urlencoded",
-              "X-Ventura-Session-Id":"1e1f88c2-e254-40b4-adf4-b2eff154b638"
-            },
-          }
-        )
-       const response= await maritalStatus.data();
+      const getData = await AxiosInstance.post("/signup/user/marital-status", {
+        ...APIData,
+      });
+      
+       const response= await getData.data();
        console.log(response)
     } catch (error) {
       console.log(error);
     }
   };
 
-
+  https://kyc-stage.ventura1.com/onboarding/v2/signup/user/marital-status
 
   useEffect(() => {
     getMaritalStatus();
@@ -31,6 +24,10 @@ const MaritalStatus = () => {
   return <>
     <p>marital status</p>
     <p>marital status</p>
+    <div className="selection">
+    <input id="burger" name="hungry" type="radio" />
+    <label htmlFor="burger">Burger + Chips</label>
+  </div>
   </>;
 };
 

@@ -11,30 +11,26 @@ module.exports = (phase) => {
       case PHASE_DEVELOPMENT_SERVER:
           return {
               env: {
-                  access_Token: "xyz",
-                  Account_Password: "abc",
+                baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
               }
           }
       case PHASE_PRODUCTION_SERVER:
           return {
-              env: {
-                  access_Token: "xyz",
-                  Account_Password: "abc",
+             env: {
+                baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
               }
           }
 
       case PHASE_PRODUCTION_BUILD:
           return {
-              env: {
-                  access_Token: "xyz",
-                  Account_Password: "abc",
+            env: {
+                baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
               }
           }
       case PHASE_EXPORT:
           return {
-              env: {
-                  access_Token: "xyz",
-                  Account_Password: "abc",
+            env: {
+                baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
               }
           }
 

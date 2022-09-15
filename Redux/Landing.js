@@ -6,6 +6,8 @@ const initialState = {
     session_id: null,
     phone: null,
     IsPhoneOTPSent: false,
+    PhoneOTPCount:0,
+    MailOTPCount:0,
     clientid: null,
     existing_user: false,
     new_user: false,
@@ -14,6 +16,7 @@ const initialState = {
     email: "",
     IsEmailOTPSent: false,
     IsemailOTPValidated: false,
+    IsPANValidated: false,
     pan: null,
   },
 };
@@ -34,6 +37,7 @@ const Landing_slice = createSlice({
         returning_user,
       } = action.payload;
       const addedToUser = produce(state.user, (draft) => {
+        
         draft.session_id = session_id;
         draft.phone = phone;
         draft.clientid = clientid;
@@ -49,10 +53,12 @@ const Landing_slice = createSlice({
     },
     
     SET_MOBILE_OTP_VALIDATED: (state, action) => {
-      const  OtpVerified  = action.payload;
-      console.log(OtpVerified)
+      console.log(action.payload)
+      const  {IsPhoneOTPValidated,returning_user}  = action.payload;
+      // console.log(IsPhoneOTPValidated,returning_user)
       const OTPValidated = produce(state.user, (draft) => {
-        draft.IsPhoneOTPValidated = OtpVerified;
+        draft.IsPhoneOTPValidated = IsPhoneOTPValidated;
+        draft.returning_user = returning_user;
       });
       return {
         ...state,
@@ -72,9 +78,12 @@ const Landing_slice = createSlice({
       };
     },
     STORE_PAN: (state, action) => {
-      const { pan } = action.payload;
+      console.log(state)
+      const { IsPANValidated,UserPANDetails} = action.payload;
+      console.log(UserPANDetails)
       const addedToUser = produce(state.user, (draft) => {
-        draft.pan = pan;
+        draft.pan = UserPANDetails;
+        draft.IsPANValidated = IsPANValidated;
       });
       return {
         ...state,

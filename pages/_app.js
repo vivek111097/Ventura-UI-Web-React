@@ -1,4 +1,6 @@
+import "../styles/Icomoon.css";
 import "../styles/globals.css";
+import "../styles/animate.min.css";
 import { Provider } from "react-redux";
 import store from "../Redux/store";
 import { createContext, useReducer } from "react";

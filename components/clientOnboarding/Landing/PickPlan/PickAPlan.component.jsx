@@ -21,39 +21,27 @@ const PickAPlan = () => {
           </p>
 
           <div className={styles.plans}>
-            <label className={styles.plan} htmlFor="basic">
-              <input type="radio" name="plan" id="basic" defaultChecked/>
+            <label className={styles.plan} htmlFor="complete">
+              <input type="radio" id="complete" name="plan" defaultChecked/>
               <div className={styles.planContent}>
-                <img
-                  loading="lazy"
-                  src="https://raw.githubusercontent.com/ismailvtl/ismailvtl.github.io/master/images/life-saver-img.svg"
-                  alt=""
-                />
                 <div className={styles.planDetails}>
-                  <span>Basic</span>
-                  <p>
-                    For smaller business, with simple salaries and pay
-                    schedules.
-                  </p>
+                  <h4>Pay at once</h4>
+                  <p>One time account opening <br />charge + AMC</p>
+                  <div className={styles.amount}>500/-</div>
                 </div>
+                <img src="/images/rightBottomLines.png" alt="" />
               </div>
             </label>
 
-            <label className={styles.plan} htmlFor="complete">
-              <input type="radio" id="complete" name="plan" />
+            <label className={styles.plan} htmlFor="basic">
+              <input type="radio" name="plan" id="basic"  />
               <div className={styles.planContent}>
-                <img
-                  loading="lazy"
-                  src="https://raw.githubusercontent.com/ismailvtl/ismailvtl.github.io/master/images/potted-plant-img.svg"
-                  alt=""
-                />
                 <div className={styles.planDetails}>
-                  <span>Complete</span>
-                  <p>
-                    For growing business who wants to create a rewarding place
-                    to work.
-                  </p>
+                  <h4>Only account opening</h4>
+                  <p>One time account opening <br />charge </p>
+                  <div className={styles.amount}>200/-</div>
                 </div>
+                <img src="/images/rightBottomLines.png" alt="" />
               </div>
             </label>
           </div>
