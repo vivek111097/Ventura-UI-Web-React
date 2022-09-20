@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
-import axios from "axios";
 
 import { STORE_SESSION } from "../../../../Redux/Landing";
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
 
-import UseAxios from "../../../global/hooks/useAxios";
 import ButtonUI from "../../../ui/Button.component";
 import Loader from "../../../ui/Loader/Loader.component";
 import Modal from "../../../ui/Modal/Modal.component";
