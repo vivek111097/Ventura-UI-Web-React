@@ -1,31 +1,32 @@
 import styles from "../styles/Home.module.css";
 import Layout from "../components/layout/layout";
-import Modal from "../components/ui/Modal/Modal.component";
 import { TOGGLE_MODAL } from "../Redux/modal";
 import { connect } from "react-redux";
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect,useState } from "react";
 import ButtonUI from "../components/ui/Button.component";
-
+import AddSignature from "../components/ui/Popups/AddSignaturePop/AddSignaturePop.component";
+// import UploadPan from "../components/ui/Popups/UploadPan/UploadPan.component";
+import Modal from "../components/ui/Modal/Modal.component";
 
 const Home = (props) => {
   const { showModal, toggleModal } = props;
-  useEffect(() => {
-    axios.get('https://kyc-stage.ventura1.com/onboarding/v1/signup/static/nominee/relationships').then(data => console.log(data))
-  })
+  // useEffect(() => {
+  //   axios.get('https://kyc-stage.ventura1.com/onboarding/v1/signup/static/nominee/relationships').then(data => console.log(data))
+  // })
+  const [otp, setOtp] = useState("");
+  const handleChange = (enteredOtp) => {
+    setOtp(enteredOtp);
+  };
   return (
     <div className={styles.container}>
-      <ButtonUI buttonType="success">Success Example</ButtonUI>
-      <ButtonUI buttonType="error">Error Example</ButtonUI>
-      <ButtonUI><img src="/images/google.png"/>Continue with Google</ButtonUI>
-      {/* <Layout>
-        {showModal && <Modal onClick={toggleModal}>
-          <ButtonUI onClick={toggleModal}>Close</ButtonUI>
-          <h1>Smart</h1>
-          <div>conflict</div>
+      <Layout>
+        {showModal && <Modal ModalType="signature_modal"  onClick={toggleModal}>
+          <AddSignature/>
+          {/* <UploadPan/> */}
         </Modal>}
         <ButtonUI onClick={toggleModal}>Toggle Modal</ButtonUI>
-      </Layout> */}
+      </Layout>
+
     </div>
   )
 }

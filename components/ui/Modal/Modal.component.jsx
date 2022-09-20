@@ -2,29 +2,31 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 
-import classes from "./Modal.module.css";
+import styles from "./Modal.module.css";
+
 
 const Backdrop = (props) => {
   const { hideBackdrop } = props;
-  return <div className={classes.backdrop} onClick={hideBackdrop} />;
+  return <div className={styles.backdrop} onClick={hideBackdrop} />;
 };
 
 const ModalOverlay = (props) => {
+  const { hideBackdrop } = props;
+
   return (
-    <div className={`${classes.modal} ${classes.modalSm}`}>
-      <div className="close">Close</div>
-      <div className={classes.content}>{props.children}</div>
+    <div
+       className={[styles.modal, styles[props.ModalType]].join(' ')}>
+      <div className="close"  onClick={hideBackdrop}>Close</div>
+      <div className={styles.content}>{props.children}</div>
     </div>
   );
 };
 
 const Modal = (props) => {
-  const {onClick } = props;
-  let portalElement;
+  const {onClick, ModalType} = props;
   const [pageMounted, setPageMounted] = useState(false);
   useEffect(() => {
     setPageMounted(true)
-    portalElement = document.querySelector("#modal_overlays");
     return () => setPageMounted(false)
   }, [])
 
@@ -36,7 +38,7 @@ const Modal = (props) => {
         document.querySelector("#modal_overlays")
       )}
       {pageMounted && createPortal(
-        <ModalOverlay>{props.children}</ModalOverlay>,
+        <ModalOverlay hideBackdrop={onClick}  ModalType={ModalType}>{props.children}</ModalOverlay>,
         document.querySelector("#modal_overlays")
       )}
     </>

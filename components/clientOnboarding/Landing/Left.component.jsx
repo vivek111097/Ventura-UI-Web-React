@@ -15,7 +15,7 @@ export default class SimpleSlider extends Component {
       slidesToShow: 1,
       slidesToScroll: 1,
       autoplay: true,
-      autoplaySpeed: 2000,
+      autoplaySpeed: 4000,
       nextArrow: false,
       prevArrow: false,
       // adaptiveHeight:true,

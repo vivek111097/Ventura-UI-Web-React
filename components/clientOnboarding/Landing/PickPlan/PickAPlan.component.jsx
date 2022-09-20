@@ -9,10 +9,10 @@ const PickAPlan = () => {
       <Header />
       <section className="ContainerBG">
         <div className="bgtop">
-          <img src="/images/welcomebgtop.png" />
+          <img src="/images/welcomebgtop.png" alt="pick up a plan"/>
         </div>
         <div className="bgbottom">
-          <img src="/images/welcomebgbottom.png" />
+          <img src="/images/welcomebgbottom.png" alt="pick up a plan"/>
         </div>
         <div className="containerMini">
           <h2 className="title">Pick a plan</h2>

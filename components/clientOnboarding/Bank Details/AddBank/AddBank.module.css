@@ -1,0 +1,111 @@
+.success_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+  width: 798px;
+  height: 56px;
+  background: #effff5;
+  border-radius: 12px;
+}
+
+.formContainer {
+  max-width: 798px;
+  margin: 20px auto;
+}
+.search_content {
+  position: relative;
+  margin: 24px 0px;
+}
+.search_content input {
+  padding-right: 40px;
+}
+.search_icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.banks{
+  display: flex;
+
+
+}
+.popular_bank {
+}
+.popular_bank ul {
+
+  
+}
+
+.popular_bank li {
+
+}
+.popular_bank li:last-child {
+
+}
+
+.all_bank {
+
+}
+.all_bank li {
+
+}
+
+.banks {
+
+}
+
+.all_bank ul {
+
+}
+
+.banklistItem{
+
+padding: 0px 16px;
+list-style: none;
+border-bottom: 1px solid#E0DFE7;
+padding: 16px;
+}
+.banklistItem:last-child{
+  border-bottom: none;
+  padding-bottom: 0px;
+}
+
+.banklist{background: #F8F8F8;
+border-radius: 12px;
+}
+
+.banklist ul{
+  padding: 0;
+}
+
+.search_result{
+width: 798px;
+height: 16px;
+font-weight: 600;
+font-size: 11px;
+line-height: 16px;
+color: #6B6874;
+}
+.remove{
+
+}
+
+.add_bank_account{
+  width: 798px;
+  height: 34px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 140%;
+  color: #191442;
+}
+
+.note{
+width: 798px;
+height: 22px;
+font-weight: 400;
+font-size: 16px;
+line-height: 140%;
+color: #6B6874;
+}

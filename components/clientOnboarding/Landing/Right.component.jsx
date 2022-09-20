@@ -4,7 +4,7 @@ import MailSignUpCard from "./MailSingUp/MailSignUpCard.component";
 import { connect } from "react-redux";
 import Occupation from "./EKYC/Occupation.component";
 const Right = (props) => {
-  console.log(props.IsPhoneOTPValidated);
+  // console.log(props.IsPhoneOTPValidated);
   const ToggleComponents=()=>{
     if(props.IsPhoneOTPValidated===true){
      return <MailSignUpCard />

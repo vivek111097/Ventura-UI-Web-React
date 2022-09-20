@@ -5,34 +5,41 @@ import ButtonUI from "../../../ui/Button.component";
 import { connect } from "react-redux";
 import Link from "next/link";
 const PANCardDetails = (props) => {
-  console.log(props)
-  const {pan}=props
-  console.log(props.pan)
+  // console.log(props)
+  // const {pan}=props
+  // console.log(props.pan)
   return (
     <>
       <Header />
       <section className="ContainerBG">
         <div className="bgtop">
-          <img src="/images/welcomebgtop.png" />
+          <img src="/images/welcomebgtop.png" alt="lines"/>
         </div>
         <div className="bgbottom">
-          <img src="/images/welcomebgbottom.png" />
+          <img src="/images/welcomebgbottom.png" alt="lines"/>
         </div>
         <div className="containerMini">
           <h2 className="title">Your PAN details</h2>
           <p className="subTitle">
             This PAN will be used to set up your demat account.
           </p>
-          <div className={styles.panNoTxt}>{pan.pan}</div>
+          <div className={styles.panNoTxt}>
+          {/* {pan.pan} */}
+          </div>
           <div className={styles.panCardBox}>
             <div className={styles.panCont}>
               <div className={styles.list}>
                 <span>Name</span>
-                <h4>Mr. {pan.name}</h4>
+                <h4>
+                {/* Mr. */}
+                 {props.pan.name}
+                 </h4>
               </div>
               <div className={styles.list}>
                 <span>Permanent Account Number</span>
-                <h4>{pan.pan}</h4>
+                <h4>
+                {props.pan.pan}
+                </h4>
               </div>
             </div>
           </div>

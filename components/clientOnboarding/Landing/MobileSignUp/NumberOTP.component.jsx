@@ -3,28 +3,31 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import ButtonUI from "../../../ui/Button.component";
 import { connect } from "react-redux";
-import {
-  SET_MOBILE_OTP_VALIDATED,
-  
-} from "../../../../Redux/Landing";
+
+import ButtonUI from "../../../ui/Button.component";
+import { SET_MOBILE_OTP_VALIDATED } from "../../../../Redux/Landing";
 import Loader from "../../../ui/Loader/Loader.component";
 import AxiosInstance from "../../../../Api/Axios/axios";
 import Modal from "../../../ui/Modal/Modal.component";
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
+
 const NumberOTP = (props) => {
   const { showModal, toggleModal } = props;
   const [isLoading, setisLoading] = useState(false);
-  const [counter, setCounter] = useState(10);
+
+  const [errorMsg, seterrorMsg] = useState(null);
+  const [counter, setCounter] = useState(5);
   const [OtpCount, setOtpCount] = useState(0);
+  console.log(OtpCount);
+  const [otpErrorMSg, setotpErrorMSg] = useState("");
+  const [isOtpErrorMSgVisible, setisOtpErrorMSgVisible] = useState(false);
   const {
     register,
     trigger,
     setValue,
     handleSubmit,
     reset,
-    setError,
     formState: { errors, isDirty, isValid },
   } = useForm();
   const router = useRouter();
@@ -32,8 +35,9 @@ const NumberOTP = (props) => {
   // console.clear();
 
   const onSubmit = async (data) => {
+    console.log(data);
     try {
-      setisLoading(true);
+      // setisLoading(true);
 
       // Destructuring All the Input
       const { otpFirst, otpSecond, otpThird, otpFourth, otpFifth, otpSixth } =
@@ -58,65 +62,71 @@ const NumberOTP = (props) => {
           },
         }
       );
-      console.log(getData)
+      console.log(getData);
       const res = await getData.data;
-console.log(res.message)
+      console.log(res);
       if (res) {
-        setisLoading(false);
+        // setisLoading(false);
         if (getData.status == 200) {
-          setOtpCount((OtpCount) => OtpCount + 1)
+          // setOtpCount((OtpCount) => OtpCount + 1);
           let returning_user = {
             last_access: res.returning_user.last_access,
             last_state: res.returning_user.last_state,
           };
           let user = {
-
             IsPhoneOTPValidated: true,
             returning_user,
           };
-          props.updateOtpValidation(user);
-
+          props.updatePhoneOtpValidation(user);
+          // props.toggleModal()
           // props.storeSession(returning_user);
         } else if (getData.status == 400) {
-          alert("OTP has expired please SignUp again.");
+          // alert("OTP has expired please SignUp again.");
         } else {
+          seterrorMsg("Something went wrong");
           props.toggleModal();
         }
       }
       reset();
     } catch (error) {
-      errors=error.response.data.message;
-      console.log(error.response.data.message)
+      // errors=error.response.data.message;
+      // console.log(error.response.data.message)
+      console.log(error);
+      seterrorMsg(error.response.data.message);
       props.toggleModal();
-      setisLoading(false);
+      setisOtpErrorMSgVisible(true);
+      setOtpCount((OtpCount) => OtpCount + 1);
+      // setisLoading(false);
       reset();
     }
   };
 
-  
-  const resendOtp = async () => {         
+  // Invalid PIN 1/3 :
+  const resendOtp = async () => {
     try {
+      setisOtpErrorMSgVisible(true);
       setCounter(10);
+      // setotpErrorMSg(" Your account will get temporarily blocked after 3 wrong attempts.")
+      // setOtpCount((OtpCount) => OtpCount + 1);
       const APIData = {
         phone: parseInt(props.phone),
       };
-      const getData = await AxiosInstance.post(
-        "/signup/user/phone/otp/verify",
-        {
-          ...APIData,
-        }
-      );
+      const getData = await AxiosInstance.post("/signup/user/phone", {
+        ...APIData,
+      });
       const response = await getData.data;
 
       console.log(response);
       if (response) {
-        setOtpCount((OtpCount) => OtpCount + 1)
-        props.updateOtpValidation(true);
+        // setOtpCount((OtpCount) => OtpCount + 1)
+        // props.updatePhoneOtpValidation(true);
       } else {
+        seterrorMsg("Something went wrong");
         props.toggleModal();
       }
       reset();
     } catch (error) {
+      seterrorMsg(error.response.data.message);
       props.toggleModal();
       console.log(error);
       reset();
@@ -124,7 +134,7 @@ console.log(res.message)
   };
   useEffect(() => {
     let inputs = document.querySelectorAll("input");
-    let values = Array(4);
+    let values = Array(6);
     let clipData;
     inputs[0].focus();
 
@@ -154,13 +164,28 @@ console.log(res.message)
         event.preventDefault();
         clipData = event.clipboardData.getData("text/plain").split("");
         filldata(index);
+        document.getElementById("otpSixth").focus();
       });
     });
 
+    // function filldata(index) {
+    //   for (let i = index; i < inputs.length; i++) {
+    //     inputs[i].value = clipData.shift();
+    //   }
+
+    // }
     function filldata(index) {
-      for (let i = index; i < inputs.length; i++) {
-        inputs[i].value = clipData.shift();
-      }
+      setValue("otpFirst", clipData[0]);
+      setValue("otpSecond", clipData[1]);
+      setValue("otpThird", clipData[2]);
+      setValue("otpFourth", clipData[3]);
+      setValue("otpFifth", clipData[4]);
+      setValue(
+        "otpSixth",
+        clipData[5]
+      ); /*for (let i = index; i < inputs.length; i++) {
+        inputs[i].value = clipData.shift();
+      }*/
     }
 
     function hasNoValue(index) {
@@ -174,6 +199,9 @@ console.log(res.message)
       counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     return () => clearInterval(timer);
   }, [counter]);
+  if (OtpCount >= 3) {
+    router.reload(window.location.pathname);
+  }
   return (
     <>
       {isLoading ? (
@@ -192,11 +220,15 @@ console.log(res.message)
                   <input
                     className="otp"
                     id="otpFirst"
-                    type="text"
+                    type="number"
                     min="0"
                     max="9"
                     step="1"
-                    autocomplete="off"
+                    autoComplete="off"
+                    maxLength={1}
+                    onPaste={(event) => {
+                      "otpFirst", event.target.value.replace(/\D/g, "");
+                    }}
                     onInput={(event) => {
                       setValue(
                         "otpFirst",
@@ -206,18 +238,21 @@ console.log(res.message)
                     {...register("otpFirst", {
                       required: true,
                     })}
-                    maxLength={1}
                   />
                 </div>
                 <div className="col-2">
                   <input
                     className="otp"
                     id="otpSecond"
-                    type="text"
+                    type="number"
                     min="0"
                     max="9"
                     step="1"
-                    autocomplete="off"
+                    autoComplete="off"
+                    maxLength={1}
+                    onPaste={(event) => {
+                      "otpSecond", event.target.value.replace(/\D/g, "");
+                    }}
                     onInput={(event) => {
                       setValue(
                         "otpSecond",
@@ -227,18 +262,21 @@ console.log(res.message)
                     {...register("otpSecond", {
                       required: true,
                     })}
-                    maxLength={1}
                   />
                 </div>
                 <div className="col-2">
                   <input
                     className="otp"
                     id="otpThird"
-                    type="text"
+                    type="number"
                     min="0"
                     max="9"
                     step="1"
-                    autocomplete="off"
+                    autoComplete="off"
+                    maxLength={1}
+                    onPaste={(event) => {
+                      "otpThird", event.target.value.replace(/\D/g, "");
+                    }}
                     onInput={(event) => {
                       setValue(
                         "otpThird",
@@ -248,18 +286,21 @@ console.log(res.message)
                     {...register("otpThird", {
                       required: true,
                     })}
-                    maxLength={1}
                   />
                 </div>
                 <div className="col-2">
                   <input
                     className="otp"
                     id="otpFourth"
-                    type="text"
+                    type="number"
                     min="0"
                     max="9"
                     step="1"
-                    autocomplete="off"
+                    autoComplete="off"
+                    maxLength={1}
+                    onPaste={(event) => {
+                      "otpFourth", event.target.value.replace(/\D/g, "");
+                    }}
                     onInput={(event) => {
                       setValue(
                         "otpFourth",
@@ -269,18 +310,21 @@ console.log(res.message)
                     {...register("otpFourth", {
                       required: true,
                     })}
-                    maxLength={1}
                   />
                 </div>
                 <div className="col-2">
                   <input
                     className="otp"
                     id="otpFifth"
-                    type="text"
+                    type="number"
                     min="0"
                     max="9"
                     step="1"
-                    autocomplete="off"
+                    autoComplete="off"
+                    maxLength={1}
+                    onPaste={(event) => {
+                      "otpFifth", event.target.value.replace(/\D/g, "");
+                    }}
                     onInput={(event) => {
                       setValue(
                         "otpFifth",
@@ -290,18 +334,21 @@ console.log(res.message)
                     {...register("otpFifth", {
                       required: true,
                     })}
-                    maxLength={1}
                   />
                 </div>
                 <div className="col-2">
                   <input
                     className="otp"
                     id="otpSixth"
-                    type="text"
+                    type="number"
                     min="0"
                     max="9"
                     step="1"
-                    autocomplete="off"
+                    autoComplete="off"
+                    maxLength={1}
+                    onPaste={(event) => {
+                      "otpSixth", event.target.value.replace(/\D/g, "");
+                    }}
                     onInput={(event) => {
                       setValue(
                         "otpSixth",
@@ -311,15 +358,14 @@ console.log(res.message)
                     {...register("otpSixth", {
                       required: true,
                     })}
-                    maxLength={1}
                   />
                 </div>
               </div>
-              {errors.otp && (
-            <small className="form-text text-danger">
-            Provided OTP is wrong please enter valid OTP.
-            </small>
-          )}
+              {/* {errors.otp && (
+                <small className="form-text text-danger">
+                  Provided OTP is wrong please enter valid OTP.
+                </small>
+              )} */}
               <div className="row otpTimerResend">
                 <div className="col-6 timer">
                   {counter === 0 ? null : <>00:{counter}s</>}
@@ -334,21 +380,23 @@ console.log(res.message)
                   )}
                 </div>
               </div>
-              <ButtonUI type={"submit"}>Verify OTP</ButtonUI>
-            </div>
+              {isOtpErrorMSgVisible && (
+                <div className="row otpTimerResend">
+                  Invalid PIN {OtpCount}/3 : Your account will get temporarily
+                  blocked after 3 wrong attempts.
+                </div>
+              )}
+              <ButtonUI type={"submit"} id="btn">
+                Verify OTP
+              </ButtonUI>
+            </div> 
           </form>
           {showModal === true ? (
             <Modal onClick={toggleModal}>
-              <ButtonUI onClick={toggleModal}>x</ButtonUI>
-              <h1>something went Wrong</h1>
+              <p>{errorMsg}</p>
+              <ButtonUI onClick={toggleModal}>OK</ButtonUI>
             </Modal>
           ) : null}
-          {/* { showModalSuccess === true ? (
-        <Modal onClick={toggleModal}>
-          <ButtonUI onClick={toggleModal}>x</ButtonUI>
-          <h1>Otp Send Successfull</h1>
-        </Modal>
-      ) : null } */}
         </>
       )}
     </>
@@ -366,7 +414,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateOtpValidation: (OtpVerified) => {
+    updatePhoneOtpValidation: (OtpVerified) => {
       console.log(OtpVerified);
       dispatch(SET_MOBILE_OTP_VALIDATED(OtpVerified));
     },

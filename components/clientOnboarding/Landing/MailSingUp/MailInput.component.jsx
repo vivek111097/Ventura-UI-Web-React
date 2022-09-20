@@ -6,15 +6,20 @@ import ButtonUI from "../../../ui/Button.component";
 import styles from ".././Landing.module.css";
 import AxiosInstance from "../../../../Api/Axios/axios";
 import Loader from "../../../ui/Loader/Loader.component";
+import Modal from "../../../ui/Modal/Modal.component";
+import { TOGGLE_MODAL } from "../../../../Redux/modal";
 
 const MailInput = (props) => {
   const [isLoading, setisLoading] = useState(false);
+  const [errorMsg, seterrorMsg] = useState(null);
   const { otpSent, setotpSent } = props;
+  const { showModal, toggleModal } = props;
   const {
     register,
     trigger,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid },
   } = useForm();
 
@@ -46,31 +51,29 @@ const MailInput = (props) => {
           session_id: props.session_id,
         },
       });
-    
 
       //   receiving response from backend
       const res = await getData.data;
-      if(getData.status==200){
+      if (getData.status == 200) {
         console.log(res);
         setisLoading(false);
         setotpSent(true);
         let MailData = {
-              email: data.email,
-              IsEmailOTPSent: true,
-            };
-            props.setEmail(MailData);
-      }
-      else{
+          email: data.email,
+          IsEmailOTPSent: true,
+        };
+        props.setEmail(MailData);
+      } else {
+        props.toggleModal();
         setisLoading(false);
-        alert("failed to send otp")
       }
-    
+      reset();
     } catch (error) {
-
       // Error IF Something Goes Wrong
-      alert("Something Went Wrong")
+      props.toggleModal();
       console.log(error);
       setisLoading(false);
+      reset();
     }
   };
 
@@ -82,7 +85,7 @@ const MailInput = (props) => {
         <>
           <h2 className="title">Add your email</h2>
           <p className="subTitle">
-            This is where we'll send you important updates and insights on the
+            This is where we&lsquo;ll send you important updates and insights on the
             market.
           </p>
           {/* Email Form  */}
@@ -110,13 +113,19 @@ const MailInput = (props) => {
 
             {/* Submit BUtton */}
             <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
-         VerifyEmail
+              VerifyEmail
             </ButtonUI>
             <div className={styles.or}>OR</div>
           </form>
           <ButtonUI type={"submit"}>Continue with Google</ButtonUI>
         </>
       )}
+      {showModal === true ? (
+        <Modal onClick={toggleModal}>
+          <ButtonUI onClick={toggleModal}>x</ButtonUI>
+          <h1>Something went Wrong</h1>
+        </Modal>
+      ) : null}
     </>
   );
 };
@@ -125,12 +134,14 @@ const mapStateToProps = (state) => {
   return {
     session_id: state.LandingReducer.user.session_id,
     phone: state.LandingReducer.user.phone,
+    showModal: state.modalReducer.showModal,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setEmail: (email) => dispatch(STORE_EMAIL(email)),
+    toggleModal: () => dispatch(TOGGLE_MODAL()),
   };
 };
 

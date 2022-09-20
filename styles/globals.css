@@ -299,7 +299,11 @@ a {
 .checkBox label {
   position: relative;
   cursor: pointer;
+  padding-left: 38px;
   color: #5c5968;
+  line-height: 22px;
+  
+  display: inline-block;
   font-size: 14px;
 }
 .checkBox label:before {
@@ -316,10 +320,14 @@ a {
   width: 22px;
   border: solid 2px #41c977;
   top: -1px;
+  position: absolute;
+  left: 0;
 }
 
 .checkBox input:checked + label:before {
   background: #41c977;
+  position: absolute;
+  left: 0;
 }
 .checkBox input:checked + label:after {
   content: "";
@@ -332,6 +340,7 @@ a {
   border: solid #ffffff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+  top: 5px;
 }
 .checkBox.duelLine label {
   display: inline-block;
@@ -355,11 +364,12 @@ a {
 /* CSS for Custom Check Box  End*/
 .title {
   font-size: 24px;
+  line-height: 33.6px;
   color: #191442;
   font-weight: 600;
   margin: 0 0 8px 0;
-  margin-bottom: 24px;
 }
+
 .subTitle {
   color: #6b6874;
   font-size: 16px;
@@ -374,6 +384,7 @@ a {
   border: solid 1px #e0dfe7;
   border-radius: 12px;
   text-align: center;
+  overflow: hidden;
 }
 .enterOTP > [class^="col-"] input {
   width: 100%;
@@ -386,6 +397,10 @@ a {
   font-size: 18px;
   outline: none;
 }
+
+.enterOTP > [class^="col-"]:last-child input{
+  border-right-width: 0;
+} 
 ul.slick-dots li {
   width: 16px;
   transition: all 0.3s ease-in;
@@ -464,6 +479,7 @@ ul.slick-dots {
   position: relative;
   z-index: 1;
   padding: 0 15px;
+  
 }
 .ContainerBG .containerMD {
   width: 100%;
@@ -546,3 +562,71 @@ ul.slick-dots {
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: 2px;
 } */
+
+
+/*tab css*/
+.content {
+  display: none;
+}
+
+.active-content {
+  display: flex;
+  flex-flow: column;
+}
+.tabs{
+  width: 194px;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  box-shadow: 0px 4px 16px -8px rgba(45, 43, 64, 0.12);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 10px;
+}
+.activetabs{
+  background: #7260E2;
+  border-radius: 8px;
+  color: #ffffff;
+  box-shadow: none;
+
+}
+/**/
+.textCenter{
+  text-align: center!important;
+}
+.error{
+  color:#f00!important;
+}
+
+/* OTP Error msg */
+.errorMsgOtp{
+  font-size: 12px;
+  line-height: 16px;
+  padding: 16px 16px 16px 32px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #FFF1F0 0%, rgba(255, 241, 240, 0) 100%);
+  position: relative;
+}
+
+.attempts{
+  font-family: "sorabold";
+  color: #f47a44;
+}
+
+.errorMsgOtp::before{
+  content: '';
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  left: 16px;
+  top: 20px;
+  border-radius: 100%;
+  background-color: #f47a44;
+}
+
+.inputError, .inputError input.otp{
+  border-color: #FDA49B;
+}

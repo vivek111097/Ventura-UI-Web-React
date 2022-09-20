@@ -11,7 +11,7 @@ const NumberSignUpCard = () => {
       <img
         src="/images/VenturaLogo.png"
         alt="Ventura Logo"
-        className={`animate__animated  animate__zoomIn ${styles.logo}`}
+        className={`animate__animated ${styles.logo}`}
       />
       {/* <h3>Ready to get started?</h3>
     <p className={styles.subTitle}>

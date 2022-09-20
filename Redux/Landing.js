@@ -18,6 +18,9 @@ const initialState = {
     IsemailOTPValidated: false,
     IsPANValidated: false,
     pan: null,
+    bank_details:{
+      selected_bank:null
+    }
   },
 };
 
@@ -101,6 +104,17 @@ const Landing_slice = createSlice({
         user: OTPValidated,
       };
     },
+    
+    SET_SELECTED_BANK:(state,action)=>{
+      const {bankName}=action.payload;
+      const storeBankName=produce(state.user.bank_details,(draft)=>{
+        draft.selected_bank=bankName;
+      })
+      return{
+        ...state,
+        user:storeBankName
+      }
+    }
   },
 });
 
@@ -111,5 +125,6 @@ export const {
   SET_MOBILE_OTP_VALIDATED,
   STORE_EMAIL,
   STORE_PAN,
+  SET_SELECTED_BANK
 } = Landing_slice.actions;
 export default Landing_slice.reducer;

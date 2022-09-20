@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import AxiosInstance from "./../../../Api/Axios/axios";
@@ -10,6 +11,8 @@ import { useRouter } from "next/router";
 import ReactSlider from "react-slider";
 import axios from "axios";
 import { connect } from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 /**
  *
  * @author vivek chaudhari
@@ -39,13 +42,25 @@ const AddNominee = (props) => {
       setNominee_Relationship(data.relationships);
     };
     getRelationships();
-  }, []);
+    var lineItem = document.querySelectorAll(".animate__animated");
+    lineItem.forEach((item, index) => {
+      item.className += " animate__fadeInUp animate__delay_" + index;
+    });
+  }, [props.session_id]);
+
+  const NomineeSchema = yup.object().shape({
+    relationship: yup.string().required(),
+    nominee_name: yup.string().required(),
+    dob: yup.string().required(),
+    nominee_address: yup.string().required(),
+    pan_or_aadhar: yup.string().required(),
+  });
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors ,isValid,isDirty},
     trigger,
   } = useForm({
     defaultValues: {
@@ -60,9 +75,11 @@ const AddNominee = (props) => {
       guard_pan_or_aadhar: "",
       guard_address: "",
     },
+    resolver: yupResolver(NomineeSchema),
   });
   const onSubmit = (data) => {
     try {
+    
       let nominee_data = {
         name: data.nominee_name,
         relation: data.relationship,
@@ -148,7 +165,7 @@ const AddNominee = (props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={style.formContainer}>
-        <h2 className="title">Add nominee 1</h2>
+        <h2 className="title animate__animated">Add nominee 1</h2>
 
         <label className="form-label" htmlFor="relationshipWithNominee">
           Relationship with nominee
@@ -245,7 +262,7 @@ const AddNominee = (props) => {
           )}
         />
         <label className="form-label" htmlFor="nomineeName">
-        % of nomination
+          % of nomination
         </label>
         <div className="Sliderwrap">
           <ReactSlider
@@ -254,7 +271,10 @@ const AddNominee = (props) => {
             trackClassName="example_track"
             defaultValue={[40, 100]}
             ariaLabel={["Leftmost thumb", "Rightmost thumb"]}
-            pearling onChange={(val) => { handleInput(val);}}
+            pearling
+            onChange={(val) => {
+              handleInput(val);
+            }}
           />
           <ul className={style.SliderNumWrap}>
             <li className={style.SliderNum}>0</li>
@@ -271,22 +291,23 @@ const AddNominee = (props) => {
           </ul>
           <ul className={style.NomineesWrap}>
             <li className={style.Nominees}>
-                <p className={style.PerOrange}>{Nominee_1_Share}%</p>
-                <p className={style.NomineeNum}>Nominee 1</p>
+              <p className={style.PerOrange}>{Nominee_1_Share}%</p>
+              <p className={style.NomineeNum}>Nominee 1</p>
             </li>
             <li className={style.Nominees}>
-                <p className={style.PerBlue}>{Nominee_2_Share}%</p>
-                <p className={style.NomineeNum}>Nominee 2</p>
+              <p className={style.PerBlue}>{Nominee_2_Share}%</p>
+              <p className={style.NomineeNum}>Nominee 2</p>
             </li>
             <li className={style.Nominees}>
-                <p className={style.PerGreen}>{Nominee_3_Share}%</p>
-                <p className={style.NomineeNum}>Nominee 3</p>
+              <p className={style.PerGreen}>{Nominee_3_Share}%</p>
+              <p className={style.NomineeNum}>Nominee 3</p>
             </li>
           </ul>
-          <div className={style.SliderTip}>Move the slider to the left or right to <strong>distribute nomination share</strong> between the nominees.
+          <div className={style.SliderTip}>
+            Move the slider to the left or right to{" "}
+            <strong>distribute nomination share</strong> between the nominees.
           </div>
         </div>
-         
 
         {/* Guardian's detail required in case of nominee is minor  */}
         {showGuardianForm && (
@@ -391,27 +412,24 @@ const AddNominee = (props) => {
         <ButtonUI
           type="submit"
           onClick={() => router.push("/co/nominee/nomineelist")}
+          // disabled={!isDirty || !isValid}
         >
           Add Nominee
         </ButtonUI>
       </div>
-      {errors.exampleRequired && <span>This field is required</span>}
     </form>
   );
 };
 
-
-
 const mapStateToProps = (state) => {
-console.log(state)
+  console.log(state);
   return {
     session_id: state.LandingReducer.user.session_id,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-  };
+  return {};
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddNominee);
+export default connect(mapStateToProps, mapDispatchToProps)(AddNominee);

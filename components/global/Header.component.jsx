@@ -1,7 +1,9 @@
 import React from 'react'
 import Link from 'next/link';
 import styles from '../../styles/Header.module.css';
+import { Router } from 'next/router';
 const Header = () => {
+
 return (
     <>
         <header className={styles.welcomeHead}>

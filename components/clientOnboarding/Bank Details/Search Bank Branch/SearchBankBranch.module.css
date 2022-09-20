@@ -1,0 +1,81 @@
+.formContainer {
+  max-width: 798px;
+  margin: 20px auto;
+}
+
+.search_branch_name {
+  width: 798px;
+  height: 34px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 140%;
+  color: #191442;
+}
+
+.search_content {
+  position: relative;
+  margin: 24px 0px;
+}
+.search_content input {
+  padding-right: 40px;
+}
+.search_icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+.search_result {
+  width: 798px;
+  height: 16px;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 16px;
+  color: #6b6874;
+}
+.branchlist {
+  width: 798px;
+  height: 454px;
+  background: #f8f8f8;
+  border-radius: 12px;
+  overflow-y: auto;
+}
+
+.branchlist ul {
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+.branchlist ul li{
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 15px;
+}
+.branchlist ul li:last-child{
+    border-bottom: none;
+}
+
+.listitem_wraper{
+     width: 371px;
+     height: 80px;
+    border-bottom: 1px solid #E0DFE7;
+}
+
+
+
+.branch_subtitel{
+    font-weight: 400;
+font-size: 12px;
+line-height: 15px;
+
+/* Neutrals/Labels */
+
+color: #6B6874;
+}
+.branch_titel{
+
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 140%;
+color: #191442;
+}

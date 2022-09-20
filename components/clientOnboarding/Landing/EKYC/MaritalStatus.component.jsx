@@ -16,7 +16,7 @@ const MaritalStatus = () => {
     }
   };
 
-  https://kyc-stage.ventura1.com/onboarding/v2/signup/user/marital-status
+  // https://kyc-stage.ventura1.com/onboarding/v2/signup/user/marital-status
 
   useEffect(() => {
     getMaritalStatus();

@@ -1,23 +1,37 @@
-
-.steps{
+.stepsWrap{
+  margin-top: 17px;
+  display: flex;
+  flex-flow: column;
+}
+.steps,.Completedsteps{
   display: flex;
   flex-wrap: nowrap;
   margin-bottom: 24px;
+  position:relative;
 }
-.steps:first-child{
-  margin-bottom:32px;
-}
-.steps.lastchild{
+.steps:last-child,.Completedsteps:last-child{
   margin-bottom:47px;
 }
  
-.stepsicon{
+.steps .stepsicon{
   display: inline-flex;
   height: 48px;
   width: 48px;
   border-radius: 50%;
   background: #E2DEFF;
   color:#2D2B40;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-right: 16px;
+}
+.Completedsteps .stepsicon{
+  display: inline-flex;
+  height: 48px;
+  width: 48px;
+  border-radius: 50%;
+  background: #BBFFD6;
+  color:#10B349;
   align-items: center;
   justify-content: center;
   font-size: 20px;
@@ -78,4 +92,3 @@
   font-weight: 600;
   color: #FF844B;
 }
-

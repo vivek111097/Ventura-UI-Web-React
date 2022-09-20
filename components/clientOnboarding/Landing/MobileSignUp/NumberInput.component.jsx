@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import axios from "axios";
@@ -15,6 +15,7 @@ import AxiosInstance from "../../../../Api/Axios/axios";
 
 const NumberInput = (props) => {
   const { showModal, toggleModal } = props;
+  const [errorMsg, seterrorMsg] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const { otpSent, setotpSent } = props;
 
@@ -86,22 +87,28 @@ const NumberInput = (props) => {
       reset();
     }
   };
+
+  useEffect(() => {
+    var lineItem = document.querySelectorAll(".animate__animated");
+    lineItem.forEach((item, index) => {
+      item.className += " animate__fadeInUp animate__delay_" + index;
+    });
+  }, []);
+
   return (
     <>
       {isLoading === true ? (
         <Loader />
       ) : (
         <>
-          <h2 className="title animate__animated animate__fadeInUp animate__delay-1s">
-            Ready to get started?
-          </h2>
-          <p className="subTitle animate__animated animate__fadeInUp animate__delay_1_3s">
+          <h2 className="title animate__animated ">Ready to get started?</h2>
+          <p className="subTitle animate__animated ">
             Enter your number to help us set up your investment account.
           </p>
 
           {/* Mobile Number Input Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="row  animate__animated animate__fadeInUp  animate__delay_1_6s">
+            <div className="row  animate__animated  ">
               <div className="col-auto ">
                 <input
                   className="form-control countryCode"
@@ -131,7 +138,7 @@ const NumberInput = (props) => {
             </div>
 
             {/* WhatsApp Notification Button Default Value Will Be Checked */}
-            <div className="checkBox  animate__animated animate__fadeInUp  animate__delay_1_9s">
+            <div className="checkBox  animate__animated ">
               <input
                 type="checkbox"
                 id="enableWhatsapp"
@@ -144,18 +151,18 @@ const NumberInput = (props) => {
             </div>
 
             {/* Submit Button */}
-            <div className="animate__animated animate__fadeInUp animate__delay_2_2s">
+            <div className="animate__animated ">
               <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
                 {/* {isLoading===true ? (<Loader/> ):    "Continue " } */}
                 Continue
               </ButtonUI>
             </div>
           </form>
-          <p className={`animate__animated animate__fadeInUp animate__delay_2_5s ${styles.haveAnAccount}`}>
+          <p className={`animate__animated  ${styles.haveAnAccount} `}>
             Have an account?
             <a href="">Login</a>
           </p>
-          <p className={`animate__animated animate__fadeInUp animate__delay_2_8s ${styles.termsOfUse}`}>
+          <p className={`animate__animated  ${styles.termsOfUse} `}>
             By proceeding, you accept Ventura’s <a href="">Terms of Use</a>{" "}
             <br />
             and <a href="">Privacy Policy</a>.
@@ -163,7 +170,7 @@ const NumberInput = (props) => {
           {showModal === true ? (
             <Modal onClick={toggleModal}>
               <ButtonUI onClick={toggleModal}>x</ButtonUI>
-              <h1>Soe thing went Wrong</h1>
+              <p>Some thing went Wrong</p>
             </Modal>
           ) : null}
         </>
@@ -184,5 +191,6 @@ const mapDispatchToProps = (dispatch) => {
     toggleModal: () => dispatch(TOGGLE_MODAL()),
   };
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(NumberInput);

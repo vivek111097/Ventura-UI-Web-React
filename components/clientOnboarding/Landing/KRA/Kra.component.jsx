@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { connect } from "react-redux";
 import AxiosInstance from "../../../../Api/Axios/axios";
 import ButtonUI from "../../../ui/Button.component";
+
 import style from "./kra.module.css";
 
 const KraComponent = (props) => {
@@ -36,7 +37,7 @@ const KraComponent = (props) => {
               <div className={style.value}>{KraData.name}</div>
           </li>
           <li className={style.list_item}>
-            <div className={style.key}>Father's Name</div>
+            <div className={style.key}>Father&lsquo;s Name</div>
             <div className={style.outer_div}>
                 <div className={style.value}>{KraData.fathers_name}</div>
                 <button className={style.btn}>Edit {`>`}</button>

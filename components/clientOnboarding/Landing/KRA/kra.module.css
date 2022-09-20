@@ -111,6 +111,34 @@
 .skip {
   display: flex;
   margin-top: 16px;
-    justify-content: center;
-    margin-top: 16px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.SliderTip {
+  font-size: 11px;
+  line-height: 16px;
+  color: #5c5968;
+  padding: 16px 16px 16px 34px;
+  background: linear-gradient(180deg, #f8f8f8 0%, rgba(248, 248, 248, 0) 100%);
+  border-radius: 12px;
+  position: relative;
+}
+.SliderTip::after {
+  content: "";
+  background: #7260e2;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  left: 17px;
+  top: 19px;
+  border-radius: 50%;
+}
+.retry {
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+  color: #ff844b;
+  margin-top: 16px;
 }
