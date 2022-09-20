@@ -11,13 +11,21 @@
 .modal {
   position: fixed;
   background-color: white;
-  padding: 20px;
+  padding: 35px 20px;
   border-radius: 24px;
   z-index: 30;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 388px;
+}
+
+.modal .close{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  font-size: 17px;
 }
 
 .signature_modal {

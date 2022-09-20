@@ -84,7 +84,7 @@ const NumberOTP = (props) => {
           // alert("OTP has expired please SignUp again.");
         } else {
           seterrorMsg("Something went wrong");
-          props.toggleModal();
+          // props.toggleModal();
         }
       }
       reset();
@@ -93,7 +93,7 @@ const NumberOTP = (props) => {
       // console.log(error.response.data.message)
       console.log(error);
       seterrorMsg(error.response.data.message);
-      props.toggleModal();
+      // props.toggleModal();
       setisOtpErrorMSgVisible(true);
       setOtpCount((OtpCount) => OtpCount + 1);
       // setisLoading(false);
@@ -104,7 +104,7 @@ const NumberOTP = (props) => {
   // Invalid PIN 1/3 :
   const resendOtp = async () => {
     try {
-      setisOtpErrorMSgVisible(true);
+      // setisOtpErrorMSgVisible(true);
       setCounter(10);
       // setotpErrorMSg(" Your account will get temporarily blocked after 3 wrong attempts.")
       // setOtpCount((OtpCount) => OtpCount + 1);
@@ -122,12 +122,12 @@ const NumberOTP = (props) => {
         // props.updatePhoneOtpValidation(true);
       } else {
         seterrorMsg("Something went wrong");
-        props.toggleModal();
+        // props.toggleModal();
       }
       reset();
     } catch (error) {
       seterrorMsg(error.response.data.message);
-      props.toggleModal();
+      // props.toggleModal();
       console.log(error);
       reset();
     }
@@ -202,6 +202,7 @@ const NumberOTP = (props) => {
   if (OtpCount >= 3) {
     router.reload(window.location.pathname);
   }
+  console.log(errors)
   return (
     <>
       {isLoading ? (
@@ -381,22 +382,22 @@ const NumberOTP = (props) => {
                 </div>
               </div>
               {isOtpErrorMSgVisible && (
-                <div className="row otpTimerResend">
-                  Invalid PIN {OtpCount}/3 : Your account will get temporarily
+                <div className="otpTimerResend errorMsgOtp">
+                  <span className="attempts">Invalid PIN {OtpCount}/3</span> : Your account will get temporarily
                   blocked after 3 wrong attempts.
-                </div>
+              </div>
               )}
               <ButtonUI type={"submit"} id="btn">
                 Verify OTP
               </ButtonUI>
             </div> 
           </form>
-          {showModal === true ? (
+          {/* {showModal === true ? (
             <Modal onClick={toggleModal}>
               <p>{errorMsg}</p>
               <ButtonUI onClick={toggleModal}>OK</ButtonUI>
             </Modal>
-          ) : null}
+          ) : null} */}
         </>
       )}
     </>

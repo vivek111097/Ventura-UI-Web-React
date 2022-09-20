@@ -92,9 +92,7 @@ a {
   flex-wrap: wrap;
 }
 .col-6 {
-  -ms-flex: 0 0 50%;
-  flex: 0 0 50%;
-  max-width: 50%;
+  width: 50%;
 }
 .col-auto {
   -ms-flex: 0 0 auto;
@@ -123,6 +121,7 @@ a {
   flex: 0 0 16.666667%;
   max-width: 16.666667%;
 }
+
 /* Custom Grid End */
 
 /* Custom Button Input Start */
@@ -158,75 +157,85 @@ a {
 }
 /* Custom Button Input End */
 
-
 /* Custom Input Label */
-.form-label{
+.form-label {
   font-size: 12px;
   line-height: 15.12px;
-  color: #6B6874;
+  color: #6b6874;
   margin-bottom: 8px;
   display: block;
 }
 
 /* Datepicker start */
 
-.datepicker .react-datepicker{
-  border: 1px solid #E0DFE7;
-  box-shadow: 0px 4px 8px -2px #2D2B4029;
+.datepicker .react-datepicker {
+  border: 1px solid #e0dfe7;
+  box-shadow: 0px 4px 8px -2px #2d2b4029;
   border-radius: 12px;
   overflow: hidden;
 }
 
-.datepicker .react-datepicker__header{
+.datepicker .react-datepicker__header {
   padding: 20px 0;
   background-color: #fff;
   border-bottom: 0;
 }
 
-.datepicker .react-datepicker__year-read-view--down-arrow, .datepicker .react-datepicker__month-read-view--down-arrow, .datepicker .react-datepicker__month-year-read-view--down-arrow, .datepicker .react-datepicker__navigation-icon::before{
+.datepicker .react-datepicker__year-read-view--down-arrow,
+.datepicker .react-datepicker__month-read-view--down-arrow,
+.datepicker .react-datepicker__month-year-read-view--down-arrow,
+.datepicker .react-datepicker__navigation-icon::before {
   border-width: 2px 2px 0 0;
-  border-color: #B0ADBE;
-  height: 5px!important;
+  border-color: #b0adbe;
+  height: 5px !important;
   top: 17px;
   width: 5px;
 }
 
-.datepicker .react-datepicker__current-month, .datepicker .react-datepicker-time__header, .datepicker .react-datepicker-year-header{
+.datepicker .react-datepicker__current-month,
+.datepicker .react-datepicker-time__header,
+.datepicker .react-datepicker-year-header {
   display: none;
 }
 
-.datepicker .react-datepicker__month-read-view--selected-month, .datepicker .react-datepicker__year-read-view--selected-year{
+.datepicker .react-datepicker__month-read-view--selected-month,
+.datepicker .react-datepicker__year-read-view--selected-year {
   margin-bottom: 22px;
-  color: #FF844B;
+  color: #ff844b;
   font-size: 16px;
   font-weight: 600;
   display: inline-block;
 }
 
-.datepicker .react-datepicker__day-name{
-  color: #B0ADBE;
+.datepicker .react-datepicker__day-name {
+  color: #b0adbe;
   margin: 0 8px 0;
 }
 
-.datepicker .react-datepicker__day-name, .datepicker .react-datepicker__day, .datepicker .react-datepicker__time-name{
-  width: 36px;;
-  height: 30px;;
+.datepicker .react-datepicker__day-name,
+.datepicker .react-datepicker__day,
+.datepicker .react-datepicker__time-name {
+  width: 36px;
+  height: 30px;
   line-height: 2rem;
-  
 }
 
-.datepicker .react-datepicker__day, .datepicker .react-datepicker__time-name{
+.datepicker .react-datepicker__day,
+.datepicker .react-datepicker__time-name {
   margin: 0 8px 16px;
 }
 
-.datepicker .react-datepicker__day--keyboard-selected, .datepicker .react-datepicker__month-text--keyboard-selected, .datepicker .react-datepicker__quarter-text--keyboard-selected, .datepicker .react-datepicker__year-text--keyboard-selected,
-.datepicker .react-datepicker__day--selected{
-  background-color: #FF844B;
+.datepicker .react-datepicker__day--keyboard-selected,
+.datepicker .react-datepicker__month-text--keyboard-selected,
+.datepicker .react-datepicker__quarter-text--keyboard-selected,
+.datepicker .react-datepicker__year-text--keyboard-selected,
+.datepicker .react-datepicker__day--selected {
+  background-color: #ff844b;
 }
 
-.datepicker .react-datepicker__month-read-view--down-arrow, .datepicker .react-datepicker__year-read-view--down-arrow{
+.datepicker .react-datepicker__month-read-view--down-arrow,
+.datepicker .react-datepicker__year-read-view--down-arrow {
   display: none;
-
 }
 
 /* Datepicker end */
@@ -479,7 +488,6 @@ ul.slick-dots {
   position: relative;
   z-index: 1;
   padding: 0 15px;
-  
 }
 .ContainerBG .containerMD {
   width: 100%;
@@ -500,7 +508,7 @@ ul.slick-dots {
 /*end*/
 .horizontal_slider {
   width: 100%;
-  height:26px
+  height: 26px;
 }
 
 .example_thumb {
@@ -510,10 +518,10 @@ ul.slick-dots {
   color: red;
   cursor: pointer;
   box-sizing: border-box;
-  border: 1px solid #E0DFE7;
+  border: 1px solid #e0dfe7;
   box-shadow: 0px 4px 8px -2px rgba(45, 43, 64, 0.16);
   border-radius: 8px;
-  outline:none
+  outline: none;
 }
 
 .example_track {
@@ -521,13 +529,13 @@ ul.slick-dots {
   border-radius: 4px;
 }
 .example_track.example_track-0 {
-  background: #FF844B;
+  background: #ff844b;
 }
 .example_track.example_track-1 {
-  background: #7260E2;
+  background: #7260e2;
 }
 .example_track.example_track-2 {
-  background: #41C977;
+  background: #41c977;
 }
 
 .horizontal_slider .example_track {
@@ -541,13 +549,12 @@ ul.slick-dots {
   height: 24px;
   line-height: 24px;
 }
-.horizontal_slider.disabled{
-  opacity:.4;
+.horizontal_slider.disabled {
+  opacity: 0.4;
 }
-.horizontal_slider.disabled .example_thumb{
+.horizontal_slider.disabled .example_thumb {
   opacity: 0;
 }
-
 
 /* input[type="password"] {
   font-family: "fontello";
@@ -563,7 +570,6 @@ ul.slick-dots {
   letter-spacing: 2px;
 } */
 
-
 /*tab css*/
 .content {
   display: none;
@@ -573,7 +579,7 @@ ul.slick-dots {
   display: flex;
   flex-flow: column;
 }
-.tabs{
+.tabs {
   width: 194px;
   align-items: center;
   justify-content: center;
@@ -586,19 +592,88 @@ ul.slick-dots {
   line-height: 20px;
   padding: 10px;
 }
-.activetabs{
-  background: #7260E2;
+.activetabs {
+  background: #7260e2;
   border-radius: 8px;
   color: #ffffff;
   box-shadow: none;
-
 }
 /**/
-.textCenter{
-  text-align: center!important;
+.textCenter {
+  text-align: center !important;
 }
-.error{
-  color:#f00!important;
+.error {
+  color: #f00 !important;
+}
+
+/* Radio Button tabs stylings */
+.radio-group {
+  display: inline-block;
+}
+.radio-group input[type="radio"] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+
+.radio-group label {
+  padding: 16px 20px;
+  gap: 10px;
+  width: 188px;
+  background: #f8f8f8;
+  border: 1px solid #e0dfe7;
+  border-radius: 12px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: normal;
+  margin-bottom: 12px;
+}
+
+.radio-group:nth-child(odd) {
+  margin-right: 12px;
+}
+
+.radio-group input[type="radio"]:checked + label {
+  color: white;
+  background: #191442;
+}
+
+.radio-group label + input[type="radio"] + label {
+  border-left: solid 2px gray;
+}
+.radioGroupMain {
+  margin-bottom: 32px;
+}
+
+/* Radio Button tabs stylings End*/
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Responsive code */
+@media (max-width: 767px) {
+  .col-6 {
+    width: 100%;
+  }
+  .slick-dots li {
+    margin: 0 4px;
+  }
+}
+@media (min-width: 768px) {
+}
+@media (min-width: 992px) {
+}
+@media (min-width: 1200px) {
 }
 
 /* OTP Error msg */

@@ -1,48 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import React, { useEffect, useState } from "react";
+import AxiosInstance from "../../../../Api/Axios/axios";
+import IncomeRagnge from "./IncomeRange.component";
 
 const Occupation = () => {
-
-    const [occupationlist, setoccupationlist] = useState([])
-
-    const getOccupationList = async () => {
-      console.log("getting list")
-        try {
-          const maritalStatus = await axios
-            .get(
-              `https://kyc-stage.ventura1.com/onboarding/v1/signup/static/user/occupations`,
-    
-              {
-                headers: {
-                  "Access-Control-Allow-Origin": "*",
-                  "Content-Type": "application/x-www-form-urlencoded",
-                  "X-Ventura-Session-Id":"1e1f88c2-e254-40b4-adf4-b2eff154b638"
-                },
-              }
-            )
-           const response= await occupationlist.data();
-              setoccupationlist([...response])
-           console.log(response)
-        } catch (error) {
-          console.log(error);
+  const [occupationList, setOccupationList] = useState([]);
+  const getIncomeRange = async () => {
+    try {
+      const getData = await AxiosInstance.get(
+        "/signup/static/user/occupations",
+        {
+          headers: {
+            session_id: "2395a076-e0df-4827-adfd-912b8b46e40a",
+          },
         }
-      };
-     
-      const displayOccupationList=occupationlist.map((item,index)=>{
-        console.log(item)
-      })
-      
-      useEffect(() => {
-        getOccupationList();
-      }, []);
+      );
+      const response = await getData.data;
+      setOccupationList(response.occupations);
+    } catch (error) {
+      console.log("failed");
+    }
+  };
+
+  console.log(occupationList);
+  useEffect(() => {
+    getIncomeRange();
+  }, []);
+
+  function handleChange(event) {
+    console.log(event.target.value);
+  }
   return (
     <>
-{occupationlist.length===0? <p>List Loading</p>: displayOccupationList }
-      <p>this is occupation</p>
-      <p>this is occupation</p>
+      <h2 className="title">Your occupation</h2>
+      <p className="subTitle">
+        These details are required by SEBI to open your demat account.
+      </p>
+      {occupationList.map((list, index) => {
+        return (
+          <div className="radio-group" key={list.occupation_detail_id_incr}>
+            <input
+              id={list.occupation_type}
+              name="hungry"
+              type="radio"
+              value={list.occupation_type}
+              onChange={handleChange}
+            />
+            <label htmlFor={list.occupation_type}>{list.occupation_type}</label>
+          </div>
+        );
+      })}
     </>
   );
-}
+};
 
 export default Occupation;

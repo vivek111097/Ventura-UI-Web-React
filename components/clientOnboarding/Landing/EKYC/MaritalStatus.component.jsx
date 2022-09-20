@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import AxiosInstance from "../../../../Api/Axios/axios";
+
 const MaritalStatus = () => {
-    const [MaritalList, setMaritalList] = useState([])
+  const [MaritalList, setMaritalList] = useState([]);
   const getMaritalStatus = async () => {
     try {
-      const getData = await AxiosInstance.post("/signup/user/marital-status", {
-        ...APIData,
+      const getData = await AxiosInstance.get("/signup/user/marital-status", {
+        headers: {
+          session_id: "2395a076-e0df-4827-adfd-912b8b46e40a",
+        },
       });
-      
-       const response= await getData.data();
-       console.log(response)
+      const response = await getData.data;
+      setMaritalList(response.marital_list);
+      console.log(response);
     } catch (error) {
-      console.log(error);
+      alert(error.response.data.message);
     }
   };
 
@@ -21,14 +23,32 @@ const MaritalStatus = () => {
   useEffect(() => {
     getMaritalStatus();
   }, []);
-  return <>
-    <p>marital status</p>
-    <p>marital status</p>
-    <div className="selection">
-    <input id="burger" name="hungry" type="radio" />
-    <label htmlFor="burger">Burger + Chips</label>
-  </div>
-  </>;
+
+  function handleChange(event) {
+    console.log(event.target.value);
+  }
+  return (
+    <>
+      <h2 className="title">Your marital status</h2>
+      <p className="subTitle">
+        These details are required by SEBI to open your demat account.
+      </p>
+      {MaritalList.map((list, index) => {
+        return (
+          <div className="radio-group" key={index}>
+            <input
+              id={list}
+              name="hungry"
+              type="radio"
+              value={list}
+              onChange={handleChange}
+            />
+            <label htmlFor={list}>{list}</label>
+          </div>
+        );
+      })}
+    </>
+  );
 };
 
 export default MaritalStatus;

@@ -113,7 +113,7 @@ const MailInput = (props) => {
 
             {/* Submit BUtton */}
             <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
-              VerifyEmail
+              Verify Email
             </ButtonUI>
             <div className={styles.or}>OR</div>
           </form>

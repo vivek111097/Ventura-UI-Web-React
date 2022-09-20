@@ -65,11 +65,11 @@ const MailOTP = (props) => {
       console.log(res);
       if (res) {
         if (getData.status == 200) {
+          router.push("/co/welcome");
           setisLoading(false);
           props.updateEmailOtpValidation(true);
-          props.updatePhoneOtpValidation(false);
-          router.push("/co/welcome");
-        }
+          // props.updatePhoneOtpValidation(false);
+        } 
       } else {
         seterrorMsg("Something went wrong");
         props.toggleModal();
@@ -91,7 +91,7 @@ const MailOTP = (props) => {
 
   const resendOtp = async () => {
     try {
-      setisOtpErrorMSgVisible(true);
+      // setisOtpErrorMSgVisible(true);
       setCounter(10);
       const APIData = {
         email: props.email,
@@ -177,8 +177,8 @@ const MailOTP = (props) => {
         "otpSixth",
         clipData[5]
       ); /*for (let i = index; i < inputs.length; i++) {
-        inputs[i].value = clipData.shift();
-      }*/
+��������inputs[i].value = clipData.shift();
+������}*/
     }
 
  
@@ -204,7 +204,7 @@ const MailOTP = (props) => {
         <>
           {/* OTP Input Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="container animate__animated animate__bounce">
+            <div className="container ">
               <h2 className="title">Enter OTP here</h2>
               <p className="subTitle">
                 We have sent an OTP to your email ID {props.email}

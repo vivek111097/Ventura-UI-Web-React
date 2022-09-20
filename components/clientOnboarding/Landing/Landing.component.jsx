@@ -13,7 +13,7 @@ const Landing = () => {
     <>
       <Head>
         <title>Ventura</title>
-        <link rel="shortcut icon" href="/images/fevicon.png" />
+        <link rel="shortcut icon" href="/images/fevicon.png" /> 
       </Head>
       {/* <Loader /> */}
       {/* <WelcomComponent/> */}

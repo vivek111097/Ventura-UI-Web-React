@@ -18,8 +18,10 @@ export default class SimpleSlider extends Component {
       autoplaySpeed: 4000,
       nextArrow: false,
       prevArrow: false,
+      arrows:false,
       // adaptiveHeight:true,
     };
+    
     return (
       <>
         <div className={styles.landingCarousel}>
