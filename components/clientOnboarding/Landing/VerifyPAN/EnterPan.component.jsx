@@ -66,12 +66,11 @@ const EnterPan = (props) => {
         // Pan verification attempts exceeds the limit
         // receiving response from backend
         const res = await getData.data;
-        console.log(res)
+        console.log(res);
         setisLoading(false);
         if (getData.status == 200) {
           console.log(res);
           if (res.message == "Pan verification attempts exceeds the limit") {
-            
             props.toggleModal();
           }
 
@@ -145,32 +144,38 @@ const EnterPan = (props) => {
             </p>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* PAN Number Input */}
-              <input
-                type="text"
-                className="animate__animated form-control"
-                id="pan"
-                placeholder="Enter PAN"
-                maxLength={10}
-                {...register("pan", {
-                  // pattern: {
-                  //   value: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/,
-                  //   message: "Invalid PAN Number",
-                  // },
-                  required: "PAN Number is required",
-                  maxLength: {
-                    value: 10,
-                    message: "Maximum 10 number",
-                  },
-                })}
-                onKeyUp={(e) => {
-                  {
-                    e.target.value.length == 10
-                      ? setisDisabled(false)
-                      : setisDisabled(true);
-                  }
-                  setValue("pan", e.target.value.toLocaleUpperCase());
-                }}
-              />
+              <div className="inputTooltip animate__animated">
+                <div className="tooltip hide">
+                  <div className="icon-Access-denied "></div>  
+                  <span className="tooltiptext tooltip-top">PAN details invalid!</span>
+                </div>
+                <input
+                  type="text"
+                  className=" form-control"
+                  id="pan"
+                  placeholder="Enter PAN"
+                  maxLength={10}
+                  {...register("pan", {
+                    // pattern: {
+                    //   value: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/,
+                    //   message: "Invalid PAN Number",
+                    // },
+                    required: "PAN Number is required",
+                    maxLength: {
+                      value: 10,
+                      message: "Maximum 10 number",
+                    },
+                  })}
+                  onKeyUp={(e) => {
+                    {
+                      e.target.value.length == 10
+                        ? setisDisabled(false)
+                        : setisDisabled(true);
+                    }
+                    setValue("pan", e.target.value.toLocaleUpperCase());
+                  }}
+                />
+              </div>
 
               <div className="animate__animated checkBox duelLine">
                 <input

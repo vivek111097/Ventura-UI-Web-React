@@ -43,20 +43,39 @@ const AddNominee = (props) => {
       );
       setNominee_Relationship(data.relationships);
     };
+    // const allreadyExistedNomineeData = async () => {
+    //   const { data } = await axios.get("http://localhost:3001/nominee");
+    //   console.log(data);
+    //   console.log(data.nominee_data.length);
+    // };
     getRelationships();
+    // allreadyExistedNomineeData();
     let lineItem = document.querySelectorAll(".animate__animated");
     lineItem.forEach((item, index) => {
       item.className += " animate__fadeInUp animate__delay_" + index;
     });
   }, [props.session_id]);
 
-  const NomineeSchema = yup.object().shape({
+  let validationObject = {
     relationship: yup.string().required(),
     nominee_name: yup.string().required(),
     dob: yup.string().required(),
     nominee_address: yup.string().required(),
     pan_or_aadhar: yup.string().required(),
-  });
+  };
+  const guar_validation = {
+    guard_relationship: yup.string().required(),
+    guard_name: yup.string().required(),
+    guard_dob: yup.string().required(),
+    guard_pan_or_aadhar: yup.string().required(),
+    guard_address: yup.string().required(),
+  };
+  if (IsMinor === "yes") {
+    validationObject = Object.assign(validationObject, guar_validation);
+  } else {
+    validationObject = Object.assign(validationObject);
+  }
+  const NomineeSchema = yup.object().shape(validationObject);
 
   const {
     register,
@@ -66,13 +85,14 @@ const AddNominee = (props) => {
     formState: { errors, isValid, isDirty },
     trigger,
   } = useForm({
+    mode: "onChange",
     defaultValues: {
-      relationship: "",
+      relationship: "Select Relationship",
       nominee_name: "",
       dob: null,
       nominee_address: "",
       pan_or_aadhar: "",
-      guard_relationship: "",
+      guard_relationship: "Select Relationship",
       guard_name: "",
       guard_dob: null,
       guard_pan_or_aadhar: "",
@@ -80,22 +100,20 @@ const AddNominee = (props) => {
     },
     resolver: yupResolver(NomineeSchema),
   });
+
   const onSubmit = async (data) => {
     try {
-      // console.log(data)
-      // const converted_date= new Date(data.dob).toLocaleDateString();
-      // console.log(converted_date)
-      
       let nominee_data = {
         name: data.nominee_name,
         relation: data.relationship,
-        birthdate: new Date(data.dob).toLocaleDateString(),
+        // birthdate: new Date(data.dob).toLocaleDateString(),
+        // birthdate: new Date().toLocaleDateString("es-CL").replace(/-/g, "/").toString(),
+        birthdate: "1/2/2022",
         address: data.nominee_address,
         identification_type: "pan",
         identification_no: data.pan_or_aadhar,
         nominee_minor: IsMinor,
         zipcode: "110011",
-
         nominee_share: 50,
       };
       let Guard_data;
@@ -103,7 +121,8 @@ const AddNominee = (props) => {
         Guard_data = {
           nominee_guardian_details: {
             guardian_identification_no: data.guard_pan_or_aadhar,
-            guardian_dob: data.guard_dob.toLocaleDateString(),
+            // guardian_dob: data.guard_dob.toLocaleDateString(),
+            guardian_dob: "1/2/1956",
             guardian_identification_type: "pan",
             guardian_name: data.guard_name,
             guardian_address: data.guard_address,
@@ -118,14 +137,13 @@ const AddNominee = (props) => {
       }
       const responceObj = Object.assign(nominee_data, Guard_data);
 
-      console.log(nominee_data);
       const PostData = {
         phone: 8369747962,
         nominee_data: [responceObj],
       };
       console.log(PostData);
 
-      const resp =await axios.post(
+      const resp = await axios.post(
         "https://kyc-stage.ventura1.com/onboarding/v2/signup/user/nominee/add",
         { ...PostData },
         {
@@ -148,11 +166,9 @@ const AddNominee = (props) => {
   //  checkAge metod accepts date of birth and Type
   //  for Nominee 'N' and Guardian 'G'
   const checkAge = (date, type) => {
-    console.log(date);
     let dob = date.getFullYear();
     let today = new Date().getFullYear();
-    console.log(dob);
-    console.log(today);
+
     if (type == "N") {
       if (today - dob < 18) {
         setShowGuardianForm(true);
@@ -216,13 +232,13 @@ const AddNominee = (props) => {
             {...register("pan_or_aadhar", {
               required: "PAN Number or Aadhaar Number is required",
               // validate: validatePANOrAddhar,
-             
             })}
             onKeyUp={(e) => {
-              const msg= validatePANOrAddhar(e.target.value);
-              setSelectedDocument(msg.type)
-              setValue("pan_or_aadhar",e.target.value.toLocaleUpperCase())
+              const msg = validatePANOrAddhar(e.target.value);
+              setSelectedDocument(msg.type);
               trigger("pan_or_aadhar");
+              setValue("pan_or_aadhar",e.target.value.replace(/[^a-z0-9]/gi, "").toLocaleUpperCase()
+              );
             }}
           />
         </div>
@@ -231,7 +247,7 @@ const AddNominee = (props) => {
             Nominee's Address
           </label>
           <textarea
-            style={{ height: 60,resize:"none" }}
+            style={{ height: 60, resize: "none" }}
             id="nominee_address"
             className="form-control"
             {...register("nominee_address")}
@@ -333,16 +349,18 @@ const AddNominee = (props) => {
         </div>
 
         {/* Guardian's detail required in case of nominee is minor  */}
-        {showGuardianForm && (
+        {showGuardianForm ? (
           <div className={style.guardContainer}>
             <label className="form-label" htmlFor="nomineeName">
               Name of nominee guardian
             </label>
-            <input
-              id="guardianName"
-              className="form-control"
-              {...register("guard_name")}
-            />
+            {showGuardianForm && (
+              <input
+                id="guardianName"
+                className="form-control"
+                {...register("guard_name")}
+              />
+            )}
 
             <label className="form-label" htmlFor="relationshipWithNominee">
               Guardian's relationship with nominee
@@ -351,6 +369,7 @@ const AddNominee = (props) => {
               className="form-control"
               {...register("guard_relationship")}
             >
+              <option disabled>Select Relationship</option>
               {nominee_relationship.map((relation, index) => (
                 <option key={index} value={relation}>
                   {relation}
@@ -416,10 +435,13 @@ const AddNominee = (props) => {
               })}
               onKeyUp={(e) => {
                 trigger("guard_pan_or_aadhar");
-                const msg= validatePANOrAddhar(e.target.value);
-              setSelectedDocument(msg.type)
-              setValue("guard_pan_or_aadhar",e.target.value.toLocaleUpperCase())
-              trigger("guard_pan_or_aadhar");
+                const msg = validatePANOrAddhar(e.target.value);
+                setSelectedDocument(msg.type);
+                setValue(
+                  "guard_pan_or_aadhar",
+                  e.target.value.toLocaleUpperCase()
+                );
+                trigger("guard_pan_or_aadhar");
               }}
             />
 
@@ -433,13 +455,11 @@ const AddNominee = (props) => {
               {...register("guard_address")}
             />
           </div>
-        )}
+        ) : null}
         {/* disabled untile complate form validation */}
+
         <div className="animate__animated">
-          <ButtonUI
-            type="submit"
-            disabled={!isDirty || !isValid}
-          >
+          <ButtonUI type="submit" disabled={!isDirty || !isValid}>
             Add Nominee
           </ButtonUI>
         </div>
@@ -449,7 +469,6 @@ const AddNominee = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     session_id: state.LandingReducer.user.session_id,
   };

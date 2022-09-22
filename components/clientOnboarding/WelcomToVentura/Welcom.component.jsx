@@ -24,7 +24,7 @@ const WelcomComponent = () => {
         </div>
 
         <div className="containerMini">
-          <h2 className="animate__animated title">Welcome to Ventura</h2>
+          <h2 className="animate__animated title">Here’s what’s next</h2>
           <div className={styles.stepsWrap}>
             {/* <div className={`animate__animated ${styles.Completedsteps}`}> */}
             <div className={`animate__animated ${styles.steps}`}>
