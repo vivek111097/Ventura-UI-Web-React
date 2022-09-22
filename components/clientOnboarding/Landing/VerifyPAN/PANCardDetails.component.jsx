@@ -5,9 +5,6 @@ import ButtonUI from "../../../ui/Button.component";
 import { connect } from "react-redux";
 import Link from "next/link";
 const PANCardDetails = (props) => {
-  // console.log(props)
-  // const {pan}=props
-  // console.log(props.pan)
   return (
     <>
       <Header />

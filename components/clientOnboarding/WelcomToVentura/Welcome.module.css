@@ -79,6 +79,7 @@
 .Reminder{
   text-align: center;
   margin-top: 16px;
+  padding-bottom: 20px;
 }
 .Reminder .text{
   font-size: 14px;

@@ -26,20 +26,20 @@ const WelcomComponent = () => {
         <div className="containerMini">
           <h2 className="animate__animated title">Welcome to Ventura</h2>
           <div className={styles.stepsWrap}>
-            <div className={`animate__animated ${styles.Completedsteps}`}>
+            {/* <div className={`animate__animated ${styles.Completedsteps}`}> */}
+            <div className={`animate__animated ${styles.steps}`}>
               <div className={styles.stepsicon}>
-                <span className='icon-react'></span>
+                <span className='icon-Complete-your-e-KYC'></span>
               </div>
               <div>
-                <h3 className={styles.Ca_Subtitle}>Complete e-KYC</h3>
+                <h3 className={styles.Ca_Subtitle}>Complete your e-KYC</h3>
                 <p className={styles.Ca_Subtitletext}>Keep your Aadhaar and PAN card handy</p>
               </div>
             </div>
 
-            
             <div className={`animate__animated ${styles.steps}`}>
               <div className={styles.stepsicon}>
-                <span className='icon-react'></span>
+                <span className='icon-Set-up-your-profile'></span>
               </div>
               <div>
                 <h3 className={styles.Ca_Subtitle}>Set up your profile</h3>
@@ -49,7 +49,7 @@ const WelcomComponent = () => {
 
             <div className={`animate__animated ${styles.steps}`}>
               <div className={styles.stepsicon}>
-                <span className='icon-react'></span>
+                <span className='icon-Link-your-bank-account'></span>
               </div>
               <div>
                 <h3 className={styles.Ca_Subtitle}>Link your bank a/c</h3>
@@ -59,7 +59,7 @@ const WelcomComponent = () => {
 
             <div className={`animate__animated ${styles.steps}`}>
               <div className={styles.stepsicon}>
-                <span className='icon-react'></span>
+                <span className='icon-Confirm-its-you'></span>
               </div>
               <div>
                 <h3 className={styles.Ca_Subtitle}>Confirm it&apos;s you</h3>
@@ -69,7 +69,7 @@ const WelcomComponent = () => {
 
             <div className={`animate__animated ${styles.steps}`}>
               <div className={styles.stepsicon}>
-                <span className='icon-react'></span>
+                <span className='icon-eSign-and-Login'></span>
               </div>
               <div>
                 <h3 className={styles.Ca_Subtitle}>eSign and Login</h3>
@@ -83,7 +83,7 @@ const WelcomComponent = () => {
           
           <div className={`animate__animated ${styles.Reminder}`}>
             <p className={styles.text}>Don&apos;t have everything ready?</p>
-            {/* <Link href="/"><a className={styles.link}>Set a reminder</a></Link> */}
+            <Link href="/"><a className={styles.link}>Set a reminder</a></Link>
           </div>
            
         </div>

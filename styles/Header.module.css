@@ -27,7 +27,7 @@
     height: 40px;
     width: 40px;
     border: 1px solid #E0DFE7;
-    color: #000;
+    color: #0C0A19;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -35,8 +35,9 @@
     align-items: center;
     border-radius: 8px;
     margin-right: 40px;
-    font-size: 25px;
+    font-size:11px;
     background-color: #ffffff;
+    transform: rotate(180deg);
 }
 
 .SandTimer{

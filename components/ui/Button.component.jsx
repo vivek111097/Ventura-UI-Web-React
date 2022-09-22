@@ -5,10 +5,10 @@ import React from "react";
 
 // Re-useable button component
 const ButtonUI = (props) => {
-  const { type, onClick , disabled } = props;
+  const { type, onClick , disabled , btnType} = props;
   return (
     <>
-      <button className="btn" type={type || "button"} onClick={onClick || void(0)} disabled={disabled || false}>
+      <button className={[`btn`, [btnType]].join(' ')} type={type || "button"} onClick={onClick || void(0)} disabled={disabled || false}>
         {props.children}
       </button>
     </>

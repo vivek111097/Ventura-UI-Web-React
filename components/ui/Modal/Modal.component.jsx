@@ -16,7 +16,7 @@ const ModalOverlay = (props) => {
   return (
     <div
        className={[styles.modal, styles[props.ModalType]].join(' ')}>
-      <div className={styles.close}  onClick={hideBackdrop}>x</div>
+      <div className={styles.close}  onClick={hideBackdrop}><span className="icon-Close"></span></div>
       <div className={styles.content}>{props.children}</div>
     </div>
   );

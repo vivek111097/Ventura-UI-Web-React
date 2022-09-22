@@ -5,7 +5,7 @@
 .Sliderwrap{
   padding:0 15px;
 }
-
+.txtarea { resize: none; }
 .SliderNumWrap{
   display: flex;
   padding: 0;
@@ -31,6 +31,21 @@
   list-style: none;
   flex: 1;
 }
+.NomineesWrap .Nominees{
+  text-align: center;
+}
+
+.NomineesWrap .Nominees:nth-child(3){
+  text-align: right!important;
+}
+.NomineesWrap .Nominees:last-child{
+  text-align: right;
+}
+.NomineesWrap .Nominees:first-child{
+  text-align: left;
+}
+
+
 .NomineesWrap  .PerOrange{
   font-style: normal;
   font-weight: 700;
@@ -86,4 +101,8 @@
 .SliderTip strong{
   font-size: 12px;
   line-height: 16px;
+}
+.inputWrap{
+  display: flex;
+  flex-flow: column;
 }

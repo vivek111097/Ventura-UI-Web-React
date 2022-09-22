@@ -8,29 +8,81 @@ const IndividualPANRegex = new RegExp(
 );
 
 export const validatePAN = (pan) => {
-  console.log(pan);
   // Checking If PAN is Valid or Not
   if (PANRegex.test(pan)) {
     // Checking If Individual PAN is Valid or Not
     if (IndividualPANRegex.test(pan)) {
-      return { validated: true, msg: "valid Pan" };
+      return {
+        validated: true,
+        responceType: "success",
+        icon: false,
+        msg: "valid Pan",
+      };
     } else {
       // return error message if string is not valid
-      return { validated: false, msg: "NRI demat account" };
+      return {
+        validated: false,
+        responceType: "error",
+        icon: false,
+        buttonText: "Contact us",
+        content:
+          "Currently NRI customers can’t open an account online. To know more about Ventura’s NRI offerings and policies, please contact our team.",
+        msg: "NRI demat account",
+      };
     }
   } else {
-    return { validated: false, msg: "Invalid Pan" };
+    return {
+      validated: false,
+      responceType: "error",
+      icon: true,
+      content: "Please try again or enter another PAN.",
+      buttonText: "Enter PAN",
+      msg: "Invalid Pan",
+    };
   }
 };
 
-export const validatePANOrAddhar = (pan) => {
-  console.log(pan);
+export const validatePANOrAddhar = (pan_Or_Aadhar) => {
+  console.log(pan_Or_Aadhar);
 
-  if (Number.isInteger(parseInt(pan[0]))) {
+  if (Number.isInteger(parseInt(pan_Or_Aadhar[0]))) {
     console.log("Aaadhar number");
+    if (pan_Or_Aadhar.length < 12) {
+      console.log("Invalid Aaadhar number");
+      return{
+        type:"A",
+        error:"Invalid "
+      }
+     
+    }else{
+      return{
+        type:"A",
+        error:"Invalid "
+      }
+    }
+
   } else {
-    const validation_msg = validatePAN(pan);
-    console.log("PAN Number");
-    return validation_msg;
+    if (PANRegex.test(pan_Or_Aadhar)) {
+      // Checking If Individual PAN is Valid or Not
+      if (IndividualPANRegex.test(pan_Or_Aadhar)) {
+        console.log("Valid PAN");
+        return{
+          type:"P",
+          error:"Valid Pan "
+        }
+      } else {
+        // return error message if string is not valid
+        console.log("NRI");
+        return{
+          type:"P",
+          error:"Invalid "
+        }
+      }
+    } else {
+      return{
+        type:"P",
+        error:"Valid Pan "
+      }
+    }
   }
 };

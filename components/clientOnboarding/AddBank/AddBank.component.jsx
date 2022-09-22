@@ -35,75 +35,92 @@ const AddBank = () => {
       setBankData([]);
     }
   };
+  useEffect(() => {
+    var lineItem = document.querySelectorAll(".animate__animated");
+    lineItem.forEach((item, index) => {
+      item.className += " animate__fadeInUp animate__delay_" + index;
+    });
+  }, []);
   return (
-    <div className={styles.formContainer}>
-      <p className={styles.add_bank_account}>Add Bank Account</p>
-      <p className={styles.note}>Make your transactions more convenient.</p>
-      <div className={styles.success_info}>
-        <div>
-          <img src="/images/strongbox.svg" alt="" />
+    <section className="ContainerBG">
+        <div className="bgtop">
+            <img src="/images/welcomebgtop.png" alt='lines'/>
         </div>
-        <div>
-          Your bank details are secured and will not be shared with anyone
+        <div className="bgbottom">
+            <img src="/images/welcomebgbottom.png" alt='lines'/>
         </div>
-      </div>
-      <div className={styles.search_content}>
-        <input
-          className="form-control"
-          placeholder="Search your bank"
-          type="text"
-          onKeyUp={(e) => getBankData(e.target.value)}
-        />
-        <img className={styles.search_icon} src="/images/search.svg" alt="" />
-      </div>
-      <p className={styles.search_result}>search Result</p>
-      <div className={styles.banklist }>
-      <ul >
-        {bankData.map((bank, i) => (
-          <li className={styles.banklistItem} key={i}>{bank.name}</li>
-        ))}
-      </ul>
-      </div>
-      {/* 
-      <div className={styles.banks}>
-        <div className={styles.popular_bank}>
-          <ul>
-            <li>
-            <img src="/images/icici.svg" alt="" />
-            <p>ICICI</p>
-            </li>
 
-            <li>
-            <img src="/images/icici.svg" alt="" />
-            <p>ICICI</p>
-            </li>
-
-
-            <li>
-            <img src="/images/icici.svg" alt="" />
-            <p>ICICI</p>
-            </li>
-
-            <li>
-            <img src="/images/icici.svg" alt="" />
-            <p>ICICI</p>
-            </li>
+        <div className="containerMD">
+          <h2 className="animate__animated title">Add Bank Account</h2>
+          <p className="animate__animated subTitle">Make your transactions more convenient.</p>
+          <div className={`animate__animated ${styles.success_info}`}>
+            <div>
+              <img src="/images/strongbox.svg" alt="" />
+            </div>
+            <div>
+              Your bank details are secured and will not be shared with anyone
+            </div>
+          </div>
+          <div className={`animate__animated ${styles.search_content}`}>
+            <input
+              className="form-control"
+              placeholder="Search your bank"
+              type="text"
+              onKeyUp={(e) => getBankData(e.target.value)}
+            />
+            <img className={styles.search_icon} src="/images/search.svg" alt="" />
+          </div>
+          <p className={`animate__animated ${styles.search_result}`}>search Result</p>
+          <div className={`animate__animated ${styles.banklist}`} >
+          <ul >
+            {bankData.map((bank, i) => (
+              <li className={styles.banklistItem} key={i}>{bank.name}</li>
+            ))}
           </ul>
-        </div>
+          </div>
+          {/* 
+          <div className={styles.banks}>
+            <div className={styles.popular_bank}>
+              <ul>
+                <li>
+                <img src="/images/icici.svg" alt="" />
+                <p>ICICI</p>
+                </li>
 
-        <div className={styles.all_bank}>
-          <ul>
-            <li><img src="/images/icici.svg" alt="" />
-            <p>ICICI</p></li>
-            <li><img src="/images/icici.svg" alt="" />
-            <p>ICICI</p></li>
-            <li><img src="/images/icici.svg" alt="" />
-            <p>ICICI</p></li>
-            
-          </ul>
+                <li>
+                <img src="/images/icici.svg" alt="" />
+                <p>ICICI</p>
+                </li>
+
+
+                <li>
+                <img src="/images/icici.svg" alt="" />
+                <p>ICICI</p>
+                </li>
+
+                <li>
+                <img src="/images/icici.svg" alt="" />
+                <p>ICICI</p>
+                </li>
+              </ul>
+            </div>
+
+            <div className={styles.all_bank}>
+              <ul>
+                <li><img src="/images/icici.svg" alt="" />
+                <p>ICICI</p></li>
+                <li><img src="/images/icici.svg" alt="" />
+                <p>ICICI</p></li>
+                <li><img src="/images/icici.svg" alt="" />
+                <p>ICICI</p></li>
+                
+              </ul>
+            </div>
+          </div> */}
         </div>
-      </div> */}
-    </div>
+        
+    </section>
+    
   );
 };
 

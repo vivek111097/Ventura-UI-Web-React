@@ -16,7 +16,7 @@ const AddSignaturePopup = () =>{
     return(
         <>
         <div className="textCenter">
-            <h2 className="title">Add your signature</h2>
+            <h2 className="title">Add your signature 123</h2>
             <p className="subTitle">Upload an image or use the signature-box to sign</p>
         </div>
         <div className={styles.tabwrap}>

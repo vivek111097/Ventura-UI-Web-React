@@ -13,12 +13,14 @@ const NumberSignUpCard = () => {
         alt="Ventura Logo"
         className={`animate__animated ${styles.logo}`}
       />
-      {/* <h3>Ready to get started?</h3>
+
+      <div className={styles.form_wrap}>
+        {/* <h3>Ready to get started?</h3>
     <p className={styles.subTitle}>
       Enter your number to help us set up your investment account.
     </p> */}
-      <NumberSingUp />
-      {/* <p className={styles.haveAnAccount}>
+        <NumberSingUp />
+        {/* <p className={styles.haveAnAccount}>
       Have an account?
       <a href=""> Login</a>
     </p>
@@ -27,6 +29,8 @@ const NumberSignUpCard = () => {
       <br />
       and <strong>Privacy Policy</strong>.
     </p> */}
+      </div>
+
     </div>
   );
 };

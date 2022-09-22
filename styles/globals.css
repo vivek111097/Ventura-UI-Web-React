@@ -253,30 +253,34 @@ a {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border: none;
+  border: 1px solid transparent;
   padding: 17px 24px;
   font-size: 14px;
   line-height: 1;
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  border-color: #007bff;
   background: #191442;
   border-radius: 12px;
   cursor: pointer;
   width: 100%;
 }
+.btn-outline:not(:disabled), .btn-outline:not([disabled]){
+  background-color: transparent;
+  border: 2px solid #191442;
+  color: #191442
+}
 .btn:hover {
   color: #fff;
-  background-color: #0069d9;
+  background-color: #4e478c;
 }
 .btn:active {
   color: #fff;
-  background-color: #0062cc;
+  background-color: #4e478c;
 }
 .btn:focus {
   color: #fff;
-  background-color: #0069d9;
+  background-color: #4e478c;
   box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
 }
 .btn:disabled,
@@ -290,6 +294,7 @@ a {
   font-weight: 600;
   font-size: 14px;
 }
+
 /* Custom Button Css End */
 
 /* CSS for Custom Check Box  */
@@ -328,7 +333,7 @@ a {
   height: 22px;
   width: 22px;
   border: solid 2px #41c977;
-  top: -1px;
+  top: -2px;
   position: absolute;
   left: 0;
 }
@@ -342,14 +347,13 @@ a {
   content: "";
   display: block;
   position: absolute;
-  top: -1px;
   left: 10px;
   width: 4px;
   height: 10px;
   border: solid #ffffff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
-  top: 5px;
+  top: 3px;
 }
 .checkBox.duelLine label {
   display: inline-block;
@@ -378,7 +382,9 @@ a {
   font-weight: 600;
   margin: 0 0 8px 0;
 }
-
+.center{
+  text-align: center;
+}
 .subTitle {
   color: #6b6874;
   font-size: 16px;
@@ -568,7 +574,7 @@ ul.slick-dots {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: 2px;
-} */
+}  */
 
 /*tab css*/
 .content {
@@ -683,12 +689,14 @@ input[type="number"] {
   padding: 16px 16px 16px 32px;
   border-radius: 12px;
   background: linear-gradient(180deg, #FFF1F0 0%, rgba(255, 241, 240, 0) 100%);
-  position: relative;
+  position: relative;  
+  color: #5C5968;
+  margin-top: 24px;
 }
 
 .attempts{
   font-family: "sorabold";
-  color: #f47a44;
+  color: #FF524B;
 }
 
 .errorMsgOtp::before{
@@ -699,9 +707,29 @@ input[type="number"] {
   left: 16px;
   top: 20px;
   border-radius: 100%;
-  background-color: #f47a44;
+  background-color: #FF524B;
 }
 
 .inputError, .inputError input.otp{
   border-color: #FDA49B;
+}
+
+.margin-b{
+  margin-bottom: 8px;
+}
+@media (min-width: 767px) {
+  .displayXs{
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .ContainerBG .bgtop img,
+  .ContainerBG .bgbottom img {
+    width: 190px;
+  }
+
+  .ContainerBG .containerMini{
+    padding-bottom: 20px;
+  }
+
 }

@@ -86,12 +86,12 @@ const NumberInput = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   var lineItem = document.querySelectorAll(".animate__animated");
-  //   lineItem.forEach((item, index) => {
-  //     item.className += " animate__fadeInUp animate__delay_" + index;
-  //   });
-  // }, []);
+  useEffect(() => {
+    var lineItem = document.querySelectorAll(".animate__animated");
+    lineItem.forEach((item, index) => {
+      item.className += " animate__fadeInUp animate__delay_" + index;
+    });
+  }, []);
 
   return (
     <>
@@ -167,7 +167,10 @@ const NumberInput = (props) => {
           </p>
           {showModal === true ? (
             <Modal onClick={toggleModal}>
-              <p>Some thing went Wrong</p>
+            <div className="center">
+
+<h3 className="title">Some thing went Wrong</h3>
+</div>
             </Modal>
           ) : null}
         </>

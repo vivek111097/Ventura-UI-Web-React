@@ -15,7 +15,11 @@ import InvalidPan from "../../../ui/Popups/PANValidation/InvalidPan";
 const EnterPan = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [isDisabled, setisDisabled] = useState(true);
-  const [iserror, setError] = useState("");
+  const [isError, setError] = useState("");
+  const [responceType, setResponceType] = useState(null);
+  const [icon, setIcon] = useState(false);
+  const [buttonText, setButtonText] = useState("");
+  const [content, setcontent] = useState("");
 
   const {
     register,
@@ -35,6 +39,10 @@ const EnterPan = (props) => {
       if (!errorMsg.validated) {
         setisLoading(false);
         setError(errorMsg.msg);
+        setIcon(errorMsg.icon);
+        setcontent(errorMsg.content);
+        setButtonText(errorMsg.buttonText);
+        setResponceType(errorMsg.responceType);
         props.toggleModal();
       } else {
         const APIData = {
@@ -58,10 +66,12 @@ const EnterPan = (props) => {
         // Pan verification attempts exceeds the limit
         // receiving response from backend
         const res = await getData.data;
+        console.log(res)
         setisLoading(false);
         if (getData.status == 200) {
           console.log(res);
           if (res.message == "Pan verification attempts exceeds the limit") {
+            
             props.toggleModal();
           }
 
@@ -106,8 +116,15 @@ const EnterPan = (props) => {
       <Header />
       {/* PAN Form */}
       {props.showModal && (
-        <Modal ModalType="signature_modal" onClick={props.toggleModal}>
-          <InvalidPan errorMsg={iserror} showModal={props.toggleModal} />
+        <Modal ModalType="panValidation" onClick={props.toggleModal}>
+          <InvalidPan
+            buttonText={buttonText}
+            errorMsg={isError}
+            content={content}
+            icon={icon}
+            responceType={responceType}
+            showModal={props.toggleModal}
+          />
         </Modal>
       )}
       {isLoading === true ? (

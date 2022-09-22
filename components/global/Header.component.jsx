@@ -9,7 +9,9 @@ return (
         <header className={styles.welcomeHead}>
             <div className={styles.welcomeHeadRow}>
                 <Link href={'/'}>
-                    <a className={styles.BackButton}>+</a>
+                    <a className={styles.BackButton}>
+                        <span className='icon-Arrow'></span>
+                    </a>
                 </Link>
                 <Link href={'/'}>
                     <a>

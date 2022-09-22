@@ -15,11 +15,10 @@ import { TOGGLE_MODAL } from "../../../../Redux/modal";
 const NumberOTP = (props) => {
   const { showModal, toggleModal } = props;
   const [isLoading, setisLoading] = useState(false);
-
+  const [isDisabled, setisDisabled] = useState(true);
   const [errorMsg, seterrorMsg] = useState(null);
-  const [counter, setCounter] = useState(5);
+  const [counter, setCounter] = useState(60);
   const [OtpCount, setOtpCount] = useState(0);
-  console.log(OtpCount);
   const [otpErrorMSg, setotpErrorMSg] = useState("");
   const [isOtpErrorMSgVisible, setisOtpErrorMSgVisible] = useState(false);
   const {
@@ -92,9 +91,14 @@ const NumberOTP = (props) => {
       // errors=error.response.data.message;
       // console.log(error.response.data.message)
       console.log(error);
-      seterrorMsg(error.response.data.message);
+      if (error.response.data.message) {
+        seterrorMsg(error.response.data.message);
+      } else {
+        seterrorMsg("Network Error");
+      }
       // props.toggleModal();
       setisOtpErrorMSgVisible(true);
+      setisDisabled(true);
       setOtpCount((OtpCount) => OtpCount + 1);
       // setisLoading(false);
       reset();
@@ -105,9 +109,11 @@ const NumberOTP = (props) => {
   const resendOtp = async () => {
     try {
       // setisOtpErrorMSgVisible(true);
-      setCounter(10);
+      reset()
+      setCounter(60);
       // setotpErrorMSg(" Your account will get temporarily blocked after 3 wrong attempts.")
       // setOtpCount((OtpCount) => OtpCount + 1);
+      setisDisabled(true)
       const APIData = {
         phone: parseInt(props.phone),
       };
@@ -127,6 +133,7 @@ const NumberOTP = (props) => {
       reset();
     } catch (error) {
       seterrorMsg(error.response.data.message);
+      alert(errorMsg);
       // props.toggleModal();
       console.log(error);
       reset();
@@ -162,7 +169,10 @@ const NumberOTP = (props) => {
 
       tag.addEventListener("paste", (event) => {
         event.preventDefault();
-        clipData = event.clipboardData.getData("text/plain").split("");
+        clipData = event.clipboardData
+          .getData("text/plain")
+          .replace(/\D/g, "")
+          .split("");
         filldata(index);
         document.getElementById("otpSixth").focus();
       });
@@ -202,7 +212,30 @@ const NumberOTP = (props) => {
   if (OtpCount >= 3) {
     router.reload(window.location.pathname);
   }
-  console.log(errors)
+  const checkvalue = () => {
+    let inputs = document.querySelectorAll("input");
+    //    inputs.forEach((item,index)=>{
+    //     console.log(item.value.length)
+    //  item.value.length
+    //     // console.log(index)
+    //    })
+    const validInputs = Array.from(inputs).filter(
+      (input) => input.value !== ""
+    );
+    if (validInputs.length == 6) {
+      setisDisabled(false);
+    } else {
+      setisDisabled(true);
+    }
+  };
+  useEffect(() => {
+    var lineItem = document.querySelectorAll(".animate__animated");
+    lineItem.forEach((item, index) => {
+      item.className += " animate__fadeInUp animate__delay_" + index;
+    });
+  }, []);
+
+  const maskedMob = props.phone.toString().replace(/.(?=.{4})/g, "x");
   return (
     <>
       {isLoading ? (
@@ -212,24 +245,25 @@ const NumberOTP = (props) => {
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* <UseCountdown></UseCountdown> */}
             <div className="container">
-              <h2 className="title">OTP sent</h2>
-              <p className="subTitle">
-                We have sent an OTP to your mobile number +91-{props.phone}.
+              <h2 className="title animate__animated">OTP sent</h2>
+              <p className="subTitle animate__animated">
+                We have sent an OTP to your mobile number +91-{maskedMob}.
               </p>
-              <div className="enterOTP row">
+              <div className="enterOTP row animate__animated">
                 <div className="col-2">
                   <input
                     className="otp"
                     id="otpFirst"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpFirst", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   setValue("otpFirst", event.clipboardData.getData('text/plain').replace(/\D/g,""))
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpFirst",
@@ -245,15 +279,16 @@ const NumberOTP = (props) => {
                   <input
                     className="otp"
                     id="otpSecond"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpSecond", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   setValue("otpSecond", event.clipboardData.getData('text/plain').replace(/\D/g,""))
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpSecond",
@@ -269,15 +304,16 @@ const NumberOTP = (props) => {
                   <input
                     className="otp"
                     id="otpThird"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpThird", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   setValue("otpThird", event.clipboardData.getData('text/plain').replace(/\D/g,""))
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpThird",
@@ -293,15 +329,16 @@ const NumberOTP = (props) => {
                   <input
                     className="otp"
                     id="otpFourth"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpFourth", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   setValue("otpFourth", event.clipboardData.getData('text/plain').replace(/\D/g,""))
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpFourth",
@@ -317,15 +354,16 @@ const NumberOTP = (props) => {
                   <input
                     className="otp"
                     id="otpFifth"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpFifth", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   setValue("otpFifth", event.clipboardData.getData('text/plain').replace(/\D/g,""))
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpFifth",
@@ -341,15 +379,16 @@ const NumberOTP = (props) => {
                   <input
                     className="otp"
                     id="otpSixth"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpSixth", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   setValue("otpSixth", event.clipboardData.getData('text/plain').replace(/\D/g,""))
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpSixth",
@@ -367,7 +406,7 @@ const NumberOTP = (props) => {
                   Provided OTP is wrong please enter valid OTP.
                 </small>
               )} */}
-              <div className="row otpTimerResend">
+              <div className="row otpTimerResend animate__animated">
                 <div className="col-6 timer">
                   {counter === 0 ? null : <>00:{counter}s</>}
                 </div>
@@ -383,14 +422,17 @@ const NumberOTP = (props) => {
               </div>
               {isOtpErrorMSgVisible && (
                 <div className="otpTimerResend errorMsgOtp">
-                  <span className="attempts">Invalid PIN {OtpCount}/3</span> : Your account will get temporarily
-                  blocked after 3 wrong attempts.
-              </div>
+                  <span className="attempts">Invalid PIN {OtpCount}/3</span> :
+                  Your account will get temporarily blocked after 3 wrong
+                  attempts.
+                </div>
               )}
-              <ButtonUI type={"submit"} id="btn">
-                Verify OTP
-              </ButtonUI>
-            </div> 
+              <div className="animate__animated">
+                <ButtonUI type={"submit"} id="btn" disabled={isDisabled}>
+                  Verify OTP
+                </ButtonUI>
+              </div>
+            </div>
           </form>
           {/* {showModal === true ? (
             <Modal onClick={toggleModal}>

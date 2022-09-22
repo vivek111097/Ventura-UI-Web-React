@@ -6,6 +6,7 @@
   height: 100vh;
   z-index: 20;
   background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
 }
 
 .modal {
@@ -42,7 +43,17 @@
 
 .panValidation{
   width: 390px;
+  text-align: center;
 }
+
+.panValidation [class^=icon-]{
+  font-size: 35px;
+}
+
+.panValidation [class^=icon-Close]{
+  font-size: 10px;
+}
+
 .fatcaModel{
   width: 600px;
   height: 500px;
@@ -56,4 +67,11 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@media (max-width: 767px){
+  .modal{
+    max-width: 95%;
+  }
+  
 }

@@ -18,7 +18,9 @@ const MailOTP = (props) => {
   const { showModal, toggleModal } = props;
   const [isLoading, setisLoading] = useState(false);
   const [errorMsg, seterrorMsg] = useState(null);
-  const [counter, setCounter] = useState(5);
+
+  const [isDisabled, setisDisabled] = useState(true);
+  const [counter, setCounter] = useState(60);
   const [OtpCount, setOtpCount] = useState(0);
   // const [otpErrorMSg, setotpErrorMSg] = useState("");
   const [isOtpErrorMSgVisible, setisOtpErrorMSgVisible] = useState(false);
@@ -36,7 +38,7 @@ const MailOTP = (props) => {
   // Handling THe Form on Submit Using Async Await
   const onSubmit = async (data) => {
     try {
-      setisLoading(true);
+      // setisLoading(true);
 
       // Destructuring All the Input
       const { otpFirst, otpSecond, otpThird, otpFourth, otpFifth, otpSixth } =
@@ -66,13 +68,13 @@ const MailOTP = (props) => {
       if (res) {
         if (getData.status == 200) {
           router.push("/co/welcome");
-          setisLoading(false);
+          // setisLoading(false);
           props.updateEmailOtpValidation(true);
           // props.updatePhoneOtpValidation(false);
-        } 
+        }
       } else {
         seterrorMsg("Something went wrong");
-        props.toggleModal();
+        // props.toggleModal();
       }
       reset();
       // console.log(res);
@@ -80,9 +82,14 @@ const MailOTP = (props) => {
       // errors=error.response.data.message;
       // console.log(error.response.data.message)
       console.log(error);
-      seterrorMsg(error.response.data.message);
-      props.toggleModal();
+      if (error.response.data.message) {
+        seterrorMsg(error.response.data.message);
+      } else {
+        seterrorMsg("Network Error");
+      }
+      // props.toggleModal();
       setisOtpErrorMSgVisible(true);
+      setisDisabled(true)
       setOtpCount((OtpCount) => OtpCount + 1);
       setisLoading(false);
       reset();
@@ -92,7 +99,9 @@ const MailOTP = (props) => {
   const resendOtp = async () => {
     try {
       // setisOtpErrorMSgVisible(true);
-      setCounter(10);
+      reset()
+      setCounter(60);      
+      setisDisabled(true)
       const APIData = {
         email: props.email,
       };
@@ -112,15 +121,15 @@ const MailOTP = (props) => {
       console.log(response);
       if (response) {
         // setOtpCount((OtpCount) => OtpCount + 1)
-        // props.updatePhoneOtpValidation(true);
+        props.updatePhoneOtpValidation(true);
       } else {
         seterrorMsg("Something went wrong");
-        props.toggleModal();
+        // props.toggleModal();
       }
       reset();
     } catch (error) {
       seterrorMsg(error.response.data.message);
-      props.toggleModal();
+      // props.toggleModal();
       console.log(error);
       reset();
     }
@@ -181,7 +190,6 @@ const MailOTP = (props) => {
 ������}*/
     }
 
- 
     function hasNoValue(index) {
       if (values[index] || values[index] === 0) return false;
 
@@ -196,6 +204,34 @@ const MailOTP = (props) => {
   if (OtpCount >= 3) {
     router.reload(window.location.pathname);
   }
+  const checkvalue = () => {
+    let inputs = document.querySelectorAll("input");
+    //    inputs.forEach((item,index)=>{
+    //     console.log(item.value.length)
+    //  item.value.length
+    //     // console.log(index)
+    //    })
+    const validInputs = Array.from(inputs).filter(
+      (input) => input.value !== ""
+    );
+    if (validInputs.length == 6) {
+      setisDisabled(false);
+    } else {
+      setisDisabled(true);
+    }
+  };
+  useEffect(() => {
+    var lineItem = document.querySelectorAll(".animate__animated");
+    lineItem.forEach((item, index) => {
+      item.className += " animate__fadeInUp animate__delay_" + index;
+    });
+  }, []);
+
+  var maskid = props.email.replace(
+    /^(.)(.*)(.@.*)$/,
+    (_, a, b, c) => a + b.replace(/./g, "x") + c
+  );
+  // alert(maskid)
   return (
     <>
       {isLoading === true ? (
@@ -205,24 +241,28 @@ const MailOTP = (props) => {
           {/* OTP Input Form */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="container ">
-              <h2 className="title">Enter OTP here</h2>
-              <p className="subTitle">
-                We have sent an OTP to your email ID {props.email}
+              <h2 className="title animate__animated">Enter OTP here</h2>
+              <p className="subTitle animate__animated">
+                We have sent an OTP to your email ID {maskid}
               </p>
-              <div className="enterOTP row">
+              <div
+                className="enterOTP row animate__animated"
+                onBlur={checkvalue}
+              >
                 <div className="col-2">
                   <input
                     className="otp"
                     id="otpFirst"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpFirst", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   "otpFirst", event.target.value.replace(/\D/g, "");
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpFirst",
@@ -238,15 +278,16 @@ const MailOTP = (props) => {
                   <input
                     className="otp"
                     id="otpSecond"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpSecond", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   "otpSecond", event.target.value.replace(/\D/g, "");
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpSecond",
@@ -262,15 +303,16 @@ const MailOTP = (props) => {
                   <input
                     className="otp"
                     id="otpThird"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpThird", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   "otpThird", event.target.value.replace(/\D/g, "");
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpThird",
@@ -286,15 +328,16 @@ const MailOTP = (props) => {
                   <input
                     className="otp"
                     id="otpFourth"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpFourth", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   "otpFourth", event.target.value.replace(/\D/g, "");
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpFourth",
@@ -310,15 +353,16 @@ const MailOTP = (props) => {
                   <input
                     className="otp"
                     id="otpFifth"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpFifth", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   "otpFifth", event.target.value.replace(/\D/g, "");
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpFifth",
@@ -334,15 +378,16 @@ const MailOTP = (props) => {
                   <input
                     className="otp"
                     id="otpSixth"
-                    type="number"
+                    type="password"
                     min="0"
                     max="9"
                     step="1"
                     autoComplete="off"
                     maxLength={1}
-                    onPaste={(event) => {
-                      "otpSixth", event.target.value.replace(/\D/g, "");
-                    }}
+                    // onPaste={(event) => {
+                    //   "otpSixth", event.target.value.replace(/\D/g, "");
+                    // }}
+                    onKeyUp={checkvalue}
                     onInput={(event) => {
                       setValue(
                         "otpSixth",
@@ -360,7 +405,7 @@ const MailOTP = (props) => {
                   Provided OTP is wrong please enter valid OTP.
                 </small>
               )} */}
-              <div className="row otpTimerResend">
+              <div className="row otpTimerResend animate__animated">
                 <div className="col-6 timer">
                   {counter === 0 ? null : <>00:{counter}s</>}
                 </div>
@@ -375,14 +420,17 @@ const MailOTP = (props) => {
                 </div>
               </div>
               {isOtpErrorMSgVisible && (
-                <div className="otpTimerResend errorMsgOtp">
-                  <span className="attempts">Invalid PIN {OtpCount}/3</span> : Your account will get temporarily
-                  blocked after 3 wrong attempts.
-              </div>
+                <div className="otpTimerResend errorMsgOtp  animate__animated">
+                  <span className="attempts">Invalid PIN {OtpCount}/3</span> :
+                  Your account will get temporarily blocked after 3 wrong
+                  attempts.
+                </div>
               )}
-              <ButtonUI type={"submit"} id="btn">
-                Verify OTP
-              </ButtonUI>
+              <div className="animate__animated">
+                <ButtonUI type={"submit"} id="btn" disabled={isDisabled}>
+                  Verify OTP
+                </ButtonUI>
+              </div>
             </div>
           </form>
           {showModal === true ? (

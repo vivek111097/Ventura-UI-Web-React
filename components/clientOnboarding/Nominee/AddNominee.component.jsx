@@ -5,7 +5,7 @@ import AxiosInstance from "./../../../Api/Axios/axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import style from "./Nominee.module.css";
-import { validatePANOrAddhar } from "../../validation/validation";
+import { validatePANOrAddhar } from "../../validation/Validation";
 import ButtonUI from "../../ui/Button.component";
 import { useRouter } from "next/router";
 import ReactSlider from "react-slider";
@@ -26,6 +26,7 @@ const AddNominee = (props) => {
   const [nominee_relationship, setNominee_Relationship] = useState([]);
   const [showGuardianForm, setShowGuardianForm] = useState(false);
   const [IsMinor, setIsMinor] = useState("no");
+  const [selected_Document, setSelectedDocument] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -35,14 +36,15 @@ const AddNominee = (props) => {
         "/signup/static/nominee/relationships",
         {
           headers: {
-            session_id: props.session_id,
+            // session_id: props.session_id,
+            session_id: "7f6042b8-bb43-47cd-b326-68ceb1e446c9",
           },
         }
       );
       setNominee_Relationship(data.relationships);
     };
     getRelationships();
-    var lineItem = document.querySelectorAll(".animate__animated");
+    let lineItem = document.querySelectorAll(".animate__animated");
     lineItem.forEach((item, index) => {
       item.className += " animate__fadeInUp animate__delay_" + index;
     });
@@ -60,7 +62,8 @@ const AddNominee = (props) => {
     register,
     handleSubmit,
     control,
-    formState: { errors ,isValid,isDirty},
+    setValue,
+    formState: { errors, isValid, isDirty },
     trigger,
   } = useForm({
     defaultValues: {
@@ -77,13 +80,16 @@ const AddNominee = (props) => {
     },
     resolver: yupResolver(NomineeSchema),
   });
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     try {
-    
+      // console.log(data)
+      // const converted_date= new Date(data.dob).toLocaleDateString();
+      // console.log(converted_date)
+      
       let nominee_data = {
         name: data.nominee_name,
         relation: data.relationship,
-        birthdate: data.dob.toLocaleDateString(),
+        birthdate: new Date(data.dob).toLocaleDateString(),
         address: data.nominee_address,
         identification_type: "pan",
         identification_no: data.pan_or_aadhar,
@@ -119,7 +125,7 @@ const AddNominee = (props) => {
       };
       console.log(PostData);
 
-      const resp = axios.post(
+      const resp =await axios.post(
         "https://kyc-stage.ventura1.com/onboarding/v2/signup/user/nominee/add",
         { ...PostData },
         {
@@ -134,6 +140,10 @@ const AddNominee = (props) => {
       console.log(e);
     }
   };
+
+  // const handel_Add_nominee=()=>{
+  //   // router.push("/co/nominee/nomineelist")
+  // }
 
   //  checkAge metod accepts date of birth and Type
   //  for Nominee 'N' and Guardian 'G'
@@ -167,145 +177,158 @@ const AddNominee = (props) => {
       <div className={style.formContainer}>
         <h2 className="title animate__animated">Add nominee 1</h2>
 
-        <label className="form-label" htmlFor="relationshipWithNominee">
-          Relationship with nominee
-        </label>
-        <select
-          id="relationshipWithNominee"
-          className="form-control"
-          {...register("relationship")}
-        >
-          {nominee_relationship.map((relation, index) => (
-            <option key={index} value={relation}>
-              {relation}
-            </option>
-          ))}
-        </select>
+        <div className={`animate__animated ${style.inputWrap}`}>
+          <label className="form-label" htmlFor="relationshipWithNominee">
+            Relationship with nominee
+          </label>
+          <select
+            id="relationshipWithNominee"
+            className="form-control"
+            {...register("relationship")}
+          >
+            <option disabled>Select Relationship</option>
+            {nominee_relationship.map((relation, index) => (
+              <option key={index} value={relation}>
+                {relation}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className={`animate__animated ${style.inputWrap}`}>
+          <label className="form-label" htmlFor="nomineeName">
+            Nominee name
+          </label>
+          <input
+            id="nomineeName"
+            className="form-control"
+            {...register("nominee_name")}
+          />
+        </div>
+        <div className={`animate__animated ${style.inputWrap}`}>
+          <label className="form-label" htmlFor="nomineeName">
+            Nominee's PAN/Aadhaar number
+          </label>
 
-        <label className="form-label" htmlFor="nomineeName">
-          Nominee name
-        </label>
-        <input
-          id="nomineeName"
-          className="form-control"
-          {...register("nominee_name")}
-        />
-
-        <label className="form-label" htmlFor="nomineeName">
-          Nominee's PAN/Aadhaar number
-        </label>
-
-        <input
-          type="text"
-          className="form-control"
-          maxLength={16}
-          {...register("pan_or_aadhar", {
-            required: "PAN Number or Aadhaar Number is required",
-            validate: validatePANOrAddhar,
-          })}
-          onKeyUp={() => {
-            trigger("pan_or_aadhar");
-          }}
-        />
-
-        <label className="form-label" htmlFor="nomineeName">
-          Nominee's Address
-        </label>
-        <textarea
-          style={{ height: 60 }}
-          id="nominee_address"
-          className="form-control"
-          {...register("nominee_address")}
-        />
-
-        <label className="form-label" htmlFor="dobNominee1">
-          Date of birth
-        </label>
-        <Controller
-          control={control}
-          name="dob"
-          render={({ field }) => (
-            <DatePicker
-              className="form-control"
-              placeholderText="Select date"
-              onChange={(date) => {
-                field.onChange(date);
-                checkAge(date, "N");
-              }}
-              selected={field.value}
-              showPopperArrow={false}
-              maxDate={new Date()}
-              showMonthDropdown
-              showYearDropdown
-              dateFormatCalendar="MMMM"
-              yearDropdownItemNumber={35}
-              scrollableYearDropdown
-              popperClassName="datepicker"
-              popperPlacement="top-start"
-              popperModifiers={[
-                {
-                  name: "offset",
-                  options: {
-                    offset: [0, -20],
-                  },
-                },
-                {
-                  name: "preventOverflow",
-                  options: {
-                    rootBoundary: "viewport",
-                    tether: false,
-                    altAxis: true,
-                  },
-                },
-              ]}
-            />
-          )}
-        />
-        <label className="form-label" htmlFor="nomineeName">
-          % of nomination
-        </label>
-        <div className="Sliderwrap">
-          <ReactSlider
-            className="horizontal_slider"
-            thumbClassName="example_thumb"
-            trackClassName="example_track"
-            defaultValue={[40, 100]}
-            ariaLabel={["Leftmost thumb", "Rightmost thumb"]}
-            pearling
-            onChange={(val) => {
-              handleInput(val);
+          <input
+            type="text"
+            className="form-control"
+            maxLength={selected_Document === "A" ? 12 : 10}
+            {...register("pan_or_aadhar", {
+              required: "PAN Number or Aadhaar Number is required",
+              // validate: validatePANOrAddhar,
+             
+            })}
+            onKeyUp={(e) => {
+              const msg= validatePANOrAddhar(e.target.value);
+              setSelectedDocument(msg.type)
+              setValue("pan_or_aadhar",e.target.value.toLocaleUpperCase())
+              trigger("pan_or_aadhar");
             }}
           />
-          <ul className={style.SliderNumWrap}>
-            <li className={style.SliderNum}>0</li>
-            <li className={style.SliderNum}>|</li>
-            <li className={style.SliderNum}>20</li>
-            <li className={style.SliderNum}>|</li>
-            <li className={style.SliderNum}>40</li>
-            <li className={style.SliderNum}>|</li>
-            <li className={style.SliderNum}>60</li>
-            <li className={style.SliderNum}>|</li>
-            <li className={style.SliderNum}>80</li>
-            <li className={style.SliderNum}>|</li>
-            <li className={style.SliderNum}>100</li>
-          </ul>
-          <ul className={style.NomineesWrap}>
-            <li className={style.Nominees}>
-              <p className={style.PerOrange}>{Nominee_1_Share}%</p>
-              <p className={style.NomineeNum}>Nominee 1</p>
-            </li>
-            <li className={style.Nominees}>
-              <p className={style.PerBlue}>{Nominee_2_Share}%</p>
-              <p className={style.NomineeNum}>Nominee 2</p>
-            </li>
-            <li className={style.Nominees}>
-              <p className={style.PerGreen}>{Nominee_3_Share}%</p>
-              <p className={style.NomineeNum}>Nominee 3</p>
-            </li>
-          </ul>
-          <div className={style.SliderTip}>
-            Move the slider to the left or right to{" "}
-            <strong>distribute nomination share</strong> between the nominees.
+        </div>
+        <div className={`animate__animated ${style.inputWrap}`}>
+          <label className="form-label" htmlFor="nomineeName">
+            Nominee's Address
+          </label>
+          <textarea
+            style={{ height: 60,resize:"none" }}
+            id="nominee_address"
+            className="form-control"
+            {...register("nominee_address")}
+          />
+        </div>
+        <div className={`animate__animated ${style.inputWrap}`}>
+          <label className="form-label" htmlFor="dobNominee1">
+            Date of birth
+          </label>
+          <Controller
+            control={control}
+            name="dob"
+            render={({ field }) => (
+              <DatePicker
+                className="form-control"
+                placeholderText="Select date"
+                onChange={(date) => {
+                  field.onChange(date);
+                  checkAge(date, "N");
+                }}
+                selected={field.value}
+                showPopperArrow={false}
+                maxDate={new Date()}
+                showMonthDropdown
+                showYearDropdown
+                dateFormatCalendar="MMMM"
+                yearDropdownItemNumber={35}
+                scrollableYearDropdown
+                popperClassName="datepicker"
+                popperPlacement="top-start"
+                popperModifiers={[
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -20],
+                    },
+                  },
+                  {
+                    name: "preventOverflow",
+                    options: {
+                      rootBoundary: "viewport",
+                      tether: false,
+                      altAxis: true,
+                    },
+                  },
+                ]}
+              />
+            )}
+          />
+        </div>
+        <div className={`animate__animated ${style.inputWrap}`}>
+          <label className="form-label" htmlFor="nomineeName">
+            % of nomination
+          </label>
+          <div className="Sliderwrap">
+            <ReactSlider
+              className="horizontal_slider"
+              thumbClassName="example_thumb"
+              trackClassName="example_track"
+              defaultValue={[40, 100]}
+              ariaLabel={["Leftmost thumb", "Rightmost thumb"]}
+              pearling
+              onChange={(val) => {
+                handleInput(val);
+              }}
+            />
+            <ul className={style.SliderNumWrap}>
+              <li className={style.SliderNum}>0</li>
+              <li className={style.SliderNum}>|</li>
+              <li className={style.SliderNum}>20</li>
+              <li className={style.SliderNum}>|</li>
+              <li className={style.SliderNum}>40</li>
+              <li className={style.SliderNum}>|</li>
+              <li className={style.SliderNum}>60</li>
+              <li className={style.SliderNum}>|</li>
+              <li className={style.SliderNum}>80</li>
+              <li className={style.SliderNum}>|</li>
+              <li className={style.SliderNum}>100</li>
+            </ul>
+            <ul className={style.NomineesWrap}>
+              <li className={style.Nominees}>
+                <p className={style.PerOrange}>{Nominee_1_Share}%</p>
+                <p className={style.NomineeNum}>Nominee 1</p>
+              </li>
+              <li className={style.Nominees}>
+                <p className={style.PerBlue}>{Nominee_2_Share}%</p>
+                <p className={style.NomineeNum}>Nominee 2</p>
+              </li>
+              <li className={style.Nominees}>
+                <p className={style.PerGreen}>{Nominee_3_Share}%</p>
+                <p className={style.NomineeNum}>Nominee 3</p>
+              </li>
+            </ul>
+            <div className={style.SliderTip}>
+              Move the slider to the left or right to{" "}
+              <strong>distribute nomination share</strong> between the nominees.
+            </div>
           </div>
         </div>
 
@@ -390,10 +413,13 @@ const AddNominee = (props) => {
               maxLength={16}
               {...register("guard_pan_or_aadhar", {
                 required: "PAN Number or Address is required",
-                validate: validatePANOrAddhar,
               })}
               onKeyUp={(e) => {
                 trigger("guard_pan_or_aadhar");
+                const msg= validatePANOrAddhar(e.target.value);
+              setSelectedDocument(msg.type)
+              setValue("guard_pan_or_aadhar",e.target.value.toLocaleUpperCase())
+              trigger("guard_pan_or_aadhar");
               }}
             />
 
@@ -409,13 +435,14 @@ const AddNominee = (props) => {
           </div>
         )}
         {/* disabled untile complate form validation */}
-        <ButtonUI
-          type="submit"
-          onClick={() => router.push("/co/nominee/nomineelist")}
-          // disabled={!isDirty || !isValid}
-        >
-          Add Nominee
-        </ButtonUI>
+        <div className="animate__animated">
+          <ButtonUI
+            type="submit"
+            disabled={!isDirty || !isValid}
+          >
+            Add Nominee
+          </ButtonUI>
+        </div>
       </div>
     </form>
   );

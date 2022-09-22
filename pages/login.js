@@ -7,6 +7,8 @@ import ButtonUI from "../components/ui/Button.component";
 import AddSignature from "../components/ui/Popups/AddSignaturePop/AddSignaturePop.component";
 // import UploadPan from "../components/ui/Popups/UploadPan/UploadPan.component";
 import Modal from "../components/ui/Modal/Modal.component";
+import FatcaValidation from "../components/ui/Popups/PANValidation/FatcaValidation";
+import PANAlreadyExistValidation from "../components/ui/Popups/PANValidation/PANAlreadyExistValidation";
 
 const Home = (props) => {
   const { showModal, toggleModal } = props;
@@ -21,8 +23,10 @@ const Home = (props) => {
     <div className={styles.container}>
       <Layout>
         {showModal && <Modal ModalType="signature_modal"  onClick={toggleModal}>
-          <AddSignature/>
+          {/* <AddSignature/> */}
           {/* <UploadPan/> */}
+          {/* <FatcaValidation/> */}
+          <PANAlreadyExistValidation/>
         </Modal>}
         <ButtonUI onClick={toggleModal}>Toggle Modal</ButtonUI>
       </Layout>

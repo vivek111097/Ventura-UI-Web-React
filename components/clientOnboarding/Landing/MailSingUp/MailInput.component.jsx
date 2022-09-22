@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { STORE_EMAIL } from "../../../../Redux/Landing";
@@ -8,6 +8,7 @@ import AxiosInstance from "../../../../Api/Axios/axios";
 import Loader from "../../../ui/Loader/Loader.component";
 import Modal from "../../../ui/Modal/Modal.component";
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
+
 
 const MailInput = (props) => {
   const [isLoading, setisLoading] = useState(false);
@@ -76,21 +77,26 @@ const MailInput = (props) => {
       reset();
     }
   };
-
+  useEffect(() => {
+    var lineItem = document.querySelectorAll(".animate__animated");
+    lineItem.forEach((item, index) => {
+      item.className += " animate__fadeInUp animate__delay_" + index;
+    });
+  }, []);
   return (
     <>
       {isLoading === true ? (
         <Loader />
       ) : (
         <>
-          <h2 className="title">Add your email</h2>
-          <p className="subTitle">
+          <h2 className="title animate__animated">Add your email</h2>
+          <p className="subTitle animate__animated">
             This is where we&lsquo;ll send you important updates and insights on the
             market.
           </p>
           {/* Email Form  */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="row">
+            <div className="row animate__animated">
               <div className="col">
                 {/* Defining Email Input */}
                 <input
@@ -112,18 +118,25 @@ const MailInput = (props) => {
             </div>
 
             {/* Submit BUtton */}
-            <ButtonUI type={"submit"} disabled={!isDirty || !isValid}>
-              Verify Email
-            </ButtonUI>
-            <div className={styles.or}>OR</div>
+            <div className="animate__animated">
+              <ButtonUI btnType="btn btn-outline" type={"submit"} disabled={!isDirty || !isValid}>
+                Verify Email
+              </ButtonUI>
+            </div>
+            <div className={`animate__animated ${styles.or}`}>OR</div>
           </form>
-          <ButtonUI type={"submit"}>Continue with Google</ButtonUI>
+          <div className="animate__animated">
+            <ButtonUI btnType={styles.gmail} type={"submit"}> <img src="/images/googleMail.svg" alt="gmail Icon" /> Continue with Google</ButtonUI>
+          </div>
+          
         </>
       )}
       {showModal === true ? (
         <Modal onClick={toggleModal}>
-          <ButtonUI onClick={toggleModal}>x</ButtonUI>
-          <h1>Something went Wrong</h1>
+        <div className="center">
+
+        <h3 className="title">Some thing went Wrong</h3>
+        </div>
         </Modal>
       ) : null}
     </>

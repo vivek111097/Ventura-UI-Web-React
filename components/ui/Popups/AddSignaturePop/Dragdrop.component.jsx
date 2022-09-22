@@ -3,13 +3,11 @@ import {useDropzone} from 'react-dropzone'
 import styles from './AddSignaturePop.module.css';
 
 function MyDropzone() {
-  
-   
+
   const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles[0]);
-     
-    
+
   }, []);
+   
   const {getRootProps, getInputProps,fileRejections, open, acceptedFiles} = useDropzone({
     // Disable click and keydown behavior
     noClick: true,
@@ -30,8 +28,8 @@ function MyDropzone() {
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
     <p key={file.path} className={styles.ErrorInfoText}>{errors.map(e => (e.message))}</p>
   ));
+
   
- 
 
   return (
     <div className={styles.FileBox} {...getRootProps()}>

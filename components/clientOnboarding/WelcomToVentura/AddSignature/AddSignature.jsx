@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Header from '../../../global/Header.component';
 import ButtonUI from "../../../ui/Button.component";
 import Modal from "../../../ui/Modal/Modal.component";
@@ -9,6 +9,12 @@ import AddSignaturePopup from "../../../ui/Popups/AddSignaturePop/AddSignaturePo
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
 const AddSignature = (props) =>{
     const { showModal, toggleModal } = props;
+    useEffect(() => {
+        var lineItem = document.querySelectorAll(".animate__animated");
+        lineItem.forEach((item, index) => {
+          item.className += " animate__fadeInUp animate__delay_" + index;
+        });
+      }, []);
     return(
         <>
         <Header />
@@ -21,9 +27,9 @@ const AddSignature = (props) =>{
             </div>
 
             <div className="containerMini">
-                <h2 className="title">Add your signature</h2>
-                <p className="subTitle">Use the signature-box to sign using your mouse/finger/stylus.</p>
-                <div className={styles.RememberList}>
+                <h2 className="title animate__animated">Add your signature</h2>
+                <p className="subTitle animate__animated">Use the signature-box to sign using your mouse/finger/stylus.</p>
+                <div className={`animate__animated ${styles.RememberList}`}>
                     <h3 className={styles.ListTitle}>Please remember:</h3>
                     <div className={styles.steps}>
                         <div className={styles.stepsicon}>
@@ -44,7 +50,9 @@ const AddSignature = (props) =>{
                         <p className={styles.steptext}>For uploading photo, the size limit is 2 MB.</p>
                     </div>
                 </div>
-                <ButtonUI type={"submit"} onClick={toggleModal}> Continue </ButtonUI>
+                <div className="animate__animated">
+                    <ButtonUI type={"submit"} onClick={toggleModal}> Continue </ButtonUI>
+                </div>
                 {showModal && <Modal ModalType="signature_modal" onClick={toggleModal}>
                     <AddSignaturePopup />
                 </Modal>}
