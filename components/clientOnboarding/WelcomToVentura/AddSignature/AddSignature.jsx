@@ -33,19 +33,19 @@ const AddSignature = (props) =>{
                     <h3 className={styles.ListTitle}>Please remember:</h3>
                     <div className={styles.steps}>
                         <div className={styles.stepsicon}>
-                            <span className='icon-react'></span>
+                            <span className='icon-Signature-box'></span>
                         </div>
                         <p className={styles.steptext}>Signature-box opens in landscape mode.</p>
                     </div>
                     <div className={styles.steps}>
                         <div className={styles.stepsicon}>
-                            <span className='icon-react'></span>
+                            <span className='icon-Image'></span>
                         </div>
                         <p className={styles.steptext}>Signature must match with the one on your Aadhaar/PAN card.</p>
                     </div>
                     <div className={styles.steps}>
                         <div className={styles.stepsicon}>
-                            <span className='icon-react'></span>
+                            <span className='icon-clear-picture'></span>
                         </div>
                         <p className={styles.steptext}>For uploading photo, the size limit is 2 MB.</p>
                     </div>

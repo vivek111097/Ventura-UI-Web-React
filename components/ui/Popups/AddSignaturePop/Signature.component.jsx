@@ -3,11 +3,11 @@ import SignaturePad from "react-signature-canvas";
 import ButtonUI from "../../Button.component";
 import styles from "./AddSignaturePop.module.css";
 
-const Signature = () => {
+const Signature = (data) => {
   let sigPad = {};
-  const [trimmedDataURL, setTrimmedDataURL] = useState(null);
+
   const trim = () => {
-    setTrimmedDataURL(sigPad.getTrimmedCanvas().toDataURL("image/png"));
+    data.func(sigPad.getTrimmedCanvas().toDataURL("image/png"));
   };
   const clear = () => {
     sigPad.clear();
@@ -15,24 +15,20 @@ const Signature = () => {
   return (
     <>
       <div className={styles.SignBox}>
-        <SignaturePad
-          canvasProps={{ width: 500, height: 200, className: "sigCanvas" }}
+        <SignaturePad backgroundColor='white'
+          canvasProps={{ width: 500, height: 200, className: "sigCanvas"}}
           ref={(ref) => {
             sigPad = ref;
           }}
         />
-
         <button className={styles.resetsignature} onClick={clear}>
           <img src="/images/resetsignature.png" />
         </button>
       </div>
       <div className={styles.btnwrap}>
-        <ButtonUI onClick={trim} type={"submit"}>
-          {" "}
-          Continue{" "}
-        </ButtonUI>
+        <ButtonUI onClick={trim} type={"submit"}>{" "}Continue{" "}</ButtonUI>
       </div>
-      {trimmedDataURL ? <img src={trimmedDataURL} alt="Signature" /> : null}
+       
     </>
   );
 };

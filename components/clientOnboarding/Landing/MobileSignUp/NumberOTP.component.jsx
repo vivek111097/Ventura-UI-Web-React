@@ -17,7 +17,7 @@ const NumberOTP = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [isDisabled, setisDisabled] = useState(true);
   const [errorMsg, seterrorMsg] = useState(null);
-  const [counter, setCounter] = useState(60);
+  const [counter, setCounter] = useState(5);
   const [OtpCount, setOtpCount] = useState(0);
   const [otpErrorMSg, setotpErrorMSg] = useState("");
   const [isOtpErrorMSgVisible, setisOtpErrorMSgVisible] = useState(false);
@@ -31,10 +31,8 @@ const NumberOTP = (props) => {
   } = useForm();
   const router = useRouter();
 
-  // console.clear();
-
+  // Handling Form on Submit Using Async Await
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       // setisLoading(true);
 
@@ -49,7 +47,6 @@ const NumberOTP = (props) => {
         phone: parseInt(phone),
         otp: parseInt(otp),
       };
-      console.log(APIData);
       const getData = await AxiosInstance.post(
         "/signup/user/phone/otp/verify",
         {
@@ -63,7 +60,7 @@ const NumberOTP = (props) => {
       );
       console.log(getData);
       const res = await getData.data;
-      console.log(res);
+      // console.log(res);
       if (res) {
         // setisLoading(false);
         if (getData.status == 200) {
@@ -110,20 +107,29 @@ const NumberOTP = (props) => {
     try {
       // setisOtpErrorMSgVisible(true);
       reset()
-      setCounter(60);
+      setCounter(3);
       // setotpErrorMSg(" Your account will get temporarily blocked after 3 wrong attempts.")
       // setOtpCount((OtpCount) => OtpCount + 1);
       setisDisabled(true)
       const APIData = {
         phone: parseInt(props.phone),
       };
-      const getData = await AxiosInstance.post("/signup/user/phone", {
+      const getData = await AxiosInstance.post( "/signup/user/resendotp",
+      {
         ...APIData,
-      });
+      },
+      {
+        headers: {
+          session_id: props.session_id,
+        },
+      }
+    );
       const response = await getData.data;
 
-      console.log(response);
+      console.log(getData);
       if (response) {
+        const responseLeft=response.attempts_left;
+        // responseLeft===0?
         // setOtpCount((OtpCount) => OtpCount + 1)
         // props.updatePhoneOtpValidation(true);
       } else {
@@ -133,8 +139,8 @@ const NumberOTP = (props) => {
       reset();
     } catch (error) {
       seterrorMsg(error.response.data.message);
-      alert(errorMsg);
-      // props.toggleModal();
+      // alert(errorMsg);
+      props.toggleModal();
       console.log(error);
       reset();
     }
@@ -234,7 +240,11 @@ const NumberOTP = (props) => {
       item.className += " animate__fadeInUp animate__delay_" + index;
     });
   }, []);
-
+const redirectToLandingPage=()=>{
+  console.log("hello")
+  window.location.reload(false)
+  
+}
   const maskedMob = props.phone.toString().replace(/.(?=.{4})/g, "x");
   return (
     <>
@@ -411,13 +421,13 @@ const NumberOTP = (props) => {
                   {counter === 0 ? null : <>00:{counter}s</>}
                 </div>
                 <div className="col-6 text-right">
-                  {counter === 0 && (
+                  {/* {counter === 0 && ( */}
                     <Link href="">
-                      <a className="btnLInk" onClick={resendOtp}>
+                      <a className={`btnLInk ${counter!=0 && "disabled"}`} onClick={resendOtp}>
                         Resend OTP
                       </a>
                     </Link>
-                  )}
+                  {/* )} */}
                 </div>
               </div>
               {isOtpErrorMSgVisible && (
@@ -434,12 +444,20 @@ const NumberOTP = (props) => {
               </div>
             </div>
           </form>
-          {/* {showModal === true ? (
+          {showModal === true ? (
+            <>
+
             <Modal onClick={toggleModal}>
-              <p>{errorMsg}</p>
-              <ButtonUI onClick={toggleModal}>OK</ButtonUI>
+              <p className="alertTitle center">{errorMsg}</p>
+              <ButtonUI onClick={()=>{
+                toggleModal(),
+                redirectToLandingPage()
+              }}>OK</ButtonUI>
             </Modal>
-          ) : null} */}
+            
+            </>
+          
+          ) : null}
         </>
       )}
     </>
@@ -458,7 +476,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updatePhoneOtpValidation: (OtpVerified) => {
-      console.log(OtpVerified);
       dispatch(SET_MOBILE_OTP_VALIDATED(OtpVerified));
     },
     storeSession: (session) => dispatch(STORE_SESSION(session)),

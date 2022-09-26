@@ -8,9 +8,13 @@ import AxiosInstance from "../../../../Api/Axios/axios";
 import Loader from "../../../ui/Loader/Loader.component";
 import Modal from "../../../ui/Modal/Modal.component";
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
+import { auth,} from "./firebse/firebse";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Router, useRouter } from "next/router";
 
 
 const MailInput = (props) => {
+  const router=useRouter();
   const [isLoading, setisLoading] = useState(false);
   const [errorMsg, seterrorMsg] = useState(null);
   const { otpSent, setotpSent } = props;
@@ -23,7 +27,7 @@ const MailInput = (props) => {
     reset,
     formState: { errors, isDirty, isValid },
   } = useForm();
-
+console.log(signInWithGoogle)
   // Defining Regex for Email
   const MailRegex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i);
 
@@ -36,6 +40,9 @@ const MailInput = (props) => {
     }
   };
 
+  // const continueWithGoogle=()=>{
+  
+  // }
   // Handling Form  on Submit USing Async Await
   const onSubmit = async (data) => {
     try {
@@ -77,6 +84,43 @@ const MailInput = (props) => {
       reset();
     }
   };
+  const signInWithGoogle=async()=>{
+
+    try {
+
+      const provider = new GoogleAuthProvider();
+
+const userData=await signInWithPopup(auth,provider)
+
+const response= userData.user;
+
+
+
+console.log(response)
+
+const APIData = {
+email: response.email,
+};
+console.log(APIData);
+const getData = await AxiosInstance.post("/signup/user/email", {...APIData}, {
+headers: {
+  session_id:props.session_id||"93a219b5-40b2-44d2-af55-0b9ba642d77a"
+//   props.session_id,
+},
+});
+console.log(getData)
+const res = await getData.data;
+  if (getData.status == 200) {
+    console.log(res);
+router.push("/co/welcome")
+  } else {
+    // props.toggleModal();
+  }
+// console.log(response)
+    } catch (error) {
+        console.log(error)
+    }
+}
   useEffect(() => {
     var lineItem = document.querySelectorAll(".animate__animated");
     lineItem.forEach((item, index) => {
@@ -126,7 +170,7 @@ const MailInput = (props) => {
             <div className={`animate__animated ${styles.or}`}>OR</div>
           </form>
           <div className="animate__animated">
-            <ButtonUI btnType={styles.gmail} type={"submit"}> <img src="/images/googleMail.svg" alt="gmail Icon" /> Continue with Google</ButtonUI>
+            <ButtonUI btnType={styles.gmail} type={"submit"} onClick={signInWithGoogle}> <img src="/images/googleMail.svg" alt="gmail Icon" /> Continue with Google</ButtonUI>
           </div>
           
         </>

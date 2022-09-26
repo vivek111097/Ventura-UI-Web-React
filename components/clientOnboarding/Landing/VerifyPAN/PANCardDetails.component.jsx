@@ -51,8 +51,8 @@ const PANCardDetails = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    pan: state.LandingReducer.user.pan,
-    phone: state.LandingReducer.user.phone,
+    pan: state.LandingReducer.user.pan || "",
+    phone: state.LandingReducer.user.phone || "",
     showModal: state.modalReducer.showModal,
   };
 };

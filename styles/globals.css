@@ -769,6 +769,14 @@ input[type="number"] {
   border-color: #FF524B transparent transparent transparent;
 }
 
+
+.disabled{
+  opacity: 0.5;
+  pointer-events: none;
+  color: #ff844b;
+  user-select: none;
+}
+
 @media (min-width: 767px) {
   .displayXs{
     display: none;

@@ -13,18 +13,21 @@ export const UserContext = createContext();
 function MyApp({ Component, pageProps }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-    <Script src="./script.js" strategy="beforeInteractive"/>
-      return (
+  return (
+    <>
+
     <Provider store={store}>
       <UserContext.Provider value={{ state, dispatch }}>
       <Head>
         <title>Ventura</title>
         <link rel="shortcut icon" href="/images/fevicon.png" /> 
       </Head>
+      
         <div id="modal_overlays"></div>
         <Component {...pageProps} />
       </UserContext.Provider>
     </Provider>
+        </>
     );
 }
 

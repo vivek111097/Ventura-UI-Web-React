@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import Header from "../../../global/Header.component";
 import ButtonUI from "../../../ui/Button.component";
 import { validatePAN } from "../../../validation/Validation.jsx";
@@ -10,8 +12,8 @@ import AxiosInstance from "../../../../Api/Axios/axios";
 import Loader from "../../../ui/Loader/Loader.component";
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
 import { STORE_PAN } from "../../../../Redux/Landing";
-import { useRouter } from "next/router";
 import InvalidPan from "../../../ui/Popups/PANValidation/InvalidPan";
+import FatcaValidation from "../../../ui/Popups/PANValidation/FatcaValidation";
 const EnterPan = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [isDisabled, setisDisabled] = useState(true);
@@ -20,13 +22,16 @@ const EnterPan = (props) => {
   const [icon, setIcon] = useState(false);
   const [buttonText, setButtonText] = useState("");
   const [content, setcontent] = useState("");
-
+  const [checkbox, setcheckbox] = useState(true);
+  const [isPanValid, setisPanValid] = useState(true);
+  const [showPanErrorMsg, setshowPanErrorMsg] = useState(false);
   const {
     register,
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
+    trigger,
+    formState: { errors, isValid, isDirty },
   } = useForm();
   const router = useRouter();
 
@@ -58,7 +63,7 @@ const EnterPan = (props) => {
           {
             headers: {
               // session_id: props.session_id,
-              session_id: "7f6042b8-bb43-47cd-b326-68ceb1e446c9",
+              session_id: "5ebcdfdf-0496-4d50-a819-33f83de5f857",
             },
           }
         );
@@ -66,13 +71,13 @@ const EnterPan = (props) => {
         // Pan verification attempts exceeds the limit
         // receiving response from backend
         const res = await getData.data;
-        console.log(res);
+        console.log(getData);
         setisLoading(false);
         if (getData.status == 200) {
           console.log(res);
-          if (res.message == "Pan verification attempts exceeds the limit") {
-            props.toggleModal();
-          }
+          // if (res.message == "Pan verification attempts exceeds the limit") {
+          //   props.toggleModal();
+          // }
 
           let UserPANDetails = {
             name: res.name,
@@ -96,14 +101,31 @@ const EnterPan = (props) => {
     } catch (error) {
       // Error If Something Goes Wrong
       setisLoading(false);
+
+      props.toggleModal();
+  //  { props.showModal?(
+  //     <Modal onClick={toggleModal}>
+  //     <InvalidPan
+  //           buttonText={buttonText}
+  //           errorMsg={isError}
+  //           content={SomeThing}
+  //           responceType={responceType}
+  //           showModal={props.toggleModal}
+  //         />
+  //     </Modal>
+  //   ):null}
       reset();
       console.log(error);
     }
   };
-
-  console.log(errors);
-  // console.log(isDirty)
-  // console.log(isValid)
+  // const displayFatcaDeclaration = () => {
+  //   props.toggleModal();
+  //   props.showModal ? (
+  //     <Modal onClick={toggleModal}>
+  //       <FatcaValidation />
+  //     </Modal>
+  //   ) : null;
+  // };
   useEffect(() => {
     var lineItem = document.querySelectorAll(".animate__animated");
     lineItem.forEach((item, index) => {
@@ -143,36 +165,61 @@ const EnterPan = (props) => {
               These details are required by SEBI to open your demat account.
             </p>
             <form onSubmit={handleSubmit(onSubmit)}>
-              {/* PAN Number Input */}
+              {/* Tooltip for Invalid Pan */}
               <div className="inputTooltip animate__animated">
-                <div className="tooltip hide">
-                  <div className="icon-Access-denied "></div>  
-                  <span className="tooltiptext tooltip-top">PAN details invalid!</span>
-                </div>
+              
+                  <div className={`tooltip ${!showPanErrorMsg && "hide"} `} >
+                    <div className="icon-Access-denied "></div>
+
+                    <span className="tooltiptext tooltip-top">
+                     
+                    PAN details invalid! 
+                    </span>
+
+                    {/* <span className="tooltiptext tooltip-top">
+                    PAN details invalid! {errors.pan.message}
+                  </span> */}
+                  </div>
+               
+                {/* PAN Number Input */}
                 <input
                   type="text"
-                  className=" form-control"
+                  className="form-control"
                   id="pan"
                   placeholder="Enter PAN"
                   maxLength={10}
                   {...register("pan", {
-                    // pattern: {
-                    //   value: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/,
-                    //   message: "Invalid PAN Number",
-                    // },
-                    required: "PAN Number is required",
+                    pattern: {
+                      value: /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}$/,
+                      message: "Invalid PAN Number",
+                    },
+                    // required: "PAN Number is required",
                     maxLength: {
                       value: 10,
                       message: "Maximum 10 number",
                     },
                   })}
-                  onKeyUp={(e) => {
-                    {
-                      e.target.value.length == 10
-                        ? setisDisabled(false)
-                        : setisDisabled(true);
+                  onChange={(e)=>{
+                    e.preventDefault()
+                    setValue("pan",e.target.value.replace(/[^a-z0-9]/gi, "").toLocaleUpperCase())
+                  if(e.target.value.length==10){
+                    if( /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(e.target.value)){
+                      setshowPanErrorMsg(false);
+                      setisPanValid(true)
+                      if(!checkbox){
+                        setisDisabled(true)
+                      }
+                      else{
+                        setisDisabled(false)
+                      }
+                    }else{
+                      setshowPanErrorMsg(true)
+                      setisPanValid(false)
                     }
-                    setValue("pan", e.target.value.toLocaleUpperCase());
+                  }else{
+                    setshowPanErrorMsg(false)
+                    setisDisabled(true)
+                  }
                   }}
                 />
               </div>
@@ -182,11 +229,40 @@ const EnterPan = (props) => {
                   type="checkbox"
                   id="enableWhatsapp"
                   defaultChecked={"checked"}
+                  // onChange={(e)=>{
+                  //   console.log(e.target.checked)
+                  // }}
+                  onInput={(e) => {
+                    e.preventDefault()
+                    console.log(e.target.checked)
+                    if(e.target.checked){
+                      setcheckbox(true)
+                      if(isPanValid){
+                        setisDisabled(false)
+                      }else{
+                        setisDisabled(true)
+                      }
+                    }else{
+                      setcheckbox(false)
+                      if(isPanValid){
+                        setisDisabled(false)
+                      }else{
+                        setisDisabled(true)
+                      }
+
+                    }
+                    // e.target.checked ? setcheckbox(true) : setcheckbox(false);
+                  }}
+                  {...register("checkbox",{
+                    required:true
+                  })}
                 />
                 <label htmlFor="enableWhatsapp">
                   I’m a tax resident of India and not paying taxes to any other
                   jurisdiction(s).
-                  <a href="#">Know more</a>
+                  {/* <Link href="#">
+                    <a onClick={displayFatcaDeclaration}>Know more</a>
+                  </Link> */}
                 </label>
               </div>
               <div className={`animate__animated ${styles.note}`}>

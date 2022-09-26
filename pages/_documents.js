@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 class MyDocument extends Document {
   render() {
@@ -11,6 +12,7 @@ class MyDocument extends Document {
           <Main />
           <div id="modal_overlays"></div>
           <NextScript />
+<Script src="./Script.js" strategy="beforeInteractive"/>
         </body>
       </Html>
     );

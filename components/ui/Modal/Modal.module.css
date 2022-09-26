@@ -32,7 +32,7 @@
 .signature_modal {
   position: fixed;
   background-color: white;
-  padding: 20px;
+  padding:40px 20px 20px;
   border-radius: 24px;
   z-index: 30;
   top: 50%;

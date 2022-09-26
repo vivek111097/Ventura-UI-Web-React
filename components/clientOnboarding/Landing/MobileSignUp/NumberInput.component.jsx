@@ -47,23 +47,27 @@ const NumberInput = (props) => {
         phone: parseInt(data.phone),
         enable_whatsapp: data.enableWhatsapp,
       };
-      console.log(APIData);
+      // console.log(APIData);
+      // Data sent to the API to receive OTP
       const getData = await AxiosInstance.post("/signup/user/phone", {
         ...APIData,
       });
+      // Generating session ID
       const getSession_ID = await AxiosInstance.post("/signup/session-id", {
         ...APIData,
       });
 
-      // receiving response from backend
-
+      // response from backend
       const sessionRes = await getSession_ID.data;
       const res = await getData.data;
       if (getSession_ID.status == 200) {
-        console.log(sessionRes);
-        console.log(res);
+        // console.log(sessionRes);
+        console.log(getData);
+
         setisLoading(false);
         setotpSent(true);
+
+        // Storing The User Data to Redux
         let UserSession = {
           session_id: sessionRes.session_id,
           phone: parseInt(sessionRes.phone),
@@ -74,6 +78,7 @@ const NumberInput = (props) => {
           returning_user: res.returning_user,
         };
         props.storeSession(UserSession);
+
       } else {
         props.toggleModal();
       }
@@ -87,7 +92,8 @@ const NumberInput = (props) => {
   };
 
   useEffect(() => {
-    var lineItem = document.querySelectorAll(".animate__animated");
+    // Adding Anitmation to div's
+    const lineItem = document.querySelectorAll(".animate__animated");
     lineItem.forEach((item, index) => {
       item.className += " animate__fadeInUp animate__delay_" + index;
     });

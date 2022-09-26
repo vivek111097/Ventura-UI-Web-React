@@ -3,9 +3,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AxiosInstance from "../../../../Api/Axios/axios";
 import styles from "./AddBank.module.css";
+import { connect } from 'react-redux';
+import { SET_SELECTED_BANK } from "../../../../Redux/Landing";
+import { useRouter } from 'next/router'
 
-const AddBank = () => {
-  const [bankName,setBankName]=useState("");
+const AddBank = (props) => {
+   const router = useRouter()
   const [bankData, setBankData] = useState([]);
   const getBankData = async (key) => {
     if (key != "") {
@@ -13,7 +16,8 @@ const AddBank = () => {
         `signup/user/bank/banks?search=${key}`,
         {
           headers: {
-            session_id: "bc693998-bf62-4193-b859-be7003cda053",
+            // session_id: props.session_id,
+             session_id: "82275b0c-9f2c-4c7b-9dc0-1972f4f55064",
           },
         }
       );
@@ -36,6 +40,13 @@ const AddBank = () => {
       setBankData([]);
     }
   };
+
+  const AfterBankSelect = (bankName) => {
+    props.storeBankName(bankName);
+    router.push("/co/bank/select-branch")
+
+  }
+
   return (
     <div className={styles.formContainer}>
       <p className={styles.add_bank_account}>Add Bank Account</p>
@@ -54,17 +65,24 @@ const AddBank = () => {
           placeholder="Search your bank"
           type="text"
           onKeyUp={(e) => getBankData(e.target.value)}
-          value={bankName}
         />
         <img className={styles.search_icon} src="/images/search.svg" alt="" />
       </div>
-      <p className={styles.search_result}>search Result</p>
-      <div className={styles.banklist }>
-      <ul >
-        {bankData.map((bank, i) => (
-          <li onSelect={(e)=>console.log(e)} className={styles.banklistItem} key={i}>{bank.name}</li>
-        ))}
-      </ul>
+      {!bankData.length == 0 && (
+        <p className={styles.search_result}>search Result</p>
+      )}
+      <div className={styles.banklist}>
+        <ul>
+          {bankData.map((bank, i) => (
+            <li
+              onClick={()=>AfterBankSelect(bank.name)}
+              className={styles.banklistItem}
+              key={i}
+            >
+              {bank.name}
+            </li>
+          ))}
+        </ul>
       </div>
       {/* 
       <div className={styles.banks}>
@@ -109,4 +127,19 @@ const AddBank = () => {
   );
 };
 
-export default AddBank;
+
+const mapStateToProps = (state) => {
+  return {
+    phone: state.LandingReducer.user.phone,
+    session_id: state.LandingReducer.user.session_id,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeBankName: (bankName) => dispatch(SET_SELECTED_BANK(bankName)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBank);
+

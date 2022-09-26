@@ -19,7 +19,8 @@ const initialState = {
     IsPANValidated: false,
     pan: null,
     bank_details:{
-      selected_bank:null
+      selected_bank: null,
+      selected_branch:null
     }
   },
 };
@@ -105,14 +106,24 @@ const Landing_slice = createSlice({
       };
     },
     
-    SET_SELECTED_BANK:(state,action)=>{
-      const {bankName}=action.payload;
-      const storeBankName=produce(state.user.bank_details,(draft)=>{
-        draft.selected_bank=bankName;
+    SET_SELECTED_BANK: (state, action) => {
+      const bankName = action.payload;
+      const storeBankName = produce(state.user,(draft)=>{
+        draft["bank_details"].selected_bank = bankName;
       })
       return{
         ...state,
         user:storeBankName
+      }
+    },
+    SET_SELECTED_BRANCH: (state, action) => {
+      const branchName = action.payload;
+      const storeBranchName = produce(state.user, (draft) => {
+        draft["bank_details"].selected_branch = branchName;
+      })
+      return {
+        ...state,
+        user: storeBranchName
       }
     }
   },

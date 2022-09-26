@@ -51,14 +51,14 @@ export const validatePANOrAddhar = (pan_Or_Aadhar) => {
       console.log("Invalid Aaadhar number");
       return{
         type:"A",
-        error:"Invalid "
+        valid:false
       }
      
     }else{
-      return{
-        type:"A",
-        error:"Invalid "
-      }
+      return {
+        type: "A",
+        valid: true,
+      };
     }
 
   } else {
@@ -66,23 +66,24 @@ export const validatePANOrAddhar = (pan_Or_Aadhar) => {
       // Checking If Individual PAN is Valid or Not
       if (IndividualPANRegex.test(pan_Or_Aadhar)) {
         console.log("Valid PAN");
-        return{
-          type:"P",
-          error:"Valid Pan "
-        }
+        return {
+          type: "P",
+          valid: true,
+        };
       } else {
         // return error message if string is not valid
         console.log("NRI");
         return{
           type:"P",
-          error:"Invalid "
+          valid:false
         }
       }
     } else {
-      return{
-        type:"P",
-        error:"Valid Pan "
-      }
+      console.log("InValid PAN");
+      return {
+        type: "P",
+        valid: false,
+      };
     }
   }
 };

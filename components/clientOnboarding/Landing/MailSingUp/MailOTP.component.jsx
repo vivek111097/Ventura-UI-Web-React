@@ -410,13 +410,13 @@ const MailOTP = (props) => {
                   {counter === 0 ? null : <>00:{counter}s</>}
                 </div>
                 <div className="col-6 text-right">
-                  {counter === 0 && (
+                  {/* {counter === 0 && ( */}
                     <Link href="">
-                      <a className="btnLInk" onClick={resendOtp}>
+                     <a className={`btnLInk ${counter!=0 && "disabled"}`} onClick={resendOtp}>
                         Resend OTP
                       </a>
                     </Link>
-                  )}
+                  {/* )} */}
                 </div>
               </div>
               {isOtpErrorMSgVisible && (

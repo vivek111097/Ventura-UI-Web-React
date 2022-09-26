@@ -21,9 +21,15 @@
 .search_content input {
   padding-right: 40px;
 }
+
+.search_content input:focus{
+  outline: 0;
+  box-shadow: none;
+  border-color: #AFA9FC;
+}
 .search_icon {
   position: absolute;
-  top: 16px;
+  top: 15px;
   right: 16px;
 }
 .banks{
@@ -61,23 +67,42 @@
 }
 
 .banklistItem{
-
-padding: 0px 16px;
 list-style: none;
 border-bottom: 1px solid#E0DFE7;
 padding: 16px;
 }
 .banklistItem:last-child{
   border-bottom: none;
-  padding-bottom: 0px;
 }
 
 .banklist{background: #F8F8F8;
 border-radius: 12px;
+max-height: 250px;
+overflow: auto;
+}
+
+.banklist::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.banklist::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+.banklist::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #6B6874;
 }
 
 .banklist ul{
   padding: 0;
+  margin: 0;
 }
 
 .search_result{

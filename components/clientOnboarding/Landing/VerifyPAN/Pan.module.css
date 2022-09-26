@@ -40,9 +40,15 @@
 }
 .panCardBox .panCont {
   position: absolute;
-  bottom: 8px;
+  top: 50%;
+  transform: translateY(-50%);
 }
+
 .panCardBox .list {
+  margin-bottom: 12px;
+}
+.panCardBox .list:last-child {
+  margin-bottom: 0;
 }
 .panCardBox .list span {
   font-weight: 400;
@@ -53,7 +59,7 @@
 .panCardBox .list h4 {
   font-weight: 600;
   font-size: 14px;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
   margin-top: 5px;
   color: #191442;
 }
