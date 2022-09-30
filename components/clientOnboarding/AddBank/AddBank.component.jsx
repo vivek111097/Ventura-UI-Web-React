@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AxiosInstance from "../../../Api/Axios/axios";
 import styles from "./AddBank.module.css";
+import { connect } from "react-redux";
 
 const AddBank = () => {
   const [bankData, setBankData] = useState([]);
@@ -12,7 +13,8 @@ const AddBank = () => {
         `signup/user/bank/banks?search=${key}`,
         {
           headers: {
-            session_id: "bc693998-bf62-4193-b859-be7003cda053",
+            // session_id: "bc693998-bf62-4193-b859-be7003cda053",
+            session_id:props.session_id
           },
         }
       );
@@ -124,4 +126,18 @@ const AddBank = () => {
   );
 };
 
-export default AddBank;
+
+const mapStateToProps = (state) => {
+  return {
+    phone: state.LandingReducer.user.phone,
+    session_id: state.LandingReducer.user.session_id,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeBankName: (bankName) => dispatch(SET_SELECTED_BANK(bankName)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBank);

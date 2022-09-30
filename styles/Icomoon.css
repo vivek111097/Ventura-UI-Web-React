@@ -58,7 +58,6 @@
 }
 .icon-camera:before {
   content: "\e908";
-  color: #10b349;
 }
 .icon-clear-picture:before {
   content: "\e909";
@@ -146,7 +145,6 @@
 }
 .icon-Plus:before {
   content: "\e91f";
-  color: #e0dfe7;
 }
 .icon-question:before {
   content: "\e920";

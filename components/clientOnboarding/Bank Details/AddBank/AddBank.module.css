@@ -4,7 +4,6 @@
   align-items: center;
   padding: 16px;
   gap: 16px;
-  width: 798px;
   height: 56px;
   background: #effff5;
   border-radius: 12px;
@@ -13,6 +12,7 @@
 .formContainer {
   max-width: 798px;
   margin: 20px auto;
+  padding: 0 15px;
 }
 .search_content {
   position: relative;
@@ -34,45 +34,105 @@
 }
 .banks{
   display: flex;
-
-
-}
-.popular_bank {
-}
-.popular_bank ul {
-
-  
 }
 
-.popular_bank li {
-
-}
-.popular_bank li:last-child {
-
-}
-
-.all_bank {
-
-}
-.all_bank li {
-
+.bankTitle{
+  font-size: 12px;
+  color: #6B6874;
+  font-weight: 600;
 }
 
-.banks {
-
+.bankIcon{
+  width: 38px;
+  height: 38px;
+  border-radius: 100%;
+background-color: #fff;
+border: 1px solid #E0DFE7;
 }
 
-.all_bank ul {
+.row{
+  display: flex;
+  flex-wrap: wrap;
+  margin:0 -15px;
+}
 
+.col{
+  flex: 0 0 50%;
+  max-width: 50%;
+  padding: 0 15px;}
+
+.card, .all_banksCard{
+  background-color: #F8F8F8;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.all_banksCard{
+  padding: 0;
+}
+
+.popular_banksList{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.popular_banksList> li{
+  flex:  0 0 25%;
+  max-width: 25%;
+}
+
+.all_bankList{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.all_bankList::-webkit-scrollbar-track,
+.popular_banksList::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.all_bankList::-webkit-scrollbar,
+.popular_banksList::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+.all_bankList::-webkit-scrollbar-thumb,
+.popular_banksList::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #6B6874;
 }
 
 .banklistItem{
 list-style: none;
 border-bottom: 1px solid#E0DFE7;
-padding: 16px;
+padding: 8px 16px;
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 16px;
 }
 .banklistItem:last-child{
   border-bottom: none;
+}
+
+.banklistItem p{
+  max-width: calc(100% - 60px);
 }
 
 .banklist{background: #F8F8F8;
@@ -106,7 +166,6 @@ overflow: auto;
 }
 
 .search_result{
-width: 798px;
 height: 16px;
 font-weight: 600;
 font-size: 11px;
@@ -118,7 +177,6 @@ color: #6B6874;
 }
 
 .add_bank_account{
-  width: 798px;
   height: 34px;
   font-weight: 600;
   font-size: 24px;
@@ -127,10 +185,22 @@ color: #6B6874;
 }
 
 .note{
-width: 798px;
 height: 22px;
 font-weight: 400;
 font-size: 16px;
 line-height: 140%;
 color: #6B6874;
+}
+
+@media (max-width: 767px){
+  .col{
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 25px;
+  }
+
+  .popular_banksList> li{
+    flex: 0 0 33%;
+    max-width: 33%;
+  }
 }

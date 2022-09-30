@@ -41,7 +41,8 @@ const PANCardDetails = (props) => {
             </div>
           </div>
           <Link href={"/co/pan"}><a  className={styles.notYourPan}>Not your PAN? Try again</a></Link>
-          <Link href={"/co/nominee"}><ButtonUI type={"submit"}>Continue</ButtonUI></Link>
+          <Link href={"/co/kyc"}><ButtonUI type={"submit"}>Continue</ButtonUI></Link>
+          <Link href={"/co/nominee"}><ButtonUI type="button">Dummy Add Nominee</ButtonUI></Link>
         </div>
       </section>
     </>
@@ -51,7 +52,7 @@ const PANCardDetails = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    pan: state.LandingReducer.user.pan || "",
+    pan: state.LandingReducer.user.pan,
     phone: state.LandingReducer.user.phone || "",
     showModal: state.modalReducer.showModal,
   };

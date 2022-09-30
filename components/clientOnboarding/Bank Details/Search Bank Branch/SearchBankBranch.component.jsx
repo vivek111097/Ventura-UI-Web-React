@@ -11,8 +11,8 @@ const SearchBankBranch = (props) => {
         `/signup/user/bank/branches?bank=${props.selected_bank}&search=${key}`,
         {
           headers: {
-            session_id: "2395a076-e0df-4827-adfd-912b8b46e40a",
-            // session_id: props.session_id,
+            // session_id: "2395a076-e0df-4827-adfd-912b8b46e40a",
+            session_id: props.session_id,
           },
         }
       );

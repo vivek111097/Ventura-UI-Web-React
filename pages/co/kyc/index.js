@@ -6,7 +6,7 @@ const Kyc = () => {
   return (
     <>
         <CompleteEkyc />
-        <ConfirmDetails />
+        {/* <ConfirmDetails /> */}
     </>
   )
 }

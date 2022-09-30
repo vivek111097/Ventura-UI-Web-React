@@ -1,3 +1,8 @@
+/* :root{
+  --x: 0;
+  --y: 0;
+  } */
+
 @font-face {
   font-family: "sorabold";
   src: url("./fonts/sora-bold-webfont.woff2") format("woff2"),
@@ -155,6 +160,34 @@ a {
   outline: 0;
   box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
 }
+
+.form-select{
+  position: relative;
+}
+
+select.form-control{
+  appearance: none;
+}
+
+.form-select:after{
+  content: '\e901';
+  font-family: 'icomoon';
+  position: absolute;
+  font-size: 11px;
+  color: #B0ADBE;
+  top: 18px;
+  right: 20px;
+  transform: rotateZ(90deg);
+}
+
+.react-datepicker__input-container::after{
+  content: '\e907';
+  font-family: 'icomoon';
+  position: absolute;
+  font-size: 18px;
+  top: 15px;
+  right: 15px;
+}
 /* Custom Button Input End */
 
 /* Custom Input Label */
@@ -173,6 +206,10 @@ a {
   box-shadow: 0px 4px 8px -2px #2d2b4029;
   border-radius: 12px;
   overflow: hidden;
+}
+
+.react-datepicker__year-read-view, .react-datepicker__month-read-view, .react-datepicker__month-year-read-view{
+  visibility: visible !important;
 }
 
 .datepicker .react-datepicker__header {
@@ -264,25 +301,14 @@ a {
   border-radius: 12px;
   cursor: pointer;
   width: 100%;
+  position: relative;
 }
 .btn-outline:not(:disabled), .btn-outline:not([disabled]){
   background-color: transparent;
   border: 2px solid #191442;
   color: #191442
 }
-.btn:hover {
-  color: #fff;
-  background-color: #4e478c;
-}
-.btn:active {
-  color: #fff;
-  background-color: #4e478c;
-}
-.btn:focus {
-  color: #fff;
-  background-color: #4e478c;
-  box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
-}
+
 .btn:disabled,
 .btn[disabled] {
   background-color: #b0adbe;
@@ -293,6 +319,74 @@ a {
   color: #ff844b;
   font-weight: 600;
   font-size: 14px;
+}
+
+.btn-sticky{
+  position: sticky;
+  padding-bottom: 20px;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 31.64%);
+  padding-top: 24px;
+}
+
+
+.btn:not([disabled]) .shiny {
+  --px: 0;
+  --py: 0;
+  border-radius: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.btn .shiny:after {
+  --bgColor: var(--color, rgba(255, 255, 255, 0.5));
+  content: '';
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  transition: all 0.3s linear;
+  position: absolute;
+  width: 240px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--bgColor) 45%, var(--bgColor) 55%, transparent 100%);
+  opacity: 0;
+  z-index: 9999;
+  transform: translateX(calc(var(--px) * 1px)) translateX(-50%);
+}
+
+.btn.btn-outline .shiny:after{
+  --bgColor: var(--color, rgba(0, 0, 0, 0.5));
+}
+.btn .shiny:hover:after {
+  opacity: 0.4;
+}
+.icon_background{
+
+}
+
+.btn .shiny span {
+  position: absolute;
+  background: rgba(255, 255, 255, .5);
+  opacity: 0.5;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: animate .5s linear infinite;
+}
+@keyframes animate {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  100% {
+    width: 500px;
+    height: 500px;
+    opacity: 0;
+  }
 }
 
 /* Custom Button Css End */
@@ -792,4 +886,38 @@ input[type="number"] {
     padding-bottom: 20px;
   }
 
+}
+
+.cropper-dashed{
+  border: 2px solid #fff!important;
+  opacity: 1!important;
+}
+.cropper-line{
+  background-color: #fff!important;
+}
+.cropper-line.line-s{
+  height: 2px!important;
+  opacity: 1!important;
+  bottom:0!important;;
+}
+.cropper-line.line-n{
+  height: 2px!important;
+  opacity: 1!important;
+  top:0!important;;
+}
+.cropper-line.line-e{
+  width: 2px!important;
+  opacity: 1!important;
+  right:0!important;;
+}
+.cropper-line.line-w{
+  width: 2px!important;
+  opacity: 1!important;
+  left:0!important;;
+}
+.cropper-face{
+  opacity: 0!important;
+}
+.cropper-point{
+  display:none;
 }

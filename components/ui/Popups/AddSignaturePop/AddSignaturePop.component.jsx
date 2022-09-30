@@ -76,7 +76,7 @@ const AddSignaturePopup = () =>{
                         
                         <div className="tabcontainer">
                             <div className={`content ${getActiveClass(1, "active-content")}`}>
-                                <MyDropzone  func={pull_data} />
+                                <MyDropzone func={pull_data} />
                                 <div className={styles.orupload}>
                                     <span className={styles.spantxt}>OR upload via</span>
                                 </div>
@@ -101,7 +101,7 @@ const AddSignaturePopup = () =>{
                     </div>
                     <div className={styles.SignBox}>
                         {Signtype == 'pdf' && (
-                            <iframe className={styles.SignBoxFrame} src={Sign}  />
+                            <iframe className={styles.SignBoxFrame} src={Sign}></iframe>
                         )}
                         {Signtype != 'pdf' && (
                             <img className={styles.SignBoxImg} src={Sign} />

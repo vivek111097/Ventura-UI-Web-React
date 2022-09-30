@@ -8,4 +8,6 @@ import { useEffect } from "react";
         });
     }, [])
 }
-export default Script
+
+
+export default Script;

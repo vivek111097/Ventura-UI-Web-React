@@ -1,10 +1,39 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Header from '../../global/Header.component'
 import ButtonUI from '../../ui/Button.component'
+import { connect } from 'react-redux'
+import { useRouter } from 'next/router'
 
 import styles from './CompleteEkyc.module.css'
 
-const CompleteEkyc = () => {
+
+
+const CompleteEkyc = (props) => {
+  const router = useRouter();
+
+
+  
+
+  const handalDigiLocker= async()=>{
+
+    // window.open(
+    //   `https://api.digitallocker.gov.in/public/oauth2/1/authorize?response_type=code&
+    //   client_id=${process.env.digilockerClientID}&
+    //   redirect_uri=${process.env.digilockerRedirectUrl}&
+    //   state=${props.phone}`,
+    // 'popup',`width=600,height=600`);
+    console.log(`https://api.digitallocker.gov.in/public/oauth2/1/authorize?response_type=code&
+    client_id=${process.env.digilockerClientID}&
+    redirect_uri=${process.env.digilockerRedirectUrl}&
+    state=${props.phone}`);
+    router.push(`https://api.digitallocker.gov.in/public/oauth2/1/authorize?response_type=code&
+       client_id=${process.env.digilockerClientID}&
+       redirect_uri=${process.env.digilockerRedirectUrl}&
+       state=${props.phone}`);
+  }
+  const startKRA=()=>{
+    router.push('/kra')
+  }
   return (
     <>
 
@@ -62,14 +91,33 @@ const CompleteEkyc = () => {
 
 
           <div className={styles.my}>
-            <ButtonUI>Start e-KYC</ButtonUI>
+
+            <ButtonUI onClick={handalDigiLocker}>Start e-KYC</ButtonUI>
           </div>
 
-          <h3 className={styles.textPrimary}>Mobile not linked with Aadhaar</h3>
+          <h3 onClick={startKRA} className={styles.textPrimary}>Mobile not linked with Aadhaar</h3>
         </div>
       </section>
     </>
   )
 }
 
-export default CompleteEkyc
+
+
+
+
+const mapStateToProps = (state) => {
+  return {
+    pan: state.LandingReducer.user.pan.pan,
+    phone: state.LandingReducer.user.phone,
+    showModal: state.modalReducer.showModal,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleModal: () => dispatch(TOGGLE_MODAL()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompleteEkyc);

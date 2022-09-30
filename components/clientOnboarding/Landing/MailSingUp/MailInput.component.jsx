@@ -1,24 +1,35 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
+import { Router, useRouter } from "next/router";
+import { auth } from "./firebse/firebse";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+import { TOGGLE_MODAL } from "../../../../Redux/modal";
 import { STORE_EMAIL } from "../../../../Redux/Landing";
+
 import ButtonUI from "../../../ui/Button.component";
 import styles from ".././Landing.module.css";
 import AxiosInstance from "../../../../Api/Axios/axios";
 import Loader from "../../../ui/Loader/Loader.component";
 import Modal from "../../../ui/Modal/Modal.component";
-import { TOGGLE_MODAL } from "../../../../Redux/modal";
-import { auth,} from "./firebse/firebse";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { Router, useRouter } from "next/router";
-
 
 const MailInput = (props) => {
-  const router=useRouter();
+  // Creating Router For Routing Purpose
+  const router = useRouter();
+
+  // Loading State
   const [isLoading, setisLoading] = useState(false);
-  const [errorMsg, seterrorMsg] = useState(null);
+
+  // Error Msg State
+  // const [errorMsg, seterrorMsg] = useState(null);
+
+  // OTP State
   const { otpSent, setotpSent } = props;
+
+  // Modal State
   const { showModal, toggleModal } = props;
+
   const {
     register,
     trigger,
@@ -27,7 +38,7 @@ const MailInput = (props) => {
     reset,
     formState: { errors, isDirty, isValid },
   } = useForm();
-console.log(signInWithGoogle)
+
   // Defining Regex for Email
   const MailRegex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i);
 
@@ -40,20 +51,17 @@ console.log(signInWithGoogle)
     }
   };
 
-  // const continueWithGoogle=()=>{
-  
-  // }
   // Handling Form  on Submit USing Async Await
   const onSubmit = async (data) => {
     try {
+      // Set Loading to true When Submitting the Form
       setisLoading(true);
-      console.log(data.email);
 
       // Sending data to API
       const APIData = {
         email: data.email,
       };
-      console.log(APIData);
+
       const getData = await AxiosInstance.post("/signup/user/email", APIData, {
         headers: {
           session_id: props.session_id,
@@ -63,65 +71,74 @@ console.log(signInWithGoogle)
       //   receiving response from backend
       const res = await getData.data;
       if (getData.status == 200) {
-        console.log(res);
+        // set loading False if Response is Successful
         setisLoading(false);
+
+        // set OTP True if Response is Successful
         setotpSent(true);
+
         let MailData = {
           email: data.email,
           IsEmailOTPSent: true,
         };
+
+        // Storing tha data in redux
         props.setEmail(MailData);
       } else {
+        // If Anything Goes Wrong then Display Modal With Error && Set Loading to True
         props.toggleModal();
         setisLoading(false);
       }
+
+      // Reset The Input Field
       reset();
     } catch (error) {
       // Error IF Something Goes Wrong
       props.toggleModal();
-      console.log(error);
       setisLoading(false);
+      // Reset The Input Field
       reset();
     }
   };
-  const signInWithGoogle=async()=>{
-
+  const signInWithGoogle = async () => {
     try {
-
+      // Creating Continue With G-mail Functionality
       const provider = new GoogleAuthProvider();
 
-const userData=await signInWithPopup(auth,provider)
+      const userData = await signInWithPopup(auth, provider);
 
-const response= userData.user;
+      const response = userData.user;
 
+      const APIData = {
+        email: response.email,
+      };
 
+      const getData = await AxiosInstance.post(
+        "/signup/user/email",
+        { ...APIData },
+        {
+          headers: {
+            session_id: props.session_id,
+          },
+        }
+      );
 
-console.log(response)
-
-const APIData = {
-email: response.email,
-};
-console.log(APIData);
-const getData = await AxiosInstance.post("/signup/user/email", {...APIData}, {
-headers: {
-  session_id:props.session_id||"93a219b5-40b2-44d2-af55-0b9ba642d77a"
-//   props.session_id,
-},
-});
-console.log(getData)
-const res = await getData.data;
-  if (getData.status == 200) {
-    console.log(res);
-router.push("/co/welcome")
-  } else {
-    // props.toggleModal();
-  }
-// console.log(response)
+      const res = await getData.data;
+      if (getData.status == 200) {
+        // Redirect To Welcome Page Instead of OTP Component
+        router.push("/co/welcome");
+      } else {
+        // props.toggleModal();
+      }
+      // console.log(response)
     } catch (error) {
-        console.log(error)
+      //temprary
+      router.push("/co/welcome");
+      console.log(error);
     }
-}
+  };
   useEffect(() => {
+    // Adding Animation to div's
     var lineItem = document.querySelectorAll(".animate__animated");
     lineItem.forEach((item, index) => {
       item.className += " animate__fadeInUp animate__delay_" + index;
@@ -135,8 +152,8 @@ router.push("/co/welcome")
         <>
           <h2 className="title animate__animated">Add your email</h2>
           <p className="subTitle animate__animated">
-            This is where we&lsquo;ll send you important updates and insights on the
-            market.
+            This is where we&lsquo;ll send you important updates and insights on
+            the market.
           </p>
           {/* Email Form  */}
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -163,24 +180,33 @@ router.push("/co/welcome")
 
             {/* Submit BUtton */}
             <div className="animate__animated">
-              <ButtonUI btnType="btn btn-outline" type={"submit"} disabled={!isDirty || !isValid}>
+              <ButtonUI
+                btnType="btn btn-outline"
+                type={"submit"}
+                disabled={!isDirty || !isValid}
+              >
                 Verify Email
               </ButtonUI>
             </div>
             <div className={`animate__animated ${styles.or}`}>OR</div>
           </form>
           <div className="animate__animated">
-            <ButtonUI btnType={styles.gmail} type={"submit"} onClick={signInWithGoogle}> <img src="/images/googleMail.svg" alt="gmail Icon" /> Continue with Google</ButtonUI>
+            <ButtonUI
+              btnType={styles.gmail}
+              type={"submit"}
+              onClick={signInWithGoogle}
+            >
+              <img src="/images/googleMail.svg" alt="gmail Icon" /> Continue
+              with Google
+            </ButtonUI>
           </div>
-          
         </>
       )}
       {showModal === true ? (
         <Modal onClick={toggleModal}>
-        <div className="center">
-
-        <h3 className="title">Some thing went Wrong</h3>
-        </div>
+          <div className="center">
+            <h3 className="title">Some thing went Wrong</h3>
+          </div>
         </Modal>
       ) : null}
     </>

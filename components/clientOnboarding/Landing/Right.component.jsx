@@ -3,6 +3,7 @@ import NumberSignUpCard from "./MobileSignUp/NumberSignUpCard.component";
 import MailSignUpCard from "./MailSingUp/MailSignUpCard.component";
 import { connect } from "react-redux";
 import Occupation from "./EKYC/Occupation.component";
+import Link from "next/link";
 
 const Right = (props) => {
   // console.log(props.IsPhoneOTPValidated);
@@ -22,7 +23,7 @@ const Right = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return {
     IsPhoneOTPValidated: state.LandingReducer.user.IsPhoneOTPValidated,
   };

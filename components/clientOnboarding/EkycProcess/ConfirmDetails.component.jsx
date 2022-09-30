@@ -2,8 +2,13 @@ import React from 'react'
 import Header from '../../global/Header.component'
 import ButtonUI from '../../ui/Button.component'
 import styles from './CompleteEkyc.module.css'
+import { useRouter } from 'next/router'
 
 const ConfirmDetails = () => {
+    const router = useRouter()
+    const handelEkyc=()=>{
+        router.push('co/kyc/completed-ekyc')
+    }
     return (
         <>
 
@@ -132,7 +137,7 @@ const ConfirmDetails = () => {
 
                     </div>
 
-                    <ButtonUI>Continue</ButtonUI>
+                    <ButtonUI onClick={handelEkyc}>Continue</ButtonUI>
 
                 </div>
             </section>

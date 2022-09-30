@@ -8,12 +8,32 @@ import EnterPan from "./VerifyPAN/EnterPan.component";
 import PANCardDetails from "./VerifyPAN/PANCardDetails.component";
 import PickAPlan from "./PickPlan/PickAPlan.component";
 import AuthContext from "./Store";
+import flagsmith from "flagsmith/isomorphic";
+import { useFlags } from "flagsmith/react";
 
 const Landing = () => {
-  const [leftVisible, setLeftVisible] = useState(true);
-  const [rightVisible, setRightVisible] = useState(true);
+  // const flags = useFlags(['my_cool_feature','banner_size']);
+// const timer=flagsmith.hasFeature()
+const flags = useFlags(['otp_timer'], ['example_trait']);
+const newflags = flagsmith.getAllFlags()
+// console.log(newflags)
+// flags.font_size.enabled=true
+flags.otp_timer.value=60
+// flagsmith.hasFeature
+// console.log(flagsmith.hasFeature)
 
+const [leftVisible, setLeftVisible] = useState(true);
+const [rightVisible, setRightVisible] = useState(true);
+
+// console.log(flags)
+  // console.log(flags.font_size.value)
   useEffect(() => {
+    // const s=flagsmith.getFlags().then((res)=>{
+    //   console.log(res)
+    // }).catch((err)=>{
+    //   console.log(err)
+    // })
+    // console.log(s)
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
       const height = window.innerHeight;

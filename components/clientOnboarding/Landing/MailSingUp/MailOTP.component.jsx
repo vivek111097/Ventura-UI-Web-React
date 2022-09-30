@@ -10,19 +10,29 @@ import {
   SET_MOBILE_OTP_VALIDATED,
 } from "../../../../Redux/Landing";
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
+
 import ButtonUI from "../../../ui/Button.component";
 import Loader from "../../../ui/Loader/Loader.component";
 import Modal from "../../../ui/Modal/Modal.component";
 
 const MailOTP = (props) => {
+    // Modal State
   const { showModal, toggleModal } = props;
+    // Loading State
   const [isLoading, setisLoading] = useState(false);
+    // Error Msg State
   const [errorMsg, seterrorMsg] = useState(null);
 
+  // Button Disabled State
   const [isDisabled, setisDisabled] = useState(true);
+
+  // Otp Counter State
   const [counter, setCounter] = useState(60);
+
+  // Otp Sent Time Count
   const [OtpCount, setOtpCount] = useState(0);
-  // const [otpErrorMSg, setotpErrorMSg] = useState("");
+  
+  // Invalid OTP Msg
   const [isOtpErrorMSgVisible, setisOtpErrorMSgVisible] = useState(false);
   const {
     register,
@@ -47,6 +57,8 @@ const MailOTP = (props) => {
       // Storing all input in one variable
       const otp = `${otpFirst}${otpSecond}${otpThird}${otpFourth}${otpFifth}${otpSixth}`;
       const email = props.email;
+
+      // Sending data to API
       const APIData = {
         email: email,
         otp: parseInt(otp),
@@ -62,46 +74,45 @@ const MailOTP = (props) => {
       );
 
       //   receiving response from backend
-      console.log(getData);
       const res = await getData.data;
-      console.log(res);
       if (res) {
         if (getData.status == 200) {
           router.push("/co/welcome");
+
           // setisLoading(false);
+
+          // Storing tha data in redux
           props.updateEmailOtpValidation(true);
           // props.updatePhoneOtpValidation(false);
         }
       } else {
+   // If Anything Goes Wrong then Display Modal With Error && Set Loading to True
         seterrorMsg("Something went wrong");
-        // props.toggleModal();
       }
+            // Reset The Input Field
       reset();
-      // console.log(res);
     } catch (error) {
-      // errors=error.response.data.message;
-      // console.log(error.response.data.message)
-      console.log(error);
+      
+            // Error IF Something Goes Wrong
       if (error.response.data.message) {
         seterrorMsg(error.response.data.message);
       } else {
         seterrorMsg("Network Error");
       }
-      // props.toggleModal();
       setisOtpErrorMSgVisible(true);
-      setisDisabled(true)
+      setisDisabled(true);
       setOtpCount((OtpCount) => OtpCount + 1);
       setisLoading(false);
       reset();
     }
   };
-
+// Resend Otp Functionality
   const resendOtp = async () => {
     try {
       // setisOtpErrorMSgVisible(true);
-      reset()
-      setCounter(60);      
-      setisDisabled(true)
+      reset();
+      setCounter(60);
+      setisDisabled(true);
       const APIData = {
         email: props.email,
       };
@@ -118,18 +129,16 @@ const MailOTP = (props) => {
       );
       const response = await getData.data;
 
-      console.log(response);
       if (response) {
+        setOtpCount(response.attempts_left)
         // setOtpCount((OtpCount) => OtpCount + 1)
         props.updatePhoneOtpValidation(true);
       } else {
         seterrorMsg("Something went wrong");
-        // props.toggleModal();
       }
       reset();
     } catch (error) {
       seterrorMsg(error.response.data.message);
-      // props.toggleModal();
       console.log(error);
       reset();
     }
@@ -206,11 +215,7 @@ const MailOTP = (props) => {
   }
   const checkvalue = () => {
     let inputs = document.querySelectorAll("input");
-    //    inputs.forEach((item,index)=>{
-    //     console.log(item.value.length)
-    //  item.value.length
-    //     // console.log(index)
-    //    })
+
     const validInputs = Array.from(inputs).filter(
       (input) => input.value !== ""
     );
@@ -227,11 +232,11 @@ const MailOTP = (props) => {
     });
   }, []);
 
-  var maskid = props.email.replace(
+  // Masking Email ID
+  const maskid = props.email.replace(
     /^(.)(.*)(.@.*)$/,
     (_, a, b, c) => a + b.replace(/./g, "x") + c
   );
-  // alert(maskid)
   return (
     <>
       {isLoading === true ? (
@@ -411,17 +416,20 @@ const MailOTP = (props) => {
                 </div>
                 <div className="col-6 text-right">
                   {/* {counter === 0 && ( */}
-                    <Link href="">
-                     <a className={`btnLInk ${counter!=0 && "disabled"}`} onClick={resendOtp}>
-                        Resend OTP
-                      </a>
-                    </Link>
+                  <Link href="">
+                    <a
+                      className={`btnLInk ${counter != 0 && "disabled"}`}
+                      onClick={resendOtp}
+                    >
+                      Resend OTP
+                    </a>
+                  </Link>
                   {/* )} */}
                 </div>
               </div>
               {isOtpErrorMSgVisible && (
                 <div className="otpTimerResend errorMsgOtp  animate__animated">
-                  <span className="attempts">Invalid PIN {OtpCount}/3</span> :
+                  <span className="attempts">Invalid OTP {OtpCount}/3</span> :
                   Your account will get temporarily blocked after 3 wrong
                   attempts.
                 </div>

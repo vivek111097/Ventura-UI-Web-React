@@ -6,7 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore(
   {
-    middleware:[thunk, logger],
+     middleware:[thunk, logger],
     reducer:rootReducer
   }
 );

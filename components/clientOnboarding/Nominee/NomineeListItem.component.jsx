@@ -5,19 +5,19 @@ import AxiosInstance from "../../../Api/Axios/axios";
 import style from "./NomineeList.module.css";
 import { connect } from 'react-redux';
 
-const NomineeListItem = () => {
+const NomineeListItem = (props) => {
   const [nomineeList, setNomineeList] = useState([]);
   useEffect(() => {
     try {
       const getNomineeList = async () => {
         const { data } = await AxiosInstance.post(
           "/signup/user/nominee/details",
-          { phone: 8369747962 },
-          // { phone: props.phone },
+          // { phone: 8369747962 },
+          { phone: props.phone },
           {
             headers: {
-              session_id: "82275b0c-9f2c-4c7b-9dc0-1972f4f55064",
-              // session_id: props.session_id,
+              // session_id: "82275b0c-9f2c-4c7b-9dc0-1972f4f55064",
+              session_id: props.session_id,
             },
           }
         );

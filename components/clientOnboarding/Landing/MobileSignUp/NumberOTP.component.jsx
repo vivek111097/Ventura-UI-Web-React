@@ -5,22 +5,34 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { connect } from "react-redux";
 
-import ButtonUI from "../../../ui/Button.component";
 import { SET_MOBILE_OTP_VALIDATED } from "../../../../Redux/Landing";
-import Loader from "../../../ui/Loader/Loader.component";
-import AxiosInstance from "../../../../Api/Axios/axios";
-import Modal from "../../../ui/Modal/Modal.component";
 import { TOGGLE_MODAL } from "../../../../Redux/modal";
 
+import AxiosInstance from "../../../../Api/Axios/axios";
+import ButtonUI from "../../../ui/Button.component";
+import Loader from "../../../ui/Loader/Loader.component";
+import Modal from "../../../ui/Modal/Modal.component";
+
 const NumberOTP = (props) => {
-  const { showModal, toggleModal } = props;
+    // Modal State
+    const { showModal, toggleModal } = props;
+    // Loading State
   const [isLoading, setisLoading] = useState(false);
-  const [isDisabled, setisDisabled] = useState(true);
+    // Error Msg State
   const [errorMsg, seterrorMsg] = useState(null);
-  const [counter, setCounter] = useState(5);
+
+  // Button Disabled State
+  const [isDisabled, setisDisabled] = useState(true);
+
+  // Otp Counter State
+  const [counter, setCounter] = useState(60);
+
+  // Otp Sent Time Count
   const [OtpCount, setOtpCount] = useState(0);
-  const [otpErrorMSg, setotpErrorMSg] = useState("");
+  
+  // Invalid OTP Msg
   const [isOtpErrorMSgVisible, setisOtpErrorMSgVisible] = useState(false);
+
   const {
     register,
     trigger,
@@ -43,6 +55,8 @@ const NumberOTP = (props) => {
       // Storing all input in one variable
       const otp = `${otpFirst}${otpSecond}${otpThird}${otpFourth}${otpFifth}${otpSixth}`;
       const phone = props.phone;
+
+      // Sending data to API
       const APIData = {
         phone: parseInt(phone),
         otp: parseInt(otp),
@@ -58,9 +72,8 @@ const NumberOTP = (props) => {
           },
         }
       );
-      console.log(getData);
+
       const res = await getData.data;
-      // console.log(res);
       if (res) {
         // setisLoading(false);
         if (getData.status == 200) {
@@ -69,66 +82,58 @@ const NumberOTP = (props) => {
             last_access: res.returning_user.last_access,
             last_state: res.returning_user.last_state,
           };
+             // Storing tha data in redux
           let user = {
             IsPhoneOTPValidated: true,
             returning_user,
           };
           props.updatePhoneOtpValidation(user);
-          // props.toggleModal()
-          // props.storeSession(returning_user);
-        } else if (getData.status == 400) {
-          // alert("OTP has expired please SignUp again.");
-        } else {
+        }  else {
           seterrorMsg("Something went wrong");
-          // props.toggleModal();
         }
       }
       reset();
     } catch (error) {
-      // errors=error.response.data.message;
-      // console.log(error.response.data.message)
-      console.log(error);
       if (error.response.data.message) {
         seterrorMsg(error.response.data.message);
       } else {
         seterrorMsg("Network Error");
       }
-      // props.toggleModal();
       setisOtpErrorMSgVisible(true);
       setisDisabled(true);
       setOtpCount((OtpCount) => OtpCount + 1);
-      // setisLoading(false);
+      setisLoading(false);
       reset();
     }
   };
 
-  // Invalid PIN 1/3 :
+// Resend Otp Functionality
   const resendOtp = async () => {
     try {
       // setisOtpErrorMSgVisible(true);
-      reset()
-      setCounter(3);
-      // setotpErrorMSg(" Your account will get temporarily blocked after 3 wrong attempts.")
-      // setOtpCount((OtpCount) => OtpCount + 1);
-      setisDisabled(true)
+      reset();
+      setCounter(60);
+      setisDisabled(true);
       const APIData = {
         phone: parseInt(props.phone),
       };
-      const getData = await AxiosInstance.post( "/signup/user/resendotp",
-      {
-        ...APIData,
-      },
-      {
-        headers: {
-          session_id: props.session_id,
+      const getData = await AxiosInstance.post(
+        "/signup/user/resendotp",
+        {
+          ...APIData,
         },
-      }
-    );
+        {
+          headers: {
+            session_id: props.session_id,
+          },
+        }
+      );
       const response = await getData.data;
 
       console.log(getData);
       if (response) {
-        const responseLeft=response.attempts_left;
+        setOtpCount(response.attempts_left)
+        const responseLeft = response.attempts_left;
         // responseLeft===0?
         // setOtpCount((OtpCount) => OtpCount + 1)
         // props.updatePhoneOtpValidation(true);
@@ -240,11 +245,10 @@ const NumberOTP = (props) => {
       item.className += " animate__fadeInUp animate__delay_" + index;
     });
   }, []);
-const redirectToLandingPage=()=>{
-  console.log("hello")
-  window.location.reload(false)
-  
-}
+  const redirectToLandingPage = () => {
+    console.log("hello");
+    window.location.reload(false);
+  };
   const maskedMob = props.phone.toString().replace(/.(?=.{4})/g, "x");
   return (
     <>
@@ -422,17 +426,20 @@ const redirectToLandingPage=()=>{
                 </div>
                 <div className="col-6 text-right">
                   {/* {counter === 0 && ( */}
-                    <Link href="">
-                      <a className={`btnLInk ${counter!=0 && "disabled"}`} onClick={resendOtp}>
-                        Resend OTP
-                      </a>
-                    </Link>
+                  <Link href="">
+                    <a
+                      className={`btnLInk ${counter != 0 && "disabled"}`}
+                      onClick={resendOtp}
+                    >
+                      Resend OTP
+                    </a>
+                  </Link>
                   {/* )} */}
                 </div>
               </div>
               {isOtpErrorMSgVisible && (
                 <div className="otpTimerResend errorMsgOtp">
-                  <span className="attempts">Invalid PIN {OtpCount}/3</span> :
+                  <span className="attempts">Invalid OTP {OtpCount}/3</span> :
                   Your account will get temporarily blocked after 3 wrong
                   attempts.
                 </div>
@@ -446,17 +453,17 @@ const redirectToLandingPage=()=>{
           </form>
           {showModal === true ? (
             <>
-
-            <Modal onClick={toggleModal}>
-              <p className="alertTitle center">{errorMsg}</p>
-              <ButtonUI onClick={()=>{
-                toggleModal(),
-                redirectToLandingPage()
-              }}>OK</ButtonUI>
-            </Modal>
-            
+              <Modal onClick={toggleModal}>
+                <p className="alertTitle center">{errorMsg}</p>
+                <ButtonUI
+                  onClick={() => {
+                    toggleModal(), redirectToLandingPage();
+                  }}
+                >
+                  OK
+                </ButtonUI>
+              </Modal>
             </>
-          
           ) : null}
         </>
       )}

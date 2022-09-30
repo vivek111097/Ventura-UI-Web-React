@@ -26,8 +26,8 @@ const WelcomComponent = () => {
         <div className="containerMini">
           <h2 className="animate__animated title">Here’s what’s next</h2>
           <div className={styles.stepsWrap}>
-            {/* <div className={`animate__animated ${styles.Completedsteps}`}> */}
-            <div className={`animate__animated ${styles.steps}`}>
+            <div className={`animate__animated ${styles.Completedsteps}`}>
+            {/* <div className={`animate__animated ${styles.steps}`}> */}
               <div className={styles.stepsicon}>
                 <span className='icon-Complete-your-e-KYC'></span>
               </div>
@@ -81,10 +81,10 @@ const WelcomComponent = () => {
             <ButtonUI onClick={()=>router.push("/co/pan")} type={"submit"}> Create account </ButtonUI>
           </div>
           
-          <div className={`animate__animated ${styles.Reminder}`}>
+          {/* <div className={`animate__animated ${styles.Reminder}`}>
             <p className={styles.text}>Don&apos;t have everything ready?</p>
             <Link href="/"><a className={styles.link}>Set a reminder</a></Link>
-          </div>
+          </div> */}
            
         </div>
       </section>

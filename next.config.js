@@ -12,14 +12,18 @@ module.exports = (phase) => {
           return {
               env: {
                 //baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
-                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2"
+                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2",
+                digilockerRedirectUrl:"http://localhost:3000/digilocker-result",
+                digilockerClientID:"54291870"
               }
           }
       case PHASE_PRODUCTION_SERVER:
           return {
              env: {
                 // baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
-                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2"
+                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2",
+                digilockerRedirectUrl:"http://localhost:3000/digilocker-result",
+                digilockerClientID:"54291870"
 
               }
           }
@@ -28,14 +32,18 @@ module.exports = (phase) => {
           return {
             env: {
                 // baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
-                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2"
+                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2",
+                digilockerRedirectUrl:"http://localhost:3000/digilocker-result",
+                digilockerClientID:"54291870"
               }
           }
       case PHASE_EXPORT:
           return {
             env: {
                 // baseUrl:"https://kyc-stage.ventura1.com/onboarding/v2"
-                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2"
+                baseUrl: "https://kyc-stage.ventura1.com/onboarding/v2",
+                digilockerRedirectUrl:"http://localhost:3000/digilocker-result",
+                digilockerClientID:"54291870"
               }
           }
 
@@ -44,21 +52,12 @@ module.exports = (phase) => {
 
 }
 
-module.exports = {
-  async rewrites() {
-    return [
-      {
-        source: '/co/pan',
-        destination: '/co/pan/panDetails',
-      },
-    ]
-  }
-}
+
 // module.exports = {
 //   eslint: {
 //     // Warning: This allows production builds to successfully complete even if
 //     // your project has ESLint errors.
-//     ignoreDuringBuilds: true,
+//     ignoreDuringBuilds: false,
 //   },
   
 // }

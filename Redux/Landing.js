@@ -18,6 +18,7 @@ const initialState = {
     IsemailOTPValidated: false,
     IsPANValidated: false,
     pan: null,
+    dob:null,
     bank_details:{
       selected_bank: null,
       selected_branch:null
@@ -30,7 +31,7 @@ const Landing_slice = createSlice({
   initialState: initialState,
   reducers: {
     STORE_SESSION: (state, action) => {
-      console.log(action.payload)
+      // console.log(action.payload)
       const {
         session_id,
         phone,
@@ -57,7 +58,7 @@ const Landing_slice = createSlice({
     },
     
     SET_MOBILE_OTP_VALIDATED: (state, action) => {
-      console.log(action.payload)
+      // console.log(action.payload)
       const  {IsPhoneOTPValidated,returning_user}  = action.payload;
       // console.log(IsPhoneOTPValidated,returning_user)
       const OTPValidated = produce(state.user, (draft) => {
@@ -82,9 +83,9 @@ const Landing_slice = createSlice({
       };
     },
     STORE_PAN: (state, action) => {
-      console.log(state)
+      // console.log(state)
       const { IsPANValidated,UserPANDetails} = action.payload;
-      console.log(UserPANDetails)
+      // console.log(UserPANDetails)
       const addedToUser = produce(state.user, (draft) => {
         draft.pan = UserPANDetails;
         draft.IsPANValidated = IsPANValidated;
@@ -94,6 +95,17 @@ const Landing_slice = createSlice({
         user: addedToUser,
       };
     },
+
+    STORE_DOB: (state, action) => {
+      const userWithDob = produce(state.user, (draft) => {
+        draft.dob = action.payload;
+      });
+      return {
+        ...state,
+        user: userWithDob,
+      };
+    },
+
 
     SET_EMAIL_OTP_VALIDATED: (state, action) => {
       const { isvalidated } = action.payload;
@@ -136,6 +148,7 @@ export const {
   SET_MOBILE_OTP_VALIDATED,
   STORE_EMAIL,
   STORE_PAN,
+  STORE_DOB,
   SET_SELECTED_BANK
 } = Landing_slice.actions;
 export default Landing_slice.reducer;

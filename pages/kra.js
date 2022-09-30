@@ -5,7 +5,7 @@ import VerifyKra from '../components/clientOnboarding/Landing/KRA/Verify_Kra.com
 const Kra = () => {
   return (
     <>
-    <KraComponent/>
+    {/* <KraComponent/> */}
     <VerifyKra/>
     </>
   )

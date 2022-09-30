@@ -5,7 +5,7 @@ const Layout = (props) => {
   
   return (
     <>
-      {props.isAuth && <ButtonUI />}
+      {/* {props.isAuth && <ButtonUI />} */}
          <main>{props.children}</main>
     </>
   )

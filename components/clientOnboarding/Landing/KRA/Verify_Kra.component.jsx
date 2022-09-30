@@ -1,16 +1,22 @@
-import React from "react";
+
 import "react-datepicker/dist/react-datepicker.css";
 import style from "./kra.module.css";
 import DatePicker from "react-datepicker";
-import { useState } from "react";
+import React,{ useState } from "react";
 import ButtonUI from "../../../ui/Button.component";
 import { useRouter } from "next/router";
 import { connect } from "react-redux";
 
-const VerifyKra = () => {
+import { STORE_DOB } from "../../../../Redux/Landing";
+
+const VerifyKra = (props) => {
   const router = useRouter();
   const [date, setDate] = useState(null);
   const [disableBtn,setdisableBtn]=useState(true);
+
+  const handalDigiLocker=()=>{
+    router.push('co/kyc')
+  }
 
   const checkAge = (date) => {
     let dob = date.getFullYear();
@@ -18,17 +24,8 @@ const VerifyKra = () => {
     today - dob < 18 ?setdisableBtn(true):setdisableBtn(false)
   };
 
-  const verifyDOB=async ()=>{
-    const {data} = await AxiosInstance.post("/signup/kra/data/get", {
-      "phone": 8369747962,
-      "pan": "BFMPC9409P",
-      "dob": "11/10/1997"
-  }, {
-      headers: {
-        session_id: "82275b0c-9f2c-4c7b-9dc0-1972f4f55064",
-      },
-    });
-   router.push("/")
+  const HandalVerifyDOB=async ()=>{
+    router.push('kra/kra-details')
   }
   
 
@@ -40,16 +37,19 @@ const VerifyKra = () => {
         className="form-control"
         placeholderText="DD/MM/YY"
         onChange={(date) => {
+          console.log(date)
           checkAge(date);
           setDate(date);
+          props.storeDob(new Date(date).toLocaleDateString("es-CL").replace(/-/g, "/").toString())
         }}
         selected={date}
         showPopperArrow={false}
         maxDate={new Date()}
         showMonthDropdown
         showYearDropdown
+        dateFormat="dd/MM/yyyy"
         dateFormatCalendar="MMMM"
-        yearDropdownItemNumber={35}
+        yearDropdownItemNumber={100}
         scrollableYearDropdown
         popperClassName="datepicker"
         popperPlacement="top-start"
@@ -75,10 +75,10 @@ const VerifyKra = () => {
         verification is not possible, you must complete KRA verification to
         proceed.
       </div>
-      <ButtonUI disabled={disableBtn}  onClick={verifyDOB}>
+      <ButtonUI disabled={disableBtn}  onClick={HandalVerifyDOB}>
         Verify
       </ButtonUI>
-      <div className={style.retry}>Retry DigiLocker e-KYC</div>
+      <div className={style.retry} onClick={handalDigiLocker}>Retry DigiLocker e-KYC</div>
     </section>
   );
 };
@@ -89,13 +89,16 @@ const mapStateToProps = (state) => {
     showModal: state.modalReducer.showModal,
     session_id: state.LandingReducer.user.session_id,
       phone: state.LandingReducer.user.phone,
-      pan:state.LandingReducer.user.pan
+      pan:state.LandingReducer.user.pan,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleModal: () => dispatch(TOGGLE_MODAL()),
+    storeDob:(dob)=>dispatch(STORE_DOB(dob))
+    
+    
   };
 };
 

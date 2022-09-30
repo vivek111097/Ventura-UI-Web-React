@@ -3,6 +3,10 @@ import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
+
+import { STORE_PAN } from "../../../../Redux/Landing";
+import { TOGGLE_MODAL } from "../../../../Redux/modal";
+
 import Header from "../../../global/Header.component";
 import ButtonUI from "../../../ui/Button.component";
 import { validatePAN } from "../../../validation/Validation.jsx";
@@ -10,20 +14,27 @@ import Modal from "../../../ui/Modal/Modal.component";
 import styles from "./Pan.module.css";
 import AxiosInstance from "../../../../Api/Axios/axios";
 import Loader from "../../../ui/Loader/Loader.component";
-import { TOGGLE_MODAL } from "../../../../Redux/modal";
-import { STORE_PAN } from "../../../../Redux/Landing";
 import InvalidPan from "../../../ui/Popups/PANValidation/InvalidPan";
-import FatcaValidation from "../../../ui/Popups/PANValidation/FatcaValidation";
 const EnterPan = (props) => {
+  // Loading State
   const [isLoading, setisLoading] = useState(false);
+
+  // Button Disabled State
   const [isDisabled, setisDisabled] = useState(true);
+
+  // Error Msg State
   const [isError, setError] = useState("");
+
   const [responceType, setResponceType] = useState(null);
   const [icon, setIcon] = useState(false);
   const [buttonText, setButtonText] = useState("");
   const [content, setcontent] = useState("");
   const [checkbox, setcheckbox] = useState(true);
-  const [isPanValid, setisPanValid] = useState(true);
+
+  // PAN Validation Status
+  const [isPanValid, setisPanValid] = useState(false);
+
+  // PAN Error Msg
   const [showPanErrorMsg, setshowPanErrorMsg] = useState(false);
   const {
     register,
@@ -35,12 +46,15 @@ const EnterPan = (props) => {
   } = useForm();
   const router = useRouter();
 
+  console.log(isDisabled,"disabled state")
   // Sending Data to API Using Async Await
   const onSubmit = async (data) => {
     try {
       setisLoading(true);
+
+      // Validating PAN Using Different Regex
       const errorMsg = validatePAN(data.pan);
-      console.log(errorMsg);
+ 
       if (!errorMsg.validated) {
         setisLoading(false);
         setError(errorMsg.msg);
@@ -50,20 +64,21 @@ const EnterPan = (props) => {
         setResponceType(errorMsg.responceType);
         props.toggleModal();
       } else {
+        // Sending data to API
         const APIData = {
-          // phone: parseInt(props.phone),
-          phone: 8369747962,
+          phone: parseInt(props.phone),
           pan: data.pan,
           testing: true,
         };
-        console.log(APIData);
+
         const getData = await AxiosInstance.post(
           "/signup/user/pan/verify",
-          APIData,
+          {
+            ...APIData,
+          },
           {
             headers: {
-              // session_id: props.session_id,
-              session_id: "5ebcdfdf-0496-4d50-a819-33f83de5f857",
+              session_id: props.session_id,
             },
           }
         );
@@ -71,14 +86,8 @@ const EnterPan = (props) => {
         // Pan verification attempts exceeds the limit
         // receiving response from backend
         const res = await getData.data;
-        console.log(getData);
         setisLoading(false);
         if (getData.status == 200) {
-          console.log(res);
-          // if (res.message == "Pan verification attempts exceeds the limit") {
-          //   props.toggleModal();
-          // }
-
           let UserPANDetails = {
             name: res.name,
             new_user: res.new_user,
@@ -101,31 +110,11 @@ const EnterPan = (props) => {
     } catch (error) {
       // Error If Something Goes Wrong
       setisLoading(false);
-
-      props.toggleModal();
-  //  { props.showModal?(
-  //     <Modal onClick={toggleModal}>
-  //     <InvalidPan
-  //           buttonText={buttonText}
-  //           errorMsg={isError}
-  //           content={SomeThing}
-  //           responceType={responceType}
-  //           showModal={props.toggleModal}
-  //         />
-  //     </Modal>
-  //   ):null}
+      setisDisabled(true);
+      // props.toggleModal();
       reset();
-      console.log(error);
     }
   };
-  // const displayFatcaDeclaration = () => {
-  //   props.toggleModal();
-  //   props.showModal ? (
-  //     <Modal onClick={toggleModal}>
-  //       <FatcaValidation />
-  //     </Modal>
-  //   ) : null;
-  // };
   useEffect(() => {
     var lineItem = document.querySelectorAll(".animate__animated");
     lineItem.forEach((item, index) => {
@@ -167,20 +156,18 @@ const EnterPan = (props) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Tooltip for Invalid Pan */}
               <div className="inputTooltip animate__animated">
-              
-                  <div className={`tooltip ${!showPanErrorMsg && "hide"} `} >
-                    <div className="icon-Access-denied "></div>
+                <div className={`tooltip ${!showPanErrorMsg && "hide"} `}>
+                  <div className="icon-Access-denied "></div>
 
-                    <span className="tooltiptext tooltip-top">
-                     
-                    PAN details invalid! 
-                    </span>
+                  <span className="tooltiptext tooltip-top">
+                    PAN details invalid!
+                  </span>
 
-                    {/* <span className="tooltiptext tooltip-top">
+                  {/* <span className="tooltiptext tooltip-top">
                     PAN details invalid! {errors.pan.message}
                   </span> */}
-                  </div>
-               
+                </div>
+
                 {/* PAN Number Input */}
                 <input
                   type="text"
@@ -199,27 +186,37 @@ const EnterPan = (props) => {
                       message: "Maximum 10 number",
                     },
                   })}
-                  onChange={(e)=>{
-                    e.preventDefault()
-                    setValue("pan",e.target.value.replace(/[^a-z0-9]/gi, "").toLocaleUpperCase())
-                  if(e.target.value.length==10){
-                    if( /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(e.target.value)){
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setValue(
+                      "pan",
+                      e.target.value
+                        .replace(/[^a-z0-9]/gi, "")
+                        .toLocaleUpperCase()
+                    );
+                    if (e.target.value.length == 10) {
+                      if (
+                        /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/.test(
+                          e.target.value
+                        )
+                      ) {
+                        setshowPanErrorMsg(false);
+                        setisPanValid(true);
+                        if (checkbox) {
+                          setisDisabled(false);
+                        } else {
+                          setisDisabled(true);
+                        }
+                      } else {
+                        setshowPanErrorMsg(true);
+                        setisDisabled(true);
+                        setisPanValid(false);
+                      }
+                    } else {
                       setshowPanErrorMsg(false);
-                      setisPanValid(true)
-                      if(!checkbox){
-                        setisDisabled(true)
-                      }
-                      else{
-                        setisDisabled(false)
-                      }
-                    }else{
-                      setshowPanErrorMsg(true)
-                      setisPanValid(false)
+                      setisDisabled(true);
+                      setisPanValid(false);
                     }
-                  }else{
-                    setshowPanErrorMsg(false)
-                    setisDisabled(true)
-                  }
                   }}
                 />
               </div>
@@ -229,32 +226,27 @@ const EnterPan = (props) => {
                   type="checkbox"
                   id="enableWhatsapp"
                   defaultChecked={"checked"}
-                  // onChange={(e)=>{
-                  //   console.log(e.target.checked)
-                  // }}
                   onInput={(e) => {
-                    e.preventDefault()
-                    console.log(e.target.checked)
-                    if(e.target.checked){
-                      setcheckbox(true)
-                      if(isPanValid){
-                        setisDisabled(false)
-                      }else{
-                        setisDisabled(true)
+                    e.preventDefault();
+                    if (e.target.checked) {
+                      setcheckbox(true);
+                      if (isPanValid) {
+                        setisDisabled(false);
+                      } 
+                      else {
+                        setisDisabled(true);
                       }
-                    }else{
-                      setcheckbox(false)
-                      if(isPanValid){
-                        setisDisabled(false)
-                      }else{
-                        setisDisabled(true)
+                    } else {
+                      setcheckbox(false);
+                      setisDisabled(true);
+                      if (isPanValid) {
+                        setisDisabled(true);
                       }
-
                     }
                     // e.target.checked ? setcheckbox(true) : setcheckbox(false);
                   }}
-                  {...register("checkbox",{
-                    required:true
+                  {...register("checkbox", {
+                    required: true,
                   })}
                 />
                 <label htmlFor="enableWhatsapp">
